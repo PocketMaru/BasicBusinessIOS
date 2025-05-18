@@ -21,7 +21,7 @@ enum ServiceType {
     case consulting
     case handyman
 }
-struct QuoteModel {
+class QuoteModel {
     let id: UUID
     var customerID: CustomerModel
     
@@ -40,4 +40,36 @@ struct QuoteModel {
     var notes: String?
     
     var totalCost: Double?
+    
+    init(
+         id: UUID,
+         customerID: CustomerModel,
+         quoteType: QuoteType,
+         serviceType: ServiceType,
+         fixedRate: Double? = nil,
+         hourlyRate: Double? = nil,
+         hoursWorked: Double? = nil,
+         squareFootRate: Double? = nil,
+         squareFootageAmount: Double? = nil,
+         roofSize: String? = nil,
+         installationDate: Date? = nil,
+         quoteDate: Date? = nil,
+         notes: String? = nil,
+         totalCost: Double? = nil
+    ) {
+        self.id = id
+        self.customerID = customerID
+        self.quoteType = quoteType
+        self.serviceType = serviceType
+        self.fixedRate = fixedRate
+        self.hourlyRate = hourlyRate
+        self.hoursWorked = hoursWorked
+        self.squareFootRate = squareFootRate
+        self.squareFootageAmount = squareFootageAmount
+        self.roofSize = roofSize
+        self.installationDate = installationDate
+        self.quoteDate = quoteDate
+        self.notes = notes
+        self.totalCost = totalCost
+    }
 }

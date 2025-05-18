@@ -8,21 +8,7 @@
 import SwiftUI
 
 struct StatsView: View {
-    @Binding var customers: [CustomerModel]
-    @Binding var businessStats: [BusinessStatsVM]
     var body: some View {
-        NavigationStack {
-            ZStack {
-                VStack{
-                    Divider()
-                    Spacer()
-                }
-                .frame(maxWidth:.infinity, maxHeight: .infinity)
-            }
-            .padding()
-            .contentShape(Rectangle())
-            .ToolBarTitle { }
-        }
-    }
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
 }
 

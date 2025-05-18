@@ -8,16 +8,8 @@
 import SwiftUI
 
 struct EmptyCustomerView: View {
-    @Binding var customers: [CustomerModel]
     var body: some View {
-        ScrollView {
-            Section {
-                    Spacer()
-                    Text("Add a customer to get started.")
-                        .foregroundStyle(.black)
-                    Spacer()
-            }
-        }
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 

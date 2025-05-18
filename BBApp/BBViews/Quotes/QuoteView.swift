@@ -8,33 +8,8 @@
 import SwiftUI
 
 struct QuoteView: View {
-    // Enumeration created to control quote view options
-    // used instead of boolean options.
-    enum QuoteViewMode {
-        case residential
-        case commercial
-        case addCustomer
-    }
-    
-    @Binding var customers: [CustomerModel]
-    @Binding var businessStats: [BusinessStatsVM]
-    @State private var newCustomer = CustomerModel()
-    @State var quoteViewMode: QuoteViewMode = .addCustomer
-    
     var body: some View {
-        NavigationStack {
-            
-            ZStack {
-                VStack{
-                    Divider()
-                    Spacer()
-                }
-                .frame(maxWidth:.infinity, maxHeight: .infinity)
-            }
-            .padding()
-            .contentShape(Rectangle())
-            .ToolBarTitle { }
-        }
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 

@@ -24,7 +24,13 @@ class CustomerModel {
         "\(firstName) \(lastName)"
     }
     // First initializer, used for when we want to create a instance of this class with specific values.
-    init(firstName: String, lastName: String, email: String, address: String, phone: String, paidBill: Bool) {
+    init(firstName: String,
+         lastName: String,
+         email: String,
+         address: String,
+         phone: String,
+         paidBill: Bool
+    ) {
         self.firstName = firstName
         self.lastName = lastName
         self.email = email

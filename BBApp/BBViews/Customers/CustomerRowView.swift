@@ -8,12 +8,7 @@
 import SwiftUI
 
 struct CustomerRowView: View {
-    @Binding var customers: [CustomerModel]
     var body: some View {
-        List {
-            ForEach(customers, id: \.customerID) { customer in
-                Text(customer.fullName)
-            }
-        }
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
