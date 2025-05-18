@@ -23,7 +23,7 @@ enum ServiceType {
 }
 struct QuoteModel {
     let id: UUID
-    var customerID: BBCustomerModel
+    var customerID: CustomerModel
     
     var quoteType: QuoteType
     var serviceType: ServiceType

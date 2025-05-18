@@ -10,7 +10,7 @@ import Observation
 
 @Observable
 // Customer model outlining the data that exists within a customer.
-class BBCustomerModel {
+class CustomerModel {
     // Variables that make up our customer model
     let customerID = UUID()
     var firstName: String = ""

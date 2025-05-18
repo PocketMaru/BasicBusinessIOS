@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct BBEmptyCustomerView: View {
-    @Binding var customers: [BBCustomerModel]
+struct EmptyCustomerView: View {
+    @Binding var customers: [CustomerModel]
     var body: some View {
         ScrollView {
             Section {

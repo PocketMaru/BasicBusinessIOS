@@ -8,23 +8,23 @@
 import SwiftUI
 
 extension View {
-    func BBToolBarTitle(action: @escaping () -> Void) -> some View {
+    func ToolBarTitle(action: @escaping () -> Void) -> some View {
         self.toolbar {
             ToolbarItem(placement:.topBarLeading) {
                 VStack{
                     HStack {
                         Text("BasicBusiness")
                             .font(.system(size: 32,weight: .bold))
-                            .foregroundStyle(BBColor.logoColor)
+                            .foregroundStyle(ThemeColors.logoColor)
                         Image(systemName:"gear")
-                            .foregroundStyle(BBColor.logoColor).font(.title.bold())
+                            .foregroundStyle(ThemeColors.logoColor).font(.title.bold())
                     }
                 }
             }
         }
-        .foregroundColor(BBColor.logoColor)
+        .foregroundColor(ThemeColors.logoColor)
         .scrollContentBackground(.hidden)
-        .background(BBColor.backgroundColor)
+        .background(ThemeColors.backgroundColor)
     }
 }
 

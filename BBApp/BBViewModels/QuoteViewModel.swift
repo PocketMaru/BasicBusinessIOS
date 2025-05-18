@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-class BBQuoteViewModel {
+class QuoteViewModel {
     var quote: [QuoteModel]
     
     init(quote: [QuoteModel]) {

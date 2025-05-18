@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct BBCustomTabView: View {
+struct CustomTabView: View {
     enum Tab { case customer, quotes, business, expenses}
-    @State var customers: [BBCustomerModel] = []
-    @State var businessStats: [BBBusinessStatsModel] = []
+    @State var customers: [CustomerModel] = []
+    @State var businessStats: [BusinessStatsVM] = []
     @State private var selectedTab: Tab = .customer
     var body: some View {
         ZStack {
             switch selectedTab {
             case .customer:
-                NavigationLink(destination: BBCustomerView(customers: $customers, businessStats: $businessStats)) {}
+                NavigationLink(destination: CustomerVM(customers: $customers, businessStats: $businessStats)) {}
             case .quotes:
                 NavigationLink(destination: BBQuoteView(customers: $customers, businessStats: $businessStats)) {}
             case .business:
@@ -103,12 +103,12 @@ struct BBCustomTabView: View {
                 Image(systemName: selectedTab == tab ? "\(icon).fill" : icon)
                 Text(title)
             }
-            .foregroundStyle(selectedTab == tab ? BBColor.logoColor : .gray)
+            .foregroundStyle(selectedTab == tab ? ThemeColors.logoColor : .gray)
             .frame(maxWidth: .infinity)
         }
     }
 }
 
 #Preview {
-    BBCustomTabView()
+    CustomTabView()
 }

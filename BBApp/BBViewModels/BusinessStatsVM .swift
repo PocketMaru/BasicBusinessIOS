@@ -8,11 +8,11 @@
 import Foundation
 
 // Business statistics View Model outlining the data that exists within the business
-class BBBusinessStatsVM {
+class BusinessStatsVM {
     var quoteData: [QuoteModel]
-    var expenseData: [BBExpenseModel]
+    var expenseData: [ExpenseModel]
     
-    init (quoteData: [QuoteModel], expenseData: [BBExpenseModel]) {
+    init (quoteData: [QuoteModel], expenseData: [ExpenseModel]) {
         self.quoteData = quoteData
         self.expenseData = expenseData
     }

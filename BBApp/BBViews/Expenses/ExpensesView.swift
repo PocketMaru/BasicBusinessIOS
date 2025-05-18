@@ -1,17 +1,14 @@
 //
-//  LPCustomerInfoView.swift
+//  LPExpensesView.swift
 //  LawnPro
 //
-//  Created by Joshua Hauer on 5/9/25.
+//  Created by Joshua Hauer on 5/10/25.
 //
 
 import SwiftUI
 
-struct BBCustomerInfoView: View {
-    
+struct ExpensesView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
-
-

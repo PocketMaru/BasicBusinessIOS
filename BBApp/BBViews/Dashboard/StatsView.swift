@@ -21,7 +21,7 @@ struct StatsView: View {
             }
             .padding()
             .contentShape(Rectangle())
-            .BBToolBarTitle { }
+            .ToolBarTitle { }
         }
     }
 }

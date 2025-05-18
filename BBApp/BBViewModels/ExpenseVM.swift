@@ -8,10 +8,10 @@
 import Foundation
 
 @Observable
-class BBExpenseVM {
-    var expense: [BBExpenseModel] = []
+class ExpenseVM {
+    var expense: [ExpenseModel] = []
     
-    init(expense: [BBExpenseModel]) {
+    init(expense: [ExpenseModel]) {
         self.expense = expense
     }
     
@@ -20,7 +20,7 @@ class BBExpenseVM {
         amount: Double,
         date: Date
     ){
-        let newExpense = BBExpenseModel(name: name, amount: amount, date: date)
+        let newExpense = ExpenseModel(name: name, amount: amount, date: date)
         expense.append(newExpense)
     }
     

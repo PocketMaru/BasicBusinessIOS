@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BBQuoteView: View {
+struct QuoteView: View {
     // Enumeration created to control quote view options
     // used instead of boolean options.
     enum QuoteViewMode {
@@ -16,9 +16,9 @@ struct BBQuoteView: View {
         case addCustomer
     }
     
-    @Binding var customers: [BBCustomerModel]
-    @Binding var businessStats: [BBBusinessStatsVM]
-    @State private var newCustomer = BBCustomerModel()
+    @Binding var customers: [CustomerModel]
+    @Binding var businessStats: [BusinessStatsVM]
+    @State private var newCustomer = CustomerModel()
     @State var quoteViewMode: QuoteViewMode = .addCustomer
     
     var body: some View {
@@ -33,7 +33,7 @@ struct BBQuoteView: View {
             }
             .padding()
             .contentShape(Rectangle())
-            .BBToolBarTitle { }
+            .ToolBarTitle { }
         }
     }
 }

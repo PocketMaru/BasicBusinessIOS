@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State var customers: [BBCustomerModel] = []
-    @State var businessStats: [BBBusinessStatsModel] = []
+    @State var customers: [CustomerModel] = []
+    @State var businessStats: [BusinessStatsVM] = []
     
     var body: some View {
         HStack {

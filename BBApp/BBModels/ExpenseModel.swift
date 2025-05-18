@@ -7,7 +7,7 @@
 
 import Foundation
 
-class BBExpenseModel {
+class ExpenseModel {
     var name: String
     var amount: Double
     var date: Date

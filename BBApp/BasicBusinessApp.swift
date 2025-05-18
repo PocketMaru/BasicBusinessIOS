@@ -12,7 +12,7 @@ struct BasicBusinessApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
-                .accentColor(BBColor.logoColor)
+                .accentColor(ThemeColors.logoColor)
         }
     }
 }

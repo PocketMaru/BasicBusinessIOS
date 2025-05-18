@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct BBCustomerView: View {
-    @State var customer: [BBCustomerVM]
-    
+struct CustomerView: View {
+    @State var customer: [CustomerVM]
+    @State var businessStats: [BusinessStatsVM]
     var body: some View {
       
     }

@@ -7,10 +7,10 @@
 
 import Foundation
 @Observable
-class BBCustomerVM {
-    var customer: [BBCustomerModel] = []
+class CustomerVM {
+    var customer: [CustomerModel] = []
     
-    init(customer: [BBCustomerModel] = []) {
+    init(customer: [CustomerModel] = []) {
         self.customer = customer
     }
     
@@ -22,7 +22,7 @@ class BBCustomerVM {
         phone: String,
         paidBill: Bool?
     ){
-        let newCustomer = BBCustomerModel(
+        let newCustomer = CustomerModel(
             firstName: firstName,
             lastName: lastName,
             email: email,
@@ -33,7 +33,7 @@ class BBCustomerVM {
         customer.append(newCustomer)
     }
     
-    func searchCustomer(by name: String) -> [BBCustomerModel] {
+    func searchCustomer(by name: String) -> [CustomerModel] {
         return customer.filter {
             $0.firstName.lowercased().contains(name.lowercased()) ||
             $0.lastName.lowercased().contains(name.lowercased())
