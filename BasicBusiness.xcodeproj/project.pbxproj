@@ -32,6 +32,15 @@
 		53D1A29F2DCFC13B00E7A675 /* ExpensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1A29E2DCFC13B00E7A675 /* ExpensesView.swift */; };
 		53D1A2A12DCFC87100E7A675 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1A2A02DCFC87100E7A675 /* CustomTabView.swift */; };
 		53D1A2A32DCFCCC400E7A675 /* TabButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1A2A22DCFCCC400E7A675 /* TabButtons.swift */; };
+		53D7F24D2DDE66FB00579741 /* HVACQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7F24C2DDE66FB00579741 /* HVACQM.swift */; };
+		53D7F24F2DDE758200579741 /* ProductSalesQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7F24E2DDE758200579741 /* ProductSalesQM.swift */; };
+		53D7F2512DDEB66D00579741 /* MaterialVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7F2502DDEB66D00579741 /* MaterialVM.swift */; };
+		53D7F2552DDEE17600579741 /* MaterialExpenseQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7F2542DDEE17600579741 /* MaterialExpenseQM.swift */; };
+		53E5A9E82DDC24C500B66821 /* MaterialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5A9E72DDC24C500B66821 /* MaterialModel.swift */; };
+		53E5A9EB2DDC61AF00B66821 /* LandscapeQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5A9EA2DDC61AF00B66821 /* LandscapeQM.swift */; };
+		53E5A9ED2DDC61C500B66821 /* PressureWashQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5A9EC2DDC61C500B66821 /* PressureWashQM.swift */; };
+		53E5A9EF2DDC61DB00B66821 /* HandymanQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5A9EE2DDC61DB00B66821 /* HandymanQM.swift */; };
+		53E5A9F12DDC61E600B66821 /* ConsultingQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5A9F02DDC61E600B66821 /* ConsultingQM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +89,15 @@
 		53D1A29E2DCFC13B00E7A675 /* ExpensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesView.swift; sourceTree = "<group>"; };
 		53D1A2A02DCFC87100E7A675 /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		53D1A2A22DCFCCC400E7A675 /* TabButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabButtons.swift; sourceTree = "<group>"; };
+		53D7F24C2DDE66FB00579741 /* HVACQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HVACQM.swift; sourceTree = "<group>"; };
+		53D7F24E2DDE758200579741 /* ProductSalesQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSalesQM.swift; sourceTree = "<group>"; };
+		53D7F2502DDEB66D00579741 /* MaterialVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialVM.swift; sourceTree = "<group>"; };
+		53D7F2542DDEE17600579741 /* MaterialExpenseQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialExpenseQM.swift; sourceTree = "<group>"; };
+		53E5A9E72DDC24C500B66821 /* MaterialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialModel.swift; sourceTree = "<group>"; };
+		53E5A9EA2DDC61AF00B66821 /* LandscapeQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeQM.swift; sourceTree = "<group>"; };
+		53E5A9EC2DDC61C500B66821 /* PressureWashQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressureWashQM.swift; sourceTree = "<group>"; };
+		53E5A9EE2DDC61DB00B66821 /* HandymanQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandymanQM.swift; sourceTree = "<group>"; };
+		53E5A9F02DDC61E600B66821 /* ConsultingQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultingQM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +130,7 @@
 			children = (
 				530215862DD78B60007F9E0B /* CustomerVM.swift */,
 				530215912DD7AF83007F9E0B /* ExpenseVM.swift */,
+				53D7F2502DDEB66D00579741 /* MaterialVM.swift */,
 				5302158A2DD78BC6007F9E0B /* BusinessStatsVM .swift */,
 				532F96982DD9098A000EEAFF /* QuoteViewModel.swift */,
 			);
@@ -198,7 +217,8 @@
 			children = (
 				53D1A2882DCABB7E00E7A675 /* CustomerModel.swift */,
 				5302158F2DD7AEBB007F9E0B /* ExpenseModel.swift */,
-				530215972DD86F4E007F9E0B /* QuoteModel.swift */,
+				53E5A9E72DDC24C500B66821 /* MaterialModel.swift */,
+				53E5A9E92DDC60F500B66821 /* QuoteModels */,
 			);
 			path = BBModels;
 			sourceTree = "<group>";
@@ -283,6 +303,21 @@
 				53D1A2952DCE658800E7A675 /* CustomSectionView.swift */,
 			);
 			path = ViewExtensions;
+			sourceTree = "<group>";
+		};
+		53E5A9E92DDC60F500B66821 /* QuoteModels */ = {
+			isa = PBXGroup;
+			children = (
+				530215972DD86F4E007F9E0B /* QuoteModel.swift */,
+				53D7F2542DDEE17600579741 /* MaterialExpenseQM.swift */,
+				53E5A9EA2DDC61AF00B66821 /* LandscapeQM.swift */,
+				53E5A9EC2DDC61C500B66821 /* PressureWashQM.swift */,
+				53E5A9F02DDC61E600B66821 /* ConsultingQM.swift */,
+				53E5A9EE2DDC61DB00B66821 /* HandymanQM.swift */,
+				53D7F24C2DDE66FB00579741 /* HVACQM.swift */,
+				53D7F24E2DDE758200579741 /* ProductSalesQM.swift */,
+			);
+			path = QuoteModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -422,22 +457,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				53D1A24C2DC7DCB900E7A675 /* MainTabView.swift in Sources */,
+				53E5A9ED2DDC61C500B66821 /* PressureWashQM.swift in Sources */,
+				53D7F24F2DDE758200579741 /* ProductSalesQM.swift in Sources */,
 				53D1A2922DCE510200E7A675 /* CustomerInfoView.swift in Sources */,
 				53D1A24D2DC7DCB900E7A675 /* BasicBusinessApp.swift in Sources */,
 				53D1A28D2DCABFEF00E7A675 /* ThemeColors.swift in Sources */,
+				53E5A9E82DDC24C500B66821 /* MaterialModel.swift in Sources */,
 				530215872DD78B60007F9E0B /* CustomerVM.swift in Sources */,
 				53D1A2872DCABB1200E7A675 /* StatsView.swift in Sources */,
+				53D7F24D2DDE66FB00579741 /* HVACQM.swift in Sources */,
 				53D1A2942DCE60A200E7A675 /* ToolBarTitle.swift in Sources */,
 				5302158B2DD78BC6007F9E0B /* BusinessStatsVM .swift in Sources */,
+				53D7F2512DDEB66D00579741 /* MaterialVM.swift in Sources */,
 				53D1A2832DCAAC4700E7A675 /* CustomerView.swift in Sources */,
 				530215922DD7AF83007F9E0B /* ExpenseVM.swift in Sources */,
+				53E5A9EF2DDC61DB00B66821 /* HandymanQM.swift in Sources */,
 				53D1A2852DCABAE400E7A675 /* QuoteView.swift in Sources */,
 				530215902DD7AEBB007F9E0B /* ExpenseModel.swift in Sources */,
 				53D1A2962DCE658800E7A675 /* CustomSectionView.swift in Sources */,
 				53D1A2A12DCFC87100E7A675 /* CustomTabView.swift in Sources */,
 				53D1A2892DCABB7E00E7A675 /* CustomerModel.swift in Sources */,
 				53D1A29F2DCFC13B00E7A675 /* ExpensesView.swift in Sources */,
+				53E5A9F12DDC61E600B66821 /* ConsultingQM.swift in Sources */,
+				53D7F2552DDEE17600579741 /* MaterialExpenseQM.swift in Sources */,
 				530215982DD86F4E007F9E0B /* QuoteModel.swift in Sources */,
+				53E5A9EB2DDC61AF00B66821 /* LandscapeQM.swift in Sources */,
 				53D1A29A2DCFAB2D00E7A675 /* CustomerRowView.swift in Sources */,
 				53D1A29C2DCFABCE00E7A675 /* EmptyCustomerView.swift in Sources */,
 				53D1A2A32DCFCCC400E7A675 /* TabButtons.swift in Sources */,

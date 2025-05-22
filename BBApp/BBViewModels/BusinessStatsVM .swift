@@ -8,9 +8,9 @@
 import Foundation
 
 // Business statistics View Model outlining the data that exists within the business
-class BusinessStatsVM {
-    var quoteData: [QuoteModel]
-    var expenseData: [ExpenseModel]
+final class BusinessStatsVM {
+    var quoteData: [QuoteModel]?
+    var expenseData: [ExpenseModel]?
     
     init (quoteData: [QuoteModel], expenseData: [ExpenseModel]) {
         self.quoteData = quoteData
@@ -18,14 +18,13 @@ class BusinessStatsVM {
     }
     
     var totalRevenue: Double {
-        quoteData.reduce(0) { total, quote in
-            total + Double(quote.totalCost ?? 0)}
+        guard let quotes = quoteData else {return 0}
+        return quotes.reduce(0) {$0 + ($1.totalCost ?? 0)}
     }
     
     var totalExpenses: Double {
-        expenseData.reduce(0) { total, expense in
-            total + Double(expense.amount)
-        }
+        guard let totalExpenses = expenseData else {return 0}
+        return totalExpenses.reduce(0) {$0 + $1.total}
     }
     
     var profit: Double {

@@ -6,3 +6,31 @@
 //
 
 import Foundation
+
+struct ConsultingQM: Quoteable {
+    var hoursWorked: Double? = 1
+    var hourlyRate: Double? = 50
+    var customer: CustomerModel
+    var fixedRate: Double? = 100
+    
+    var id: UUID
+    var customerID: UUID {
+        customer.customerID
+    }
+    var industryType: IndustryType = .consulting
+    var quoteType: QuoteType
+    var quoteDate: Date?
+    var notes: String?
+    var totalCost: Double? {
+        switch quoteType {
+            case .fixedRate:
+            return fixedRate
+        case .hourlyRate:
+            guard let hoursWorked = hoursWorked,
+                  let hourlyRate = hourlyRate else {return nil}
+            return hoursWorked * hourlyRate
+        case .squareFootage, .subscription:
+            return nil
+        }
+    }
+}
