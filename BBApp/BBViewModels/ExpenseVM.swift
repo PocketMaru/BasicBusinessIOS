@@ -8,24 +8,23 @@
 import Foundation
 
 @Observable
-class ExpenseVM {
-    var expense: [ExpenseModel] = []
-    
-    init(expense: [ExpenseModel]) {
-        self.expense = expense
+final class ExpenseVM {
+    var expenses: [ExpenseModel] = []
+    init(expenses: [ExpenseModel]) {
+        self.expenses = expenses
     }
     
-    func addExpense(
-        name: String,
-        amount: Double,
-        date: Date
-    ){
-        let newExpense = ExpenseModel(name: name, amount: amount, date: date)
-        expense.append(newExpense)
+    func addExpense(_ expense: ExpenseModel) {
+        expenses.append(expense)
+    }
+    
+    func addMaterialExpense(_ expense: MaterialExpenseQM) {
+        let matExpense = expense.toExpense()
+        expenses.append(matExpense)
     }
     
     func removeExpense(at index: Int){
-        expense.remove(at: index)
+        guard index >= 0 && index < expenses.count else { return }
+        expenses.remove(at: index)
     }
-    
 }

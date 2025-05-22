@@ -7,10 +7,10 @@
 
 import Foundation
 @Observable
-class CustomerVM {
+final class CustomerVM {
     var customer: [CustomerModel] = []
     
-    init(customer: [CustomerModel] = []) {
+    init(customer: [CustomerModel]) {
         self.customer = customer
     }
     
@@ -34,9 +34,12 @@ class CustomerVM {
     }
     
     func searchCustomer(by name: String) -> [CustomerModel] {
+        let query = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        
         return customer.filter {
-            $0.firstName.lowercased().contains(name.lowercased()) ||
-            $0.lastName.lowercased().contains(name.lowercased())
+            $0.firstName.lowercased().contains(query) ||
+            $0.lastName.lowercased().contains(query) ||
+            "\($0.firstName) \($0.lastName)".lowercased().contains(query)
         }
     }
     
