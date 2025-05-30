@@ -6,8 +6,8 @@
 //
 
 import Foundation
-
-enum MaterialUnitTypes {
+// Material Units of Measurement
+enum ProductUnitTypes {
     case gallon
     case liter
     case ounce
@@ -15,13 +15,14 @@ enum MaterialUnitTypes {
     case bag
     case unit
     case piece
+    case gram
 }
-
+// Model defining materials purchased for quotes, and materials on hand in inventory
 struct MaterialModel {
     var id: UUID
     var name: String
     var description: String?
     var unitCost: Double
-    var quantityAvailable: Int
-    var unitType: MaterialUnitTypes
+    var unitType: ProductUnitTypes
 }
+

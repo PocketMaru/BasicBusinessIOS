@@ -8,6 +8,7 @@
 import Foundation
 
 struct LandscapeQM: Quoteable {
+    var materialsUsed: [MaterialExpenseQM]? = nil
     var squareFootageAmount: Double?
     var squareFootRate: Double?
     var fixedRate: Double?

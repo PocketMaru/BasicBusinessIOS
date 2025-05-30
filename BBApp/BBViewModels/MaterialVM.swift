@@ -8,24 +8,48 @@
 import Foundation
 
 final class MaterialVM {
-    var materials: [MaterialModel] = []
+    private(set) var materials: [MaterialModel] = []
+    private(set) var quoteMaterials: [MaterialExpenseQM] = []
     
     init(materials: [MaterialModel]) {
         self.materials = materials
     }
     
-    func addMaterial(id: UUID, name: String, description: String?, unitCost: Double, quantityAvailable: Int, unitType: MaterialUnitTypes ) {
-        let newMaterial = MaterialModel(id: id, name: name, description: description, unitCost: unitCost, quantityAvailable: quantityAvailable, unitType: unitType)
+    func addMaterial(
+        id: UUID,
+        name: String,
+        description: String?,
+        unitCost: Double,
+        unitType: ProductUnitTypes
+    ) {
+        guard !materials.contains(where: { $0.id == id }) else { return }
+        
+        let newMaterial = MaterialModel(
+            id: id, name: name,
+            description: description,
+            unitCost: unitCost,
+            unitType: unitType
+        )
         materials.append(newMaterial)
+    }
+    
+    func addMaterialToQuote (from savedMaterial: MaterialModel, markAsExpense: Bool = false) {
+        let quoteMaterial = MaterialExpenseQM(from: savedMaterial, addedAsExpense: markAsExpense)
+        quoteMaterials.append(quoteMaterial)
+    }
+    
+    func saveToCatalog(from expense: MaterialExpenseQM) {
+        addMaterial(
+            id: expense.id,
+            name: expense.name,
+            description: expense.description,
+            unitCost: expense.unitCost,
+            unitType: expense.unitType
+        )
     }
     
     func removeMaterial(at index: Int) {
         guard index >= 0 && index < materials.count else { return }
         materials.remove(at: index)
-    }
-    // Modifying the MaterialModels data to reflect what was used
-    func subtractMaterials(from material: inout MaterialModel, by expense: MaterialExpenseQM) {
-        material.quantityAvailable = max(0, material.quantityAvailable - expense.quantityUsed)
-        
     }
 }

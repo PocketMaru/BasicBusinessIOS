@@ -1,12 +1,12 @@
 //
-//  BBQuoteModel.swift
+//  QuoteModel.swift
 //  BasicBusiness
 //
 //  Created by Joshua Hauer on 5/17/25.
 //
 
 import Foundation
-// Data all quotes will have
+// Global quote expectations.
 protocol Quoteable {
     var id: UUID {get}
     var customerID: UUID {get}
@@ -42,7 +42,10 @@ enum QuoteType {
 
 struct QuoteModel: Quoteable {
     var id = UUID()
-    var customerID: UUID
+    var customer: CustomerModel
+    var customerID: UUID {
+        customer.customerID
+    }
     var industryType: IndustryType
     var serviceType: ServiceType
     var quoteType: QuoteType
@@ -58,4 +61,12 @@ struct QuoteModel: Quoteable {
     var totalCost: Double?
     
     var customFields: Data?
+    
+    var materialExpenses: [MaterialExpenseQM] = []
+    var materialTotalCost: Double? {
+        materialExpenses.reduce(0) { $0 + $1.unitCost }
+    }
+    var pendingExpenses: [MaterialExpensePreview] = []
 }
+
+

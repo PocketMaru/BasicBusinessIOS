@@ -1,5 +1,5 @@
 //
-//  BBExpenseViewModel.swift
+//  ExpenseVM.swift
 //  BasicBusiness
 //
 //  Created by Joshua Hauer on 5/16/25.
@@ -19,8 +19,9 @@ final class ExpenseVM {
     }
     
     func addMaterialExpense(_ expense: MaterialExpenseQM) {
-        let matExpense = expense.toExpense()
-        expenses.append(matExpense)
+        if let matExpense = expense.toExpense() {
+            return expenses.append(matExpense)
+        }
     }
     
     func removeExpense(at index: Int){

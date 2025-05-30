@@ -1,5 +1,5 @@
 //
-//  BBCustomerViewModel.swift
+//  CustomerVM.swift
 //  BasicBusiness
 //
 //  Created by Joshua Hauer on 5/16/25.
@@ -18,7 +18,7 @@ final class CustomerVM {
         firstName: String,
         lastName: String,
         email: String,
-        address: String,
+        address: String?,
         phone: String,
         paidBill: Bool?
     ){

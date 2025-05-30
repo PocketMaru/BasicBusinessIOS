@@ -8,6 +8,7 @@
 import Foundation
 
 struct ConsultingQM: Quoteable {
+    var materialsUsed: [MaterialExpenseQM]? = nil
     var hoursWorked: Double? = 1
     var hourlyRate: Double? = 50
     var customer: CustomerModel

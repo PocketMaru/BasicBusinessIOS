@@ -1,5 +1,5 @@
 //
-//  BBQuoteViewModel.swift
+//  QuoteVM.swift
 //  BasicBusiness
 //
 //  Created by Joshua Hauer on 5/17/25.
@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-final class QuoteViewModel {
+final class QuoteVM {
     var quote: [QuoteModel]
     
     init(quote: [QuoteModel]) {

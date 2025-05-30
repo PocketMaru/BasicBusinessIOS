@@ -1,6 +1,6 @@
 //
-//  LPCustomerModel.swift
-//  LawnPro
+//  CustomerModel.swift
+//  BasicBusiness
 //
 //  Created by Joshua Hauer on 5/6/25.
 //
@@ -16,7 +16,7 @@ struct CustomerModel {
     var firstName: String = ""
     var lastName: String = ""
     var email: String = ""
-    var address: String = ""
+    var address: String? = nil
     var phone: String = ""
     var paidBill: Bool? = false
     
