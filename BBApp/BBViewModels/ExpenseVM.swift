@@ -10,6 +10,7 @@ import Foundation
 @Observable
 final class ExpenseVM {
     var expenses: [ExpenseModel] = []
+    var materialExpenses: [MaterialExpenseQM] = []
     init(expenses: [ExpenseModel]) {
         self.expenses = expenses
     }
@@ -22,6 +23,11 @@ final class ExpenseVM {
         if let matExpense = expense.toExpense() {
             return expenses.append(matExpense)
         }
+    }
+    
+    func removeMaterialExpense(at index: Int){
+        guard index >= 0 && index < materialExpenses.count else { return }
+        materialExpenses.remove(at: index)
     }
     
     func removeExpense(at index: Int){

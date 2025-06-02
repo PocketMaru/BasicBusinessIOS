@@ -39,8 +39,7 @@ extension MaterialExpenseQM {
     }
 }
 
-// Inventory item snapshot to monitor what materials were used.
-// Adding a variable to subtract usage from stock.
+// Extension for taking a material from storage, adding it to a quote, and choosing wether or not it is an expense. 
 extension MaterialExpenseQM {
     init(from material: MaterialModel, addedAsExpense: Bool = false) {
         self.id = material.id

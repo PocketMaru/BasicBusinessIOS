@@ -14,7 +14,7 @@ final class MaterialVM {
     init(materials: [MaterialModel]) {
         self.materials = materials
     }
-    
+    // Adding materials to the material model
     func addMaterial(
         id: UUID,
         name: String,
@@ -32,13 +32,13 @@ final class MaterialVM {
         )
         materials.append(newMaterial)
     }
-    
+    // Adding materials to the quote
     func addMaterialToQuote (from savedMaterial: MaterialModel, markAsExpense: Bool = false) {
         let quoteMaterial = MaterialExpenseQM(from: savedMaterial, addedAsExpense: markAsExpense)
         quoteMaterials.append(quoteMaterial)
     }
-    
-    func saveToCatalog(from expense: MaterialExpenseQM) {
+    // Adding materials from quote to material storage
+    func saveToMaterials(from expense: MaterialExpenseQM) {
         addMaterial(
             id: expense.id,
             name: expense.name,
@@ -47,8 +47,8 @@ final class MaterialVM {
             unitType: expense.unitType
         )
     }
-    
-    func removeMaterial(at index: Int) {
+    // Removal of materials stored
+    func removeStoredMaterial(at index: Int) {
         guard index >= 0 && index < materials.count else { return }
         materials.remove(at: index)
     }
