@@ -19,7 +19,7 @@ final class ExpenseVM {
         expenses.append(expense)
     }
     
-    func addMaterialExpense(_ expense: MaterialExpenseQM) {
+    func convertMaterialToExpense(_ expense: MaterialExpenseQM) {
         if let matExpense = expense.toExpense() {
             return expenses.append(matExpense)
         }

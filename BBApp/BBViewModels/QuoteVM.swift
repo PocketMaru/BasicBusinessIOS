@@ -9,11 +9,43 @@ import Foundation
 
 @Observable
 final class QuoteVM {
-    var quote: [QuoteModel]
+    var quotes: [QuoteModel] = []
     
-    init(quote: [QuoteModel]) {
-        self.quote = quote
+    var draftQuote: QuoteModel?
+    
+    var savedMaterials: [MaterialModel]
+    
+    var quoteMaterials: [MaterialExpenseQM] = []
+    
+    var customerSelection: [CustomerModel] = []
+    
+    var selectedCustomer: CustomerModel? = nil
+    
+    init(existingQuotes: [QuoteModel] = [], savedMaterials: [MaterialModel]) {
+        self.quotes = existingQuotes
+        self.savedMaterials = savedMaterials
     }
     
+    func startNewQuote(for customer: CustomerModel) {
+        self.selectedCustomer = customer
+        self.draftQuote = QuoteModel(
+            customer: customer,
+            industryType: .landscaping,
+            serviceType: .maintenance,
+            quoteType: .fixedRate
+        )
+        quoteMaterials.removeAll()
+    }
     
+    func addMaterialToQuote(from savedMaterial: MaterialModel, markAsExpense: Bool = false) {
+        let quoteMaterial = MaterialExpenseQM(from: savedMaterial, addedAsExpense: markAsExpense)
+        quoteMaterials.append(quoteMaterial)
+    }
+    
+    func saveDraftToQuote() {
+        guard let customer = selectedCustomer else { return }
+        if let quote = draftQuote {
+            quotes.append(quote)
+        }
+    }
 }

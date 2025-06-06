@@ -1,18 +1,14 @@
 //
-//  LPTabButtons.swift
-//  LawnPro
+//  QuoteSummaryView.swift
+//  BasicBusiness
 //
-//  Created by Joshua Hauer on 5/10/25.
+//  Created by Joshua Hauer on 6/6/25.
 //
 
 import SwiftUI
 
-struct TabButtons: View {
+struct QuoteSummaryView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
-}
-
-#Preview {
-    TabButtons()
 }
