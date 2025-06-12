@@ -7,11 +7,12 @@
 
 import Foundation
 @Observable
-final class CustomerVM {
-    var customer: [CustomerModel] = []
+final class CustomerListVM {
+    var allCustomers: [CustomerModel] = []
+    var allQuotes: [QuoteModel] = []
     
     init(customer: [CustomerModel]) {
-        self.customer = customer
+        self.allCustomers = customer
     }
     
     func addCustomer(
@@ -30,13 +31,13 @@ final class CustomerVM {
             phone: phone,
             paidBill: paidBill ?? false
         )
-        customer.append(newCustomer)
+        allCustomers.append(newCustomer)
     }
     
     func searchCustomer(by name: String) -> [CustomerModel] {
         let query = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         
-        return customer.filter {
+        return allCustomers.filter {
             $0.firstName.lowercased().contains(query) ||
             $0.lastName.lowercased().contains(query) ||
             "\($0.firstName) \($0.lastName)".lowercased().contains(query)
@@ -44,6 +45,10 @@ final class CustomerVM {
     }
     
     func removeCustomer(at index: Int){
-        customer.remove(at: index)
+        allCustomers.remove(at: index)
+    }
+    
+    func showAllCustomerQuotes(for customerID: UUID) -> [QuoteModel] {
+        allQuotes.filter { $0.customerID == customerID }
     }
 }

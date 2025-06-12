@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+@Observable
 final class MaterialVM {
     private(set) var materials: [MaterialModel] = []
     private(set) var quoteMaterials: [MaterialExpenseQM] = []

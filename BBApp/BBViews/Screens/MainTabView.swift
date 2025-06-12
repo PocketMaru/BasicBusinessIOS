@@ -8,7 +8,16 @@
 import SwiftUI
 
 struct MainTabView: View {
+    var customer: CustomerModel?
     var body: some View {
-        EmptyView()
+        
+        TabView {
+            BusinessStatsView()
+                .tabItem {
+                    Image(systemName: "chart.bar")
+                    Text("Business Stats")
+                }
+        }
+       
     }
 }

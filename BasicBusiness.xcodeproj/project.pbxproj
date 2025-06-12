@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		530215872DD78B60007F9E0B /* CustomerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530215862DD78B60007F9E0B /* CustomerVM.swift */; };
+		530215872DD78B60007F9E0B /* CustomerListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530215862DD78B60007F9E0B /* CustomerListVM.swift */; };
 		5302158B2DD78BC6007F9E0B /* BusinessStatsVM .swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302158A2DD78BC6007F9E0B /* BusinessStatsVM .swift */; };
 		530215902DD7AEBB007F9E0B /* ExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302158F2DD7AEBB007F9E0B /* ExpenseModel.swift */; };
 		530215922DD7AF83007F9E0B /* ExpenseVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530215912DD7AF83007F9E0B /* ExpenseVM.swift */; };
 		530215982DD86F4E007F9E0B /* QuoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530215972DD86F4E007F9E0B /* QuoteModel.swift */; };
 		532F96992DD9098A000EEAFF /* QuoteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532F96982DD9098A000EEAFF /* QuoteVM.swift */; };
+		53318F9A2DFA082C0046B0F0 /* InvoiceVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53318F992DFA082C0046B0F0 /* InvoiceVM.swift */; };
+		53B0E37C2DFA615A009C29A9 /* CustomerDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */; };
 		53BAE3EE2DF353A300862427 /* BusinessStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3ED2DF353A300862427 /* BusinessStatsView.swift */; };
 		53BAE3F02DF353B700862427 /* CustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3EF2DF353B700862427 /* CustomerView.swift */; };
 		53BAE3F22DF353C400862427 /* ExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3F12DF353C400862427 /* ExpenseView.swift */; };
@@ -73,12 +75,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		530215862DD78B60007F9E0B /* CustomerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerVM.swift; sourceTree = "<group>"; };
+		530215862DD78B60007F9E0B /* CustomerListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerListVM.swift; sourceTree = "<group>"; };
 		5302158A2DD78BC6007F9E0B /* BusinessStatsVM .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusinessStatsVM .swift"; sourceTree = "<group>"; };
 		5302158F2DD7AEBB007F9E0B /* ExpenseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseModel.swift; sourceTree = "<group>"; };
 		530215912DD7AF83007F9E0B /* ExpenseVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseVM.swift; sourceTree = "<group>"; };
 		530215972DD86F4E007F9E0B /* QuoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteModel.swift; sourceTree = "<group>"; };
 		532F96982DD9098A000EEAFF /* QuoteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteVM.swift; sourceTree = "<group>"; };
+		53318F992DFA082C0046B0F0 /* InvoiceVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceVM.swift; sourceTree = "<group>"; };
+		53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerDetailVM.swift; sourceTree = "<group>"; };
 		53BAE3ED2DF353A300862427 /* BusinessStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessStatsView.swift; sourceTree = "<group>"; };
 		53BAE3EF2DF353B700862427 /* CustomerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerView.swift; sourceTree = "<group>"; };
 		53BAE3F12DF353C400862427 /* ExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseView.swift; sourceTree = "<group>"; };
@@ -152,10 +156,12 @@
 		530215852DD78AB8007F9E0B /* BBViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				530215862DD78B60007F9E0B /* CustomerVM.swift */,
+				53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */,
+				530215862DD78B60007F9E0B /* CustomerListVM.swift */,
 				530215912DD7AF83007F9E0B /* ExpenseVM.swift */,
 				53FA99212DE8CCC700EBA5C8 /* ProductSalesVM.swift */,
 				53D7F2502DDEB66D00579741 /* MaterialVM.swift */,
+				53318F992DFA082C0046B0F0 /* InvoiceVM.swift */,
 				5302158A2DD78BC6007F9E0B /* BusinessStatsVM .swift */,
 				532F96982DD9098A000EEAFF /* QuoteVM.swift */,
 			);
@@ -542,7 +548,7 @@
 				53BAE4222DF35A9B00862427 /* ExpenseRow.swift in Sources */,
 				53BAE40C2DF3586300862427 /* CancelButton.swift in Sources */,
 				53BAE3F22DF353C400862427 /* ExpenseView.swift in Sources */,
-				530215872DD78B60007F9E0B /* CustomerVM.swift in Sources */,
+				530215872DD78B60007F9E0B /* CustomerListVM.swift in Sources */,
 				53BAE3FF2DF3554000862427 /* QuoteView.swift in Sources */,
 				53BAE4162DF358DE00862427 /* MaterialListView.swift in Sources */,
 				53D7F24D2DDE66FB00579741 /* HVACQM.swift in Sources */,
@@ -565,10 +571,12 @@
 				53D1A2892DCABB7E00E7A675 /* CustomerModel.swift in Sources */,
 				53BAE41F2DF3595800862427 /* InvoiceSummaryView.swift in Sources */,
 				53E5A9F12DDC61E600B66821 /* ConsultingQM.swift in Sources */,
+				53B0E37C2DFA615A009C29A9 /* CustomerDetailVM.swift in Sources */,
 				53BAE4102DF358A700862427 /* ExpenseItemView.swift in Sources */,
 				53BAE41D2DF3594500862427 /* InvoiceRow.swift in Sources */,
 				53BAE4062DF3581900862427 /* CustomerSelector.swift in Sources */,
 				53D7F2552DDEE17600579741 /* MaterialExpenseQM.swift in Sources */,
+				53318F9A2DFA082C0046B0F0 /* InvoiceVM.swift in Sources */,
 				530215982DD86F4E007F9E0B /* QuoteModel.swift in Sources */,
 				53E5A9EB2DDC61AF00B66821 /* LandscapeQM.swift in Sources */,
 				53BAE4182DF358EE00862427 /* SaveQuoteButton.swift in Sources */,

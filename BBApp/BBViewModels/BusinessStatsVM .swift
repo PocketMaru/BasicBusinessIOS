@@ -8,6 +8,7 @@
 import Foundation
 
 // Business statistics View Model outlining the data that exists within the business.
+@Observable
 final class BusinessStatsVM {
     var quoteData: [QuoteModel]?
     var expenseData: [ExpenseModel]?
