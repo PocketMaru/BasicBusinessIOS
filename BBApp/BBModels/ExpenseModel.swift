@@ -61,4 +61,50 @@ struct ExpenseModel {
         }
     }
 }
-
+// Extension for sample data.
+extension ExpenseModel {
+    static let sample = ExpenseModel(
+        id: UUID(),
+        name: "Sample Expense",
+        type: .food,
+        date: Date(),
+        description: nil,
+        hoursWorked: nil,
+        hourlyRate: nil,
+        fixedRate: 100.0,
+        expenseStatus: .confirmed
+    )
+    
+    static let sampleList: [ExpenseModel] = [
+        .sample,
+        ExpenseModel(
+            id: UUID(),
+            name: "Another Sample Expense",
+            type: .employeeWages,
+            date: Date(),
+            description: nil,
+            hoursWorked: 10.0,
+            hourlyRate: 25.0,
+            fixedRate: nil,
+            expenseStatus: .pending),
+        
+        ExpenseModel(
+            id: UUID(),
+            name: "Yet Another Sample Expense",
+            type: .materialExpense,
+            date: Date(),
+            description: nil,
+            hoursWorked: nil,
+            hourlyRate: nil,
+            fixedRate: nil,
+            expenseStatus: .confirmed)
+    ]
+    
+    static func randomExpense() -> ExpenseModel {
+        sampleList.randomElement()!
+    }
+    
+    static func sample(_ index: Int) -> ExpenseModel {
+        sampleList[index % sampleList.count]
+    }
+}

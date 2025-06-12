@@ -29,3 +29,21 @@ struct InvoiceModel {
 
     var customFields: Data?
 }
+// Extension for sample data.
+extension InvoiceModel {
+    static let sample = InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription)
+    
+    static let sampleList: [InvoiceModel] = [
+        .sample,
+        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription),
+        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription),
+    ]
+    
+    static func randomSample() -> InvoiceModel {
+        sampleList.randomElement()!
+    }
+    
+    static func sample(_ index: Int) -> InvoiceModel{
+        sampleList[index % sampleList.count]
+    }
+}

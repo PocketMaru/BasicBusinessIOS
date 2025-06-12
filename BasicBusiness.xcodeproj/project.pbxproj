@@ -30,7 +30,6 @@
 		53BAE4142DF358CA00862427 /* QuoteSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4132DF358CA00862427 /* QuoteSummaryView.swift */; };
 		53BAE4162DF358DE00862427 /* MaterialListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4152DF358DE00862427 /* MaterialListView.swift */; };
 		53BAE4182DF358EE00862427 /* SaveQuoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4172DF358EE00862427 /* SaveQuoteButton.swift */; };
-		53BAE41B2DF3592F00862427 /* InvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE41A2DF3592F00862427 /* InvoiceView.swift */; };
 		53BAE41D2DF3594500862427 /* InvoiceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE41C2DF3594500862427 /* InvoiceRow.swift */; };
 		53BAE41F2DF3595800862427 /* InvoiceSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE41E2DF3595800862427 /* InvoiceSummaryView.swift */; };
 		53BAE4222DF35A9B00862427 /* ExpenseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4212DF35A9B00862427 /* ExpenseRow.swift */; };
@@ -98,7 +97,6 @@
 		53BAE4132DF358CA00862427 /* QuoteSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteSummaryView.swift; sourceTree = "<group>"; };
 		53BAE4152DF358DE00862427 /* MaterialListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialListView.swift; sourceTree = "<group>"; };
 		53BAE4172DF358EE00862427 /* SaveQuoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveQuoteButton.swift; sourceTree = "<group>"; };
-		53BAE41A2DF3592F00862427 /* InvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceView.swift; sourceTree = "<group>"; };
 		53BAE41C2DF3594500862427 /* InvoiceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRow.swift; sourceTree = "<group>"; };
 		53BAE41E2DF3595800862427 /* InvoiceSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceSummaryView.swift; sourceTree = "<group>"; };
 		53BAE4212DF35A9B00862427 /* ExpenseRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRow.swift; sourceTree = "<group>"; };
@@ -175,7 +173,6 @@
 				53BAE3ED2DF353A300862427 /* BusinessStatsView.swift */,
 				53BAE3EF2DF353B700862427 /* CustomerView.swift */,
 				53BAE3FE2DF3554000862427 /* QuoteView.swift */,
-				53BAE41A2DF3592F00862427 /* InvoiceView.swift */,
 				53BAE3F12DF353C400862427 /* ExpenseView.swift */,
 			);
 			path = Screens;
@@ -542,7 +539,6 @@
 				53D7F24F2DDE758200579741 /* ProductSalesQM.swift in Sources */,
 				53D1A24D2DC7DCB900E7A675 /* BasicBusinessApp.swift in Sources */,
 				53D1A28D2DCABFEF00E7A675 /* ThemeColors.swift in Sources */,
-				53BAE41B2DF3592F00862427 /* InvoiceView.swift in Sources */,
 				53E5A9E82DDC24C500B66821 /* MaterialModel.swift in Sources */,
 				53BAE40E2DF3588600862427 /* ViewModifiers.swift in Sources */,
 				53BAE4222DF35A9B00862427 /* ExpenseRow.swift in Sources */,

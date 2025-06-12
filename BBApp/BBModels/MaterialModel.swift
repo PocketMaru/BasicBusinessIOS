@@ -14,4 +14,28 @@ struct MaterialModel {
     var unitCost: Double
     var unitType: ProductUnitTypes
 }
-
+// Extension for sample data.
+extension MaterialModel {
+    static let sample = MaterialModel(
+        id: UUID(),
+        name: "Wood",
+        description: "High quality pressure treated lumber",
+        unitCost: 100.00,
+        unitType: .piece
+    )
+    
+    static let sampleList: [MaterialModel] = [
+        .sample,
+        MaterialModel(id: UUID(), name: "2X4s", unitCost: 8.99, unitType: .unit),
+        MaterialModel(id: UUID(), name: "2X2s", unitCost: 12.99, unitType: .unit),
+        MaterialModel(id: UUID(), name: "2X10s", unitCost: 16.99, unitType: .unit)
+    ]
+    
+    static func randomMaterial() -> MaterialModel {
+        sampleList.randomElement()!
+    }
+    
+    static func sampleList(_ index: Int) -> MaterialModel {
+        sampleList[index % sampleList.count]
+    }
+}

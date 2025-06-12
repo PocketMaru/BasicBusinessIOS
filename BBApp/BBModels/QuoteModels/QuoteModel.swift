@@ -68,5 +68,29 @@ struct QuoteModel: Quoteable {
     }
     var pendingExpenses: [MaterialExpensePreview] = []
 }
+// Extension for sample data.
+extension QuoteModel {
+    static let sample = QuoteModel(
+        customer: .sample,
+        industryType: .landscaping,
+        serviceType: .installation,
+        quoteType: .fixedRate,
+        notes: "This is a sample quote."
+    )
+    
+    static let sampleList: [QuoteModel] = [
+        .sample,
+        QuoteModel(customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription),
+        QuoteModel(customer: CustomerModel.sample, industryType: .landscaping, serviceType: .maintenance, quoteType: .subscription),
+    ]
+    
+    static func randomSample() -> QuoteModel {
+        sampleList.randomElement()!
+    }
+    
+    static func sample(_ index: Int) -> QuoteModel {
+        sampleList[index % sampleList.count]
+    }
+}
 
 
