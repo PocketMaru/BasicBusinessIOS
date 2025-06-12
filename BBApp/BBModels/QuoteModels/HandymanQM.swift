@@ -18,7 +18,7 @@ struct HandymanQM: Quoteable {
     
     var id: UUID
     var customerID: UUID {
-        customer.customerID
+        customer.id
     }
     var industryType: IndustryType = .landscaping
     var quoteType: QuoteType = .fixedRate

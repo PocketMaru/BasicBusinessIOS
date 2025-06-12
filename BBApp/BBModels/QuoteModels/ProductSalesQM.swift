@@ -13,7 +13,7 @@ struct ProductSalesQM {
     var customer: CustomerModel
     var id: UUID
     var customerID: UUID {
-        customer.customerID
+        customer.id
     }
     
     var industryType: IndustryType = .productSales

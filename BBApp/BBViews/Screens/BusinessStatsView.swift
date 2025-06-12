@@ -9,6 +9,21 @@ import SwiftUI
 
 struct BusinessStatsView: View {
     var body: some View {
-        EmptyView()
+        NavigationStack{
+            ZStack{
+                AppColors.bg.ignoresSafeArea()
+                ScrollView {
+                        VStack {
+                            Text("Stats View")
+                                .padding()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+            }
+            .ToolBarTitle()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+

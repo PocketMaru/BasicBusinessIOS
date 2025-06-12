@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct InvoiceModel {
-    var id = UUID()
+struct InvoiceModel: Identifiable {
+    var id: UUID = UUID()
     var customer: CustomerModel
     var customerID: UUID {
-        customer.customerID
+        customer.id
     }
     var industryType: IndustryType
     var serviceType: ServiceType
@@ -38,12 +38,4 @@ extension InvoiceModel {
         InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription),
         InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription),
     ]
-    
-    static func randomSample() -> InvoiceModel {
-        sampleList.randomElement()!
-    }
-    
-    static func sample(_ index: Int) -> InvoiceModel{
-        sampleList[index % sampleList.count]
-    }
 }

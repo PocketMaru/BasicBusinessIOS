@@ -40,11 +40,11 @@ enum QuoteType {
     case subscription
 }
 
-struct QuoteModel: Quoteable {
-    var id = UUID()
+struct QuoteModel: Identifiable, Quoteable {
+    var id: UUID = UUID()
     var customer: CustomerModel
     var customerID: UUID {
-        customer.customerID
+        customer.id
     }
     var industryType: IndustryType
     var serviceType: ServiceType

@@ -34,7 +34,7 @@ struct CustomHeader: View {
     var body: some View {
         HStack {
             Image(systemName: "gear")
-                .foregroundStyle(ThemeColors.logoColor)
+                .foregroundStyle(AppColors.text)
             Text(title)
                 .foregroundStyle(.black)
         }

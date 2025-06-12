@@ -16,7 +16,7 @@ struct ConsultingQM: Quoteable {
     
     var id: UUID
     var customerID: UUID {
-        customer.customerID
+        customer.id
     }
     var industryType: IndustryType = .consulting
     var quoteType: QuoteType

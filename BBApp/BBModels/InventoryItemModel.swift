@@ -31,7 +31,7 @@ enum UnitCategory {
     case quantity
 }
 
-struct InventoryItemModel {
+struct InventoryItemModel: Identifiable {
     var id: UUID = UUID()
     var name: String
     var cost: Double

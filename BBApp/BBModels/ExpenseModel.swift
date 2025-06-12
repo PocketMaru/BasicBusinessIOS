@@ -37,8 +37,8 @@ extension ExpenseStatus: CustomStringConvertible {
     }
 }
 
-struct ExpenseModel {
-    var id: UUID
+struct ExpenseModel: Identifiable {
+    var id: UUID = UUID()
     var name: String
     var type: ExpenseType
     var date: Date
@@ -97,14 +97,16 @@ extension ExpenseModel {
             hoursWorked: nil,
             hourlyRate: nil,
             fixedRate: nil,
-            expenseStatus: .confirmed)
+            expenseStatus: .confirmed),
+        ExpenseModel(
+            id: UUID(),
+            name: "Last Sample Expense",
+            type: .food,
+            date: Date(),
+            description: nil,
+            hoursWorked: 5.0,
+            hourlyRate: 15.0,
+            fixedRate: nil,
+            expenseStatus: .pending)
     ]
-    
-    static func randomExpense() -> ExpenseModel {
-        sampleList.randomElement()!
-    }
-    
-    static func sample(_ index: Int) -> ExpenseModel {
-        sampleList[index % sampleList.count]
-    }
 }

@@ -10,35 +10,47 @@ import SwiftUI
 struct MainTabView: View {
     var customerListVM: CustomerListVM
     var customerDetailVM: CustomerDetailVM
-    
     var quoteVM: QuoteVM
     var materialVM: MaterialVM
     
     var body: some View {
         
         TabView {
-            BusinessStatsView()
-                .tabItem {
-                    Image(systemName: "chart.bar")
-                    Text("Business Stats")
-                }
-            CustomerView()
-                .tabItem {
-                    Image(systemName: "person.3")
-                    Text("Customers")
-                }
-            QuoteView()
-                .tabItem {
-                    Image(systemName: "quote")
-                    Text("Quote")
-                }
-            ExpenseView()
-                .tabItem {
-                    Image(systemName: "pencil")
-                    Text("Expenses")
-                }
+            NavigationStack {
+                BusinessStatsView()
+            }
+            .tabItem {
+                Image(systemName: "chart.bar")
+                Text("Business Stats")
+            }
             
+            NavigationStack {
+                CustomerView(customerListVM: customerListVM, customerDetailVM: customerDetailVM)
+            }
+            .tabItem {
+                Image(systemName: "person.3")
+                Text("Customers")
+            }
+            
+            NavigationStack {
+                QuoteView()
+            }
+            .tabItem {
+                Image(systemName: "book.pages")
+                Text("Quote")
+            }
+            
+            NavigationStack {
+                ExpenseView()
+            }
+            .tabItem {
+                Image(systemName: "dollarsign.circle.fill")
+                Text("Expenses")
+            }
         }
-       
+        .tabViewStyle(DefaultTabViewStyle())
+        .tint(.primaryAccent)
+        
     }
 }
+

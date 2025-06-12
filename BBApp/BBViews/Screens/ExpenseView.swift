@@ -9,6 +9,21 @@ import SwiftUI
 
 struct ExpenseView: View {
     var body: some View {
-        EmptyView()
+        ZStack {
+            AppColors.bg.ignoresSafeArea()
+            ScrollView {
+                VStack {
+                    Text("Expense View")
+                        .padding()
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+       
+        .ToolBarTitle()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .navigationBarTitleDisplayMode(.inline)
+        
     }
+    
 }

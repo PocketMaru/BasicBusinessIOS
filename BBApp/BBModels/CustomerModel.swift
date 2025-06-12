@@ -6,13 +6,10 @@
 //
 
 import Foundation
-import Observation
-
-
 // Customer model outlining the data that exists within a customer.
-struct CustomerModel {
+struct CustomerModel: Identifiable {
     // Variables that make up our customer model
-    let customerID = UUID()
+    var id: UUID = UUID()
     var firstName: String = ""
     var lastName: String = ""
     var email: String = ""
@@ -42,12 +39,4 @@ extension CustomerModel {
         CustomerModel(firstName: "Valkyrie", lastName: "Hauer", email: "valkyriehauer@icloud.com", address: "43 Ginger Circle", phone: "333-222-1111", zipCode: "34748", paidBill: false),
         CustomerModel(firstName: "Goose", lastName: "BABA", email: "goosebaba@icloud.com", address: "43 Ginger Circle", phone: "111-222-3333", zipCode: "34748", paidBill: false)
     ]
-    
-    static func randomSample() -> CustomerModel {
-        sampleList.randomElement()!
-    }
-    
-    static func sample(_ index: Int) -> CustomerModel {
-        sampleList[index % sampleList.count]
-    }
 }

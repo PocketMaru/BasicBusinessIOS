@@ -9,6 +9,20 @@ import SwiftUI
 
 struct QuoteView: View {
     var body: some View {
-        EmptyView()
+        ZStack {
+            AppColors.bg.ignoresSafeArea()
+            ScrollView {
+                VStack {
+                    Text("Quote View")
+                        .padding()
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+       
+        .ToolBarTitle()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .navigationBarTitleDisplayMode(.inline)
+        
     }
 }

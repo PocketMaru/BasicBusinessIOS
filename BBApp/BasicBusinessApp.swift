@@ -14,8 +14,8 @@ struct BasicBusinessApp: App {
             MainTabView(
                 customerListVM: CustomerListVM(customer: CustomerModel.sampleList ),
                 customerDetailVM: CustomerDetailVM(customer: CustomerModel.sample),
-                quoteVM: QuoteVM(savedMaterials: <#[MaterialModel]#>),
-                materialVM: MaterialVM(materials: <#[MaterialModel]#>)
+                quoteVM: QuoteVM(savedMaterials: MaterialModel.sampleList),
+                materialVM: MaterialVM(materials: MaterialModel.sampleList)
             )
                 .accentColor(ThemeColors.logoColor)
         }

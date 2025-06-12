@@ -16,7 +16,7 @@ struct HVACQM {
     
     var id: UUID
     var customerID: UUID {
-        customer.customerID
+        customer.id
     }
     
     var industryType: IndustryType = .HVAC

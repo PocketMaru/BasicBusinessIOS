@@ -7,8 +7,8 @@
 
 import Foundation
 // Model defining materials purchased for quotes, and materials on hand in inventory
-struct MaterialModel {
-    var id: UUID
+struct MaterialModel: Identifiable {
+    var id: UUID = UUID()
     var name: String
     var description: String?
     var unitCost: Double
@@ -30,12 +30,4 @@ extension MaterialModel {
         MaterialModel(id: UUID(), name: "2X2s", unitCost: 12.99, unitType: .unit),
         MaterialModel(id: UUID(), name: "2X10s", unitCost: 16.99, unitType: .unit)
     ]
-    
-    static func randomMaterial() -> MaterialModel {
-        sampleList.randomElement()!
-    }
-    
-    static func sampleList(_ index: Int) -> MaterialModel {
-        sampleList[index % sampleList.count]
-    }
 }
