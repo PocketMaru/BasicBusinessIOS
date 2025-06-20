@@ -18,25 +18,28 @@ struct CustomSectionView<Content: View>: View {
     }
     
     var body: some View {
-        Section(header: CustomHeader(title: headerTitle)) {
-            HStack {
-                Spacer()
-                content
-                Spacer()
-            }
+        VStack(alignment: .center, spacing: 4) {
+            CustomHeader(title: headerTitle)
+            content
+                .bubbleStyleBLKText()
+                .padding(.horizontal, 8)
         }
+        .padding(.vertical, 8)
     }
 }
 
 struct CustomHeader: View {
     var title: String
-    
+    var icon: String? = nil
     var body: some View {
-        HStack {
-            Image(systemName: "gear")
-                .foregroundStyle(AppColors.text)
+        HStack(spacing: 6) {
+            if let icon = icon {
+                Image(systemName: icon)
+                    .foregroundStyle(AppColors.secondaryText)
+            }
             Text(title)
-                .foregroundStyle(.black)
+                .font(.headline)
+                .foregroundStyle(AppColors.accent)
         }
     }
 }

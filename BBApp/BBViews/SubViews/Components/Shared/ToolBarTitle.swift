@@ -6,47 +6,54 @@
 //
 
 import SwiftUI
-
-
-
-
-//extension View {
-//    func ToolBarTitle(_ title: String = "Basic Business", iconName: String? = "chart.bar") -> some View {
-//        self
-//            .navigationTitle(title)
-//            .navigationBarTitleDisplayMode(.inline)
-//            .toolbar {
-//                if let icon = iconName {
-//                    ToolbarItem(placement: .topBarLeading) {
-//                        Image(systemName: icon)
-//                            .font(.title3.bold())
-//                            .foregroundStyle(AppColors.accent)
-//                    }
-//                }
-//            }
-//    }
-//}
-
+// My version of liquid glass for titles, light and dark mode variants.
 extension View {
-    func ToolBarTitle(_ title: String = "Basic Business", _ iconName: String? = "chart.bar") -> some View {
+    func ToolBarTitle(
+        title: String = "Basic Business",
+        iconName: String? = "chart.bar",
+        editMode: Binding<Bool>? = nil,
+        mainIconTapped: (() -> Void)? = nil,
+        editIconTapped: (() -> Void)? = nil
+    ) -> some View {
         self
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
+                    Group {
                         Text(title)
-                            .font(.system(size: 20, weight: .semibold))
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .background(AppColors.accent.opacity(0.15))
-                            .clipShape(Capsule())
-                            .foregroundStyle(AppColors.accent)
-                }
-                ToolbarItem(placement: .topBarLeading) {
-                   Image(systemName: "chart.bar")
-                        .font(.title3.bold())
-                        .foregroundStyle(AppColors.accent)
+                            .bubbleStyle()
+                    }
                 }
                 
+                ToolbarItem(placement: .topBarLeading) {
+                    if let icon = iconName {
+                        if let action = mainIconTapped {
+                            Button(action: action) {
+                                Image(systemName: icon)
+                                    .font(.title3.bold())
+                                    .foregroundStyle(AppColors.accent)
+                            }
+                        }
+                        else {
+                            Image(systemName: icon)
+                                .font(.title3.bold())
+                                .foregroundStyle(AppColors.accent)
+                        }
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                        if let action = editIconTapped {
+                            Button(action: action) {
+                                if let editField = editMode {
+                                    Image(systemName: editField.wrappedValue ? "checkmark.circle.fill" : "pencil.circle" )
+                                        .font(.title3.bold())
+                                        .foregroundStyle(AppColors.accent)
+                                }
+
+                            }
+                        }
+                }
             }
     }
 }

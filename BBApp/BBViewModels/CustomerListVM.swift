@@ -11,8 +11,8 @@ final class CustomerListVM {
     var allCustomers: [CustomerModel] = []
     var allQuotes: [QuoteModel] = []
     
-    init(customer: [CustomerModel]) {
-        self.allCustomers = customer
+    init(customers: [CustomerModel]) {
+        self.allCustomers = customers
     }
     
     func addCustomer(
@@ -50,5 +50,11 @@ final class CustomerListVM {
     
     func showAllCustomerQuotes(for customerID: UUID) -> [QuoteModel] {
         allQuotes.filter { $0.customerID == customerID }
+    }
+    
+    func updateCustomer(with updated: CustomerModel) {
+        if let index = allCustomers.firstIndex(where: { $0.id == updated.id }) {
+            allCustomers[index] = updated
+        }
     }
 }

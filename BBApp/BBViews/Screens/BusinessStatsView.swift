@@ -7,21 +7,79 @@
 
 import SwiftUI
 
+enum StatsSummaryViewType {
+    case income
+    case expenses
+    case quotes
+    case invoices
+    
+    var title: String {
+        switch self {
+        case .income:
+            return "Income"
+        case .expenses:
+            return "Expenses"
+        case .quotes:
+            return "Quotes"
+        case .invoices:
+            return "Invoices"
+        }
+    }
+}
+
 struct BusinessStatsView: View {
+    @Bindable var userVM: UserVM
+    @Binding var activeSheet: ActiveUserSheet?
+    
+    @State private var showStatsSummary = false
+    @State var selectedSummaryViewType: StatsSummaryViewType = .income
+    
+    var invoices = InvoiceVM(invoice: InvoiceModel.sampleList, customer: CustomerModel.sampleList)
+    var expenses = ExpenseVM(expenses: ExpenseModel.sampleList )
+    
     var body: some View {
         NavigationStack{
             ZStack{
                 AppColors.bg.ignoresSafeArea()
                 ScrollView {
                         VStack {
-                            Text("Stats View")
-                                .padding()
+                            HStack(spacing: 16) {
+                                StatButtonView(label: "Total Income", value: "1000", tapAction: {
+                                    selectedSummaryViewType = .income
+                                    showStatsSummary = true
+                                } )
+                                    .padding()
+                                StatButtonView(label: "Total Expenses", value: "1000", tapAction: {
+                                    selectedSummaryViewType = .expenses
+                                    showStatsSummary = true
+                                } )
+                                    .padding()
+                            }
+                            
+                            HStack {
+                                StatButtonView(label: "Quotes", value: "1000", tapAction: {
+                                    selectedSummaryViewType = .quotes
+                                    showStatsSummary = true
+                                } )
+                                    .padding()
+                                StatButtonView(label: "Invoices", value: "1000", tapAction: {
+                                    selectedSummaryViewType = .invoices
+                                    showStatsSummary = true
+                                } )
+                                    .padding()
+                            }
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
                 }
             }
-            .ToolBarTitle()
+            .ToolBarTitle(title: userVM.user.businessName, mainIconTapped: {
+                activeSheet = .user
+            })
+            
+            .navigationDestination(isPresented: $showStatsSummary) {
+                StatsSummaryView(invoices: invoices, expenses: expenses, selectedStat: selectedSummaryViewType,activeSheet: $activeSheet)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

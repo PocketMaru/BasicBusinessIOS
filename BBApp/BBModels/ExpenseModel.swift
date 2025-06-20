@@ -19,6 +19,33 @@ enum ExpenseType {
     case employeeWages
     case materialExpense
     case other
+    
+    var name: String {
+        switch self {
+        case .food:
+            return "Food"
+        case .gas:
+            return "Gas"
+        case .housing:
+            return "Housing"
+        case .utilities:
+            return "Utilities"
+        case .healthcare:
+            return "Healthcare"
+        case .clothing:
+            return "Clothing"
+        case .transportation:
+            return "Transportation"
+        case .entertainment:
+            return "Entertainment"
+        case .employeeWages:
+            return "Employee Wages"
+        case .materialExpense:
+            return "Material Expense"
+        case .other:
+            return "Other"
+        }
+    }
 }
 
 enum ExpenseStatus {
@@ -91,13 +118,14 @@ extension ExpenseModel {
         ExpenseModel(
             id: UUID(),
             name: "Yet Another Sample Expense",
-            type: .materialExpense,
+            type: .clothing,
             date: Date(),
             description: nil,
             hoursWorked: nil,
             hourlyRate: nil,
-            fixedRate: nil,
+            fixedRate: 300,
             expenseStatus: .confirmed),
+        
         ExpenseModel(
             id: UUID(),
             name: "Last Sample Expense",
@@ -106,7 +134,7 @@ extension ExpenseModel {
             description: nil,
             hoursWorked: 5.0,
             hourlyRate: 15.0,
-            fixedRate: nil,
+            fixedRate: 400,
             expenseStatus: .pending)
     ]
 }

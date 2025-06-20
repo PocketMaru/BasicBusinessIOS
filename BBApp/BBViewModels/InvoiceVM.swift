@@ -12,6 +12,10 @@ class InvoiceVM {
     var invoice: [InvoiceModel] = []
     var customer: [CustomerModel] = []
     
+    init(invoice: [InvoiceModel], customer: [CustomerModel]) {
+        self.invoice = invoice
+        self.customer = customer
+    }
     func removeInvoice(_ index: Int) {
         invoice.remove(at: index)
     }

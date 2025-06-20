@@ -16,7 +16,7 @@ struct InvoiceModel: Identifiable {
     var industryType: IndustryType
     var serviceType: ServiceType
     var quoteType: QuoteType
-    var quoteDate: Date?
+    var invoiceDate: Date?
     var installationDate: Date?
     var serviceDate: Date?
     var notes: String?
@@ -35,7 +35,8 @@ extension InvoiceModel {
     
     static let sampleList: [InvoiceModel] = [
         .sample,
-        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription),
-        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription),
+        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription, invoiceDate: Date(), totalCost: 100.0),
+        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription, invoiceDate: Date(), totalCost: 100.0),
+        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription, invoiceDate: Date(), totalCost: 100.0),
     ]
 }

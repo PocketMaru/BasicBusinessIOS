@@ -17,13 +17,32 @@ protocol Quoteable {
     var totalCost: Double? {get}
 }
 // Industry types
-enum IndustryType {
+enum IndustryType: String, CaseIterable, Identifiable {
     case landscaping
     case pressureWashing
     case consulting
     case handyman
     case HVAC
     case productSales
+    
+    var id: String {self.rawValue}
+    
+    var displayName: String {
+        switch self {
+        case .landscaping:
+            return "Landscaping"
+        case .pressureWashing:
+            return "Pressure Washing"
+        case .consulting:
+            return "Consulting"
+        case .handyman:
+            return "Handyman"
+        case .HVAC:
+            return "HVAC"
+        case .productSales:
+            return "Product Sales"
+        }
+    }
 }
 // Service types
 enum ServiceType {
