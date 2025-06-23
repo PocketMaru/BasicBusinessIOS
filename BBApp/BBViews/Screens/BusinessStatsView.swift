@@ -38,7 +38,6 @@ struct BusinessStatsView: View {
     var expenses = ExpenseVM(expenses: ExpenseModel.sampleList )
     
     var body: some View {
-        NavigationStack{
             ZStack{
                 AppColors.bg.ignoresSafeArea()
                 ScrollView {
@@ -78,9 +77,8 @@ struct BusinessStatsView: View {
             })
             
             .navigationDestination(isPresented: $showStatsSummary) {
-                StatsSummaryView(invoices: invoices, expenses: expenses, selectedStat: selectedSummaryViewType,activeSheet: $activeSheet)
+                StatsSummaryView(selectedStat: $selectedSummaryViewType, invoices: invoices, expenses: expenses,activeSheet: $activeSheet)
             }
-        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

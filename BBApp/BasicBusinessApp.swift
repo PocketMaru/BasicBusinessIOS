@@ -13,7 +13,7 @@ struct BasicBusinessApp: App {
         WindowGroup {
             MainTabView(
                 customerListVM: CustomerListVM(customers: CustomerModel.sampleList ),
-                customerDetailVM: CustomerDetailVM(customer: CustomerModel.sample, customerListVM: CustomerListVM(customers: CustomerModel.sampleList)),
+                customerDetailVM: CustomerDetailVM(customer: CustomerModel.sample),
                 quoteVM: QuoteVM(savedMaterials: MaterialModel.sampleList),
                 materialVM: MaterialVM(materials: MaterialModel.sampleList)
             )

@@ -30,8 +30,6 @@
 		53BAE4032DF357D100862427 /* StatsSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4022DF357D100862427 /* StatsSummaryView.swift */; };
 		53BAE4062DF3581900862427 /* CustomerSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4052DF3581900862427 /* CustomerSelector.swift */; };
 		53BAE4082DF3582500862427 /* CustomerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4072DF3582500862427 /* CustomerDetailView.swift */; };
-		53BAE40A2DF3585700862427 /* PrimaryActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4092DF3585700862427 /* PrimaryActionButton.swift */; };
-		53BAE40C2DF3586300862427 /* CancelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE40B2DF3586300862427 /* CancelButton.swift */; };
 		53BAE40E2DF3588600862427 /* BubbleCapsuleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE40D2DF3588600862427 /* BubbleCapsuleStyle.swift */; };
 		53BAE4102DF358A700862427 /* ExpenseItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE40F2DF358A700862427 /* ExpenseItemView.swift */; };
 		53BAE4142DF358CA00862427 /* QuoteSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4132DF358CA00862427 /* QuoteSummaryView.swift */; };
@@ -43,6 +41,7 @@
 		53BF84872DE3746E0042A983 /* InventoryItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BF84862DE3746E0042A983 /* InventoryItemModel.swift */; };
 		53BF84892DE3789F0042A983 /* InvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BF84882DE3789F0042A983 /* InvoiceModel.swift */; };
 		53C6CAB92E049073000A7229 /* CustomBubbleTextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C6CAB82E049073000A7229 /* CustomBubbleTextStyle.swift */; };
+		53C6CABB2E0540C1000A7229 /* StatsSummaryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C6CABA2E0540C1000A7229 /* StatsSummaryDetailView.swift */; };
 		53D1A24D2DC7DCB900E7A675 /* BasicBusinessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1A24A2DC7DCB900E7A675 /* BasicBusinessApp.swift */; };
 		53D1A24E2DC7DCB900E7A675 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53D1A2482DC7DCB900E7A675 /* Assets.xcassets */; };
 		53D1A2512DC7DCBE00E7A675 /* BasicBusinessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1A24F2DC7DCBE00E7A675 /* BasicBusinessTests.swift */; };
@@ -105,8 +104,6 @@
 		53BAE4022DF357D100862427 /* StatsSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSummaryView.swift; sourceTree = "<group>"; };
 		53BAE4052DF3581900862427 /* CustomerSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerSelector.swift; sourceTree = "<group>"; };
 		53BAE4072DF3582500862427 /* CustomerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerDetailView.swift; sourceTree = "<group>"; };
-		53BAE4092DF3585700862427 /* PrimaryActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryActionButton.swift; sourceTree = "<group>"; };
-		53BAE40B2DF3586300862427 /* CancelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButton.swift; sourceTree = "<group>"; };
 		53BAE40D2DF3588600862427 /* BubbleCapsuleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleCapsuleStyle.swift; sourceTree = "<group>"; };
 		53BAE40F2DF358A700862427 /* ExpenseItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseItemView.swift; sourceTree = "<group>"; };
 		53BAE4132DF358CA00862427 /* QuoteSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteSummaryView.swift; sourceTree = "<group>"; };
@@ -118,6 +115,7 @@
 		53BF84862DE3746E0042A983 /* InventoryItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryItemModel.swift; sourceTree = "<group>"; };
 		53BF84882DE3789F0042A983 /* InvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceModel.swift; sourceTree = "<group>"; };
 		53C6CAB82E049073000A7229 /* CustomBubbleTextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBubbleTextStyle.swift; sourceTree = "<group>"; };
+		53C6CABA2E0540C1000A7229 /* StatsSummaryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSummaryDetailView.swift; sourceTree = "<group>"; };
 		53D1A21E2DC7DC9200E7A675 /* BasicBusiness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicBusiness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D1A22B2DC7DC9300E7A675 /* BasicBusinessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BasicBusinessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D1A2352DC7DC9300E7A675 /* BasicBusinessUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BasicBusinessUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -233,8 +231,6 @@
 			isa = PBXGroup;
 			children = (
 				53B0E37D2DFC1CD5009C29A9 /* StatButtonView.swift */,
-				53BAE4092DF3585700862427 /* PrimaryActionButton.swift */,
-				53BAE40B2DF3586300862427 /* CancelButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -253,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				53BAE4022DF357D100862427 /* StatsSummaryView.swift */,
+				53C6CABA2E0540C1000A7229 /* StatsSummaryDetailView.swift */,
 			);
 			path = BusinessStatsViews;
 			sourceTree = "<group>";
@@ -568,11 +565,11 @@
 				53BAE40E2DF3588600862427 /* BubbleCapsuleStyle.swift in Sources */,
 				53B0E3842DFC9D50009C29A9 /* UserView.swift in Sources */,
 				53BAE4222DF35A9B00862427 /* ExpenseRow.swift in Sources */,
-				53BAE40C2DF3586300862427 /* CancelButton.swift in Sources */,
 				53BAE3F22DF353C400862427 /* ExpenseView.swift in Sources */,
 				530215872DD78B60007F9E0B /* CustomerListVM.swift in Sources */,
 				53BAE3FF2DF3554000862427 /* QuoteView.swift in Sources */,
 				53BAE4162DF358DE00862427 /* MaterialListView.swift in Sources */,
+				53C6CABB2E0540C1000A7229 /* StatsSummaryDetailView.swift in Sources */,
 				53D7F24D2DDE66FB00579741 /* HVACQM.swift in Sources */,
 				53D1A2942DCE60A200E7A675 /* ToolBarTitle.swift in Sources */,
 				53BAE4142DF358CA00862427 /* QuoteSummaryView.swift in Sources */,
@@ -586,7 +583,6 @@
 				53BAE4082DF3582500862427 /* CustomerDetailView.swift in Sources */,
 				53BF84872DE3746E0042A983 /* InventoryItemModel.swift in Sources */,
 				53FA99222DE8CCC700EBA5C8 /* ProductSalesVM.swift in Sources */,
-				53BAE40A2DF3585700862427 /* PrimaryActionButton.swift in Sources */,
 				53E5A9EF2DDC61DB00B66821 /* HandymanQM.swift in Sources */,
 				53BAE4012DF356DF00862427 /* MainTabView.swift in Sources */,
 				53B0E3822DFC9A50009C29A9 /* UserVM.swift in Sources */,

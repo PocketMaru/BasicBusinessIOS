@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct CustomerView: View {
-    var customerListVM: CustomerListVM
+    @Bindable var customerListVM: CustomerListVM
     @Bindable var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
     var body: some View {
-        NavigationStack {
             ZStack {
                 AppColors.bg.ignoresSafeArea()
                 List {
@@ -20,7 +19,7 @@ struct CustomerView: View {
                         NavigationLink(
                             destination:CustomerDetailView(
                                 customer: CustomerDetailVM(
-                                    customer: customer, customerListVM: customerListVM),
+                                    customer: customer),
                                 userVM: userVM,
                                 activeSheet: $activeSheet
                             )) {
@@ -45,7 +44,6 @@ struct CustomerView: View {
             .ToolBarTitle(title: userVM.user.businessName, mainIconTapped: {
                 activeSheet = .user
             })
-        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

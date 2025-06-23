@@ -9,7 +9,7 @@ import Foundation
 
 // Creating Material Expenses.
 // This allows a user to convert materials needed for a quote to expenses.
-struct MaterialExpenseQM {
+struct MaterialExpenseQM: Identifiable {
     var id: UUID
     var name: String
     var description: String?

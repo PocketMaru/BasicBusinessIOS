@@ -11,18 +11,40 @@ struct CustomSectionView<Content: View>: View {
     
     let headerTitle: String
     let content: Content
+    let tapped: (() -> Void)?
     
-    init(headerTitle: String, @ViewBuilder content: () -> Content) {
+    init(
+        headerTitle: String,
+        @ViewBuilder content: () -> Content,
+        tapped: (() -> Void)? = nil
+    ) {
         self.headerTitle = headerTitle
         self.content = content()
+        self.tapped = tapped
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 4) {
-            CustomHeader(title: headerTitle)
-            content
-                .bubbleStyleBLKText()
-                .padding(.horizontal, 8)
+            Group {
+                if let tapped = tapped {
+                    Button(action: tapped) {
+                        VStack(spacing: 4) {
+                            CustomHeader(title: headerTitle)
+                            content
+                                .bubbleStyleBLKText()
+                                .padding(.horizontal, 8)
+                        }
+                    }
+                } else {
+                    VStack(spacing: 4) {
+                        CustomHeader(title: headerTitle)
+                        content
+                            .bubbleStyleBLKText()
+                            .padding(.horizontal, 8)
+                    }
+                }
+            
+          }
         }
         .padding(.vertical, 8)
     }

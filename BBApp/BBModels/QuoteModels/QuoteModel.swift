@@ -50,6 +50,19 @@ enum ServiceType {
     case maintenance
     case repair
     case recurring
+    
+    var name: String {
+        switch self {
+        case .installation:
+            return "Installation"
+        case .maintenance:
+            return "Maintenance"
+        case .repair:
+            return "Repair"
+        case .recurring:
+            return "Recurring"
+        }
+    }
 }
 // Quote types
 enum QuoteType {
@@ -57,6 +70,19 @@ enum QuoteType {
     case hourlyRate
     case squareFootage
     case subscription
+    
+    var name: String {
+        switch self {
+        case .fixedRate:
+            return "Fixed Rate"
+        case .hourlyRate:
+            return "Hourly Rate"
+        case .squareFootage:
+            return "Square Footage"
+        case .subscription:
+            return "Subscription"
+        }
+    }
 }
 
 struct QuoteModel: Identifiable, Quoteable {

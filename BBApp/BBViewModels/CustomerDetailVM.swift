@@ -10,15 +10,14 @@ import Foundation
 @Observable
 class CustomerDetailVM {
     var customer: CustomerModel
-    var customerListVM: CustomerListVM
+    var onSave: ((CustomerModel)-> Void)? = nil
     
-    init(customer: CustomerModel, customerListVM: CustomerListVM) {
+    init(customer: CustomerModel, onSave: ((CustomerModel)-> Void)? = nil) {
         self.customer = customer
-        self.customerListVM = customerListVM
     }
     
     func saveChanges() {
-        customerListVM.updateCustomer(with: customer)
+        onSave?(customer)
     }
     // Customer Lifetime Value, Last Invoice
     
