@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomBubleTextStyle: ViewModifier {
+struct CustomBubbleTextStyle: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
 
     func body(content: Content) -> some View {
@@ -44,6 +44,6 @@ struct CustomBubleTextStyle: ViewModifier {
 
 extension View {
     func bubbleStyleBLKText() -> some View {
-        self.modifier(CustomBubleTextStyle())
+        self.modifier(CustomBubbleTextStyle())
     }
 }

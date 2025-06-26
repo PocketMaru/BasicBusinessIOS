@@ -50,6 +50,7 @@ enum ServiceType {
     case maintenance
     case repair
     case recurring
+    case custom(String)
     
     var name: String {
         switch self {
@@ -61,6 +62,8 @@ enum ServiceType {
             return "Repair"
         case .recurring:
             return "Recurring"
+        case .custom(let name):
+            return name
         }
     }
 }
@@ -125,17 +128,37 @@ extension QuoteModel {
     
     static let sampleList: [QuoteModel] = [
         .sample,
-        QuoteModel(customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription),
-        QuoteModel(customer: CustomerModel.sample, industryType: .landscaping, serviceType: .maintenance, quoteType: .subscription),
+        QuoteModel(
+            customer: CustomerModel.sample,
+            industryType: .landscaping,
+            serviceType: .maintenance,
+            quoteType: .subscription,
+            totalCost: 300),
+        QuoteModel(
+            customer: CustomerModel.sample,
+            industryType: .pressureWashing,
+            serviceType: .maintenance,
+            quoteType: .fixedRate,
+            totalCost: 3000),
+        QuoteModel(
+            customer: CustomerModel.sample,
+            industryType: .HVAC,
+            serviceType: .maintenance,
+            quoteType: .fixedRate,
+            totalCost: 1000),
+        QuoteModel(
+            customer: CustomerModel.sample,
+            industryType: .consulting,
+            serviceType: .custom("Consulting Services"),
+            quoteType: .fixedRate,
+            totalCost: 250),
+        QuoteModel(
+            customer: CustomerModel.sample,
+            industryType: .handyman,
+            serviceType: .maintenance,
+            quoteType: .fixedRate,
+            totalCost: 3000),
     ]
-    
-    static func randomSample() -> QuoteModel {
-        sampleList.randomElement()!
-    }
-    
-    static func sample(_ index: Int) -> QuoteModel {
-        sampleList[index % sampleList.count]
-    }
 }
 
 

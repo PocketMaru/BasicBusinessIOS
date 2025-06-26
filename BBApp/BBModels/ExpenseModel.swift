@@ -113,7 +113,7 @@ extension ExpenseModel {
             hoursWorked: 10.0,
             hourlyRate: 25.0,
             fixedRate: nil,
-            expenseStatus: .pending),
+            expenseStatus: .confirmed),
         
         ExpenseModel(
             id: UUID(),
@@ -129,12 +129,12 @@ extension ExpenseModel {
         ExpenseModel(
             id: UUID(),
             name: "Last Sample Expense",
-            type: .food,
+            type: .employeeWages,
             date: Date(),
             description: nil,
             hoursWorked: 5.0,
             hourlyRate: 15.0,
             fixedRate: 400,
-            expenseStatus: .pending)
+            expenseStatus: .confirmed)
     ]
 }

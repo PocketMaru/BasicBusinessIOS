@@ -12,7 +12,6 @@ struct StatBubbleStyle: ViewModifier {
         Group {
             if UITraitCollection.current.userInterfaceStyle == .dark {
                 content
-                    .frame(width: 180, height: 120) 
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
                     .overlay(
                         RoundedRectangle(cornerRadius: 24)
@@ -20,7 +19,6 @@ struct StatBubbleStyle: ViewModifier {
                     )
             } else {
                 content
-                    .frame(width: 180, height: 120)
                     .background(
                         RoundedRectangle(cornerRadius: 24)
                             .fill(Color.white)

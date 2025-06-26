@@ -12,8 +12,9 @@ struct MainTabView: View {
     var customerDetailVM: CustomerDetailVM
     var quoteVM: QuoteVM
     var materialVM: MaterialVM
-    @State private var activeSheet: ActiveUserSheet?
     var userVM = UserVM(user: UserModel.sample)
+    @State private var activeSheet: ActiveUserSheet?
+    
     
     var body: some View {
         

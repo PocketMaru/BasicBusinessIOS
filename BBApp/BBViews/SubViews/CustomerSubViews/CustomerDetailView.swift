@@ -23,9 +23,8 @@ struct CustomerDetailView: View {
                                 TextField("First Name", text: $customer.customer.firstName)
                             } else {
                                 HStack {
-                                    Spacer()
                                     Text(customer.customer.firstName)
-                                    Spacer()
+                                        .frame(maxWidth: .infinity, alignment: .center)
                                 }
                             }
                         }
@@ -35,9 +34,8 @@ struct CustomerDetailView: View {
                                 TextField("First Name", text: $customer.customer.lastName)
                             } else {
                                 HStack {
-                                    Spacer()
                                     Text(customer.customer.lastName)
-                                    Spacer()
+                                        .frame(maxWidth: .infinity, alignment: .center)
                                 }
                             }
                         }
@@ -46,11 +44,10 @@ struct CustomerDetailView: View {
                             if isEditing {
                                 TextField("Email", text: $customer.customer.email)
                             } else {
-                                HStack {
-                                    Spacer()
+                                
                                     Text(customer.customer.email)
-                                    Spacer()
-                                }
+                                        .frame(maxWidth: .infinity, alignment: .center)
+                                
                             }
                         }
                         
@@ -60,11 +57,10 @@ struct CustomerDetailView: View {
                                     get: {customer.customer.address ?? ""},
                                     set: {customer.customer.address = $0.isEmpty ? nil : $0}))
                             } else {
-                                HStack {
-                                    Spacer()
+                               
                                     Text(customer.customer.address ?? "")
-                                    Spacer()
-                                }
+                                        .frame(maxWidth: .infinity, alignment: .center)
+                                
                             }
                         }
                         
@@ -72,11 +68,8 @@ struct CustomerDetailView: View {
                             if isEditing {
                                 TextField("Phone", text: $customer.customer.phone)
                             } else {
-                                HStack {
-                                    Spacer()
                                     Text(customer.customer.phone)
-                                    Spacer()
-                                }
+                                        .frame(maxWidth: .infinity, alignment: .center)
                             }
                         }
                         

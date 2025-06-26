@@ -20,7 +20,7 @@
 		53B0E3822DFC9A50009C29A9 /* UserVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3812DFC9A50009C29A9 /* UserVM.swift */; };
 		53B0E3842DFC9D50009C29A9 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3832DFC9D50009C29A9 /* UserView.swift */; };
 		53B0E3862DFCA8E0009C29A9 /* ActiveUserSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3852DFCA8E0009C29A9 /* ActiveUserSheet.swift */; };
-		53B0E3882DFDE3E6009C29A9 /* StatBubbleMod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3872DFDE3E6009C29A9 /* StatBubbleMod.swift */; };
+		53B0E3882DFDE3E6009C29A9 /* StatBubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3872DFDE3E6009C29A9 /* StatBubbleStyle.swift */; };
 		53B0E38A2DFDE47E009C29A9 /* CustomFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3892DFDE47E009C29A9 /* CustomFormView.swift */; };
 		53BAE3EE2DF353A300862427 /* BusinessStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3ED2DF353A300862427 /* BusinessStatsView.swift */; };
 		53BAE3F02DF353B700862427 /* CustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3EF2DF353B700862427 /* CustomerView.swift */; };
@@ -94,7 +94,7 @@
 		53B0E3812DFC9A50009C29A9 /* UserVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVM.swift; sourceTree = "<group>"; };
 		53B0E3832DFC9D50009C29A9 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		53B0E3852DFCA8E0009C29A9 /* ActiveUserSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveUserSheet.swift; sourceTree = "<group>"; };
-		53B0E3872DFDE3E6009C29A9 /* StatBubbleMod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatBubbleMod.swift; sourceTree = "<group>"; };
+		53B0E3872DFDE3E6009C29A9 /* StatBubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatBubbleStyle.swift; sourceTree = "<group>"; };
 		53B0E3892DFDE47E009C29A9 /* CustomFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFormView.swift; sourceTree = "<group>"; };
 		53BAE3ED2DF353A300862427 /* BusinessStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessStatsView.swift; sourceTree = "<group>"; };
 		53BAE3EF2DF353B700862427 /* CustomerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerView.swift; sourceTree = "<group>"; };
@@ -197,34 +197,34 @@
 		53BAE3F32DF353CD00862427 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
-				53BAE3FC2DF354F400862427 /* BusinessStatsViews */,
-				53BAE3F92DF3545500862427 /* CustomerViews */,
-				53BAE3F82DF3543C00862427 /* QuoteViews */,
-				53BAE4192DF3590E00862427 /* InvoiceViews */,
-				53BAE4042DF357F700862427 /* ExpenseViews */,
+				53BAE3FC2DF354F400862427 /* BusinessStatsSubViews */,
+				53BAE3F92DF3545500862427 /* CustomerSubViews */,
+				53BAE3F82DF3543C00862427 /* QuoteSubViews */,
+				53BAE4192DF3590E00862427 /* InvoiceSubViews */,
+				53BAE4042DF357F700862427 /* ExpenseSubViews */,
 				53BAE4232DF35AAC00862427 /* Components */,
 				53BAE3FB2DF354B800862427 /* Modifiers */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
 		};
-		53BAE3F82DF3543C00862427 /* QuoteViews */ = {
+		53BAE3F82DF3543C00862427 /* QuoteSubViews */ = {
 			isa = PBXGroup;
 			children = (
 				53BAE4132DF358CA00862427 /* QuoteSummaryView.swift */,
 				53BAE4152DF358DE00862427 /* MaterialListView.swift */,
 				53BAE4172DF358EE00862427 /* SaveQuoteButton.swift */,
 			);
-			path = QuoteViews;
+			path = QuoteSubViews;
 			sourceTree = "<group>";
 		};
-		53BAE3F92DF3545500862427 /* CustomerViews */ = {
+		53BAE3F92DF3545500862427 /* CustomerSubViews */ = {
 			isa = PBXGroup;
 			children = (
 				53BAE4072DF3582500862427 /* CustomerDetailView.swift */,
 				53BAE4052DF3581900862427 /* CustomerSelector.swift */,
 			);
-			path = CustomerViews;
+			path = CustomerSubViews;
 			sourceTree = "<group>";
 		};
 		53BAE3FA2DF3547400862427 /* Buttons */ = {
@@ -240,36 +240,36 @@
 			children = (
 				53BAE40D2DF3588600862427 /* BubbleCapsuleStyle.swift */,
 				53C6CAB82E049073000A7229 /* CustomBubbleTextStyle.swift */,
-				53B0E3872DFDE3E6009C29A9 /* StatBubbleMod.swift */,
+				53B0E3872DFDE3E6009C29A9 /* StatBubbleStyle.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
 		};
-		53BAE3FC2DF354F400862427 /* BusinessStatsViews */ = {
+		53BAE3FC2DF354F400862427 /* BusinessStatsSubViews */ = {
 			isa = PBXGroup;
 			children = (
 				53BAE4022DF357D100862427 /* StatsSummaryView.swift */,
 				53C6CABA2E0540C1000A7229 /* StatsSummaryDetailView.swift */,
 			);
-			path = BusinessStatsViews;
+			path = BusinessStatsSubViews;
 			sourceTree = "<group>";
 		};
-		53BAE4042DF357F700862427 /* ExpenseViews */ = {
+		53BAE4042DF357F700862427 /* ExpenseSubViews */ = {
 			isa = PBXGroup;
 			children = (
 				53BAE40F2DF358A700862427 /* ExpenseItemView.swift */,
 				53BAE4212DF35A9B00862427 /* ExpenseRow.swift */,
 			);
-			path = ExpenseViews;
+			path = ExpenseSubViews;
 			sourceTree = "<group>";
 		};
-		53BAE4192DF3590E00862427 /* InvoiceViews */ = {
+		53BAE4192DF3590E00862427 /* InvoiceSubViews */ = {
 			isa = PBXGroup;
 			children = (
 				53BAE41C2DF3594500862427 /* InvoiceRow.swift */,
 				53BAE41E2DF3595800862427 /* InvoiceSummaryView.swift */,
 			);
-			path = InvoiceViews;
+			path = InvoiceSubViews;
 			sourceTree = "<group>";
 		};
 		53BAE4232DF35AAC00862427 /* Components */ = {
@@ -573,7 +573,7 @@
 				53D7F24D2DDE66FB00579741 /* HVACQM.swift in Sources */,
 				53D1A2942DCE60A200E7A675 /* ToolBarTitle.swift in Sources */,
 				53BAE4142DF358CA00862427 /* QuoteSummaryView.swift in Sources */,
-				53B0E3882DFDE3E6009C29A9 /* StatBubbleMod.swift in Sources */,
+				53B0E3882DFDE3E6009C29A9 /* StatBubbleStyle.swift in Sources */,
 				53BF84892DE3789F0042A983 /* InvoiceModel.swift in Sources */,
 				5302158B2DD78BC6007F9E0B /* BusinessStatsVM .swift in Sources */,
 				53BAE3F02DF353B700862427 /* CustomerView.swift in Sources */,

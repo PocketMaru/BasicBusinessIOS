@@ -35,8 +35,50 @@ extension InvoiceModel {
     
     static let sampleList: [InvoiceModel] = [
         .sample,
-        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription, invoiceDate: Date(), totalCost: 100.0),
-        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription, invoiceDate: Date(), totalCost: 100.0),
-        InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription, invoiceDate: Date(), totalCost: 100.0),
+        InvoiceModel(
+            id: UUID(),
+            customer: CustomerModel.sample,
+            industryType: .landscaping,
+            serviceType: .recurring,
+            quoteType: .subscription,
+            invoiceDate: Date(),
+            totalCost: 750.16
+        ),
+        InvoiceModel(
+            id: UUID(),
+            customer: CustomerModel.sample,
+            industryType: .landscaping,
+            serviceType: .recurring,
+            quoteType: .subscription,
+            invoiceDate: Date(),
+            totalCost: 3500.97
+        ),
+        InvoiceModel(
+            id: UUID(),
+            customer: CustomerModel.sample,
+            industryType: .landscaping,
+            serviceType: .recurring,
+            quoteType: .subscription,
+            invoiceDate: Date(),
+            totalCost: 1500.14
+        ),
+        InvoiceModel(
+            id: UUID(),
+            customer: CustomerModel.sample,
+            industryType: .landscaping,
+            serviceType: .recurring,
+            quoteType: .subscription,
+            invoiceDate: Date(),
+            totalCost: 1200.50
+        ),
+        InvoiceModel(
+            id: UUID(),
+            customer: CustomerModel.sample,
+            industryType: .landscaping,
+            serviceType: .recurring,
+            quoteType: .subscription,
+            invoiceDate: Date(),
+            totalCost: 5500.65
+        ),
     ]
 }

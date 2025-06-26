@@ -30,7 +30,7 @@ final class BusinessStatsVM {
         return invoices.reduce(0) {$0 + ($1.totalCost ?? 0)}
     }
     // Total of all pending expenses in quotes.
-    var quotedExpenses: Double {
+    var forecastedExpenses: Double {
         guard let quotes = quoteData else {return 0}
         return quotes.reduce(0) { $0 + $1.pendingExpenses.reduce(0) { $0 + $1.estimatedCost}}
     }
@@ -41,7 +41,7 @@ final class BusinessStatsVM {
     }
     // Total revenue including quote profit and loss.
     var forecastedProfit: Double {
-        return (invoicedRevenue + quotedRevenue) - (quotedExpenses + confirmedExpenses)
+        return (invoicedRevenue + quotedRevenue) - (forecastedExpenses + confirmedExpenses)
     }
     // Total revenue, including only confirmed profit and loss.
     var totalProfit: Double {

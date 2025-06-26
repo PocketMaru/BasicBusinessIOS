@@ -13,6 +13,8 @@ struct StatsSummaryDetailView: View {
     var customerDetail: CustomerDetailVM?
     var invoice: InvoiceModel?
     var expense: ExpenseModel?
+    var quote: QuoteModel?
+    var customer: CustomerModel?
     @Binding var statDetailSheetItem: StatDetailSheetItem?
     var body: some View {
         NavigationStack {
@@ -54,6 +56,20 @@ struct StatsSummaryDetailView: View {
                             Text("Income")
                         case .quote:
                             Text("Quotes")
+                        case .customer:
+                            if let customer = customer {
+                                CustomSectionView(headerTitle: customer.fullName ?? customer.firstName) {
+                                    VStack {
+                                        Text(customer.phone)
+                                        Divider()
+                                        Text(customer.email)
+                                        Divider()
+                                        Text(customer.address ?? "No Address On File")
+                                    }
+                                }
+                            }
+                        case .material:
+                            Text("Material")
                         case .none:
                             Text("None")
                         }
