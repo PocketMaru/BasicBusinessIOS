@@ -63,6 +63,7 @@ struct UserView: View {
             .ToolBarTitle(
                 title:"User Profile",
                 iconName: "arrowshape.backward.circle.fill",
+                editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
                 editMode: $isEditing,
                 mainIconTapped: {
                     isPresented.toggle()

@@ -11,6 +11,7 @@ extension View {
     func ToolBarTitle(
         title: String = "Basic Business",
         iconName: String? = "chart.bar",
+        editIconName: String? = "person.circle.fill",
         editMode: Binding<Bool>? = nil,
         mainIconTapped: (() -> Void)? = nil,
         editIconTapped: (() -> Void)? = nil
@@ -19,14 +20,11 @@ extension View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Group {
-                        Text(title)
-                            .bubbleStyle()
-                    }
+                    Text(title)
+                        .bubbleStyle()
                 }
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    if let icon = iconName {
+                if let icon = iconName, !icon.isEmpty {
+                    ToolbarItem(placement: .topBarLeading) {
                         if let action = mainIconTapped {
                             Button(action: action) {
                                 Image(systemName: icon)
@@ -41,18 +39,14 @@ extension View {
                         }
                     }
                 }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                        if let action = editIconTapped {
-                            Button(action: action) {
-                                if let editField = editMode {
-                                    Image(systemName: editField.wrappedValue ? "checkmark.circle.fill" : "pencil.circle" )
-                                        .font(.title3.bold())
-                                        .foregroundStyle(AppColors.accent)
-                                }
-
-                            }
+                if let action = editIconTapped, let editIconName = editIconName {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: action) {
+                            Image(systemName: editIconName)
+                                .font(.title3.bold())
+                                .foregroundStyle(AppColors.accent)
                         }
+                    }
                 }
             }
     }

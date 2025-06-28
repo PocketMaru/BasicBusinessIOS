@@ -108,18 +108,16 @@ struct CustomerDetailView: View {
             .background(AppColors.bg)
             .scrollContentBackground(.hidden)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(isEditing ? "Done" : "Edit") {
-                        isEditing.toggle()
-                        if !isEditing {
-                            customer.saveChanges()
-                        }
-                    }
-                }
-            }
-            .ToolBarTitle(title: customer.customer.firstName + " " + customer.customer.lastName, mainIconTapped: {
+            .ToolBarTitle(
+                title: customer.customer.firstName + " " + customer.customer.lastName,
+                editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
+                mainIconTapped: {
                 activeSheet = .user
+            }, editIconTapped: {
+                isEditing.toggle()
+                if !isEditing {
+                    customer.saveChanges()
+                }
             })
         }
     }

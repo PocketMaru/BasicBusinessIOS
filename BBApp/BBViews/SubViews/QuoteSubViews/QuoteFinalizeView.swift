@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuoteSummaryView: View {
+struct QuoteFinalizeView: View {
     var body: some View {
         EmptyView()
     }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-// Global quote expectations.
+
 protocol Quoteable {
     var id: UUID {get}
     var customerID: UUID {get}
@@ -16,35 +16,7 @@ protocol Quoteable {
     var notes: String? {get}
     var totalCost: Double? {get}
 }
-// Industry types
-enum IndustryType: String, CaseIterable, Identifiable {
-    case landscaping
-    case pressureWashing
-    case consulting
-    case handyman
-    case HVAC
-    case productSales
-    
-    var id: String {self.rawValue}
-    
-    var displayName: String {
-        switch self {
-        case .landscaping:
-            return "Landscaping"
-        case .pressureWashing:
-            return "Pressure Washing"
-        case .consulting:
-            return "Consulting"
-        case .handyman:
-            return "Handyman"
-        case .HVAC:
-            return "HVAC"
-        case .productSales:
-            return "Product Sales"
-        }
-    }
-}
-// Service types
+
 enum ServiceType {
     case installation
     case maintenance
@@ -67,7 +39,7 @@ enum ServiceType {
         }
     }
 }
-// Quote types
+
 enum QuoteType {
     case fixedRate
     case hourlyRate
@@ -116,7 +88,7 @@ struct QuoteModel: Identifiable, Quoteable {
     }
     var pendingExpenses: [MaterialExpensePreview] = []
 }
-// Extension for sample data.
+
 extension QuoteModel {
     static let sample = QuoteModel(
         customer: .sample,

@@ -47,10 +47,15 @@ struct StatsSummaryView: View {
     var customerDetailVM: CustomerDetailVM?
     var customerListVM: CustomerListVM
     @State private var statDetailSheetItem: StatDetailSheetItem?
+    @State private var paidStatus: Bool = true
+    @State private var navigateToCustomerDetail: CustomerModel? = nil
+    var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
     
     var body: some View {
         NavigationStack {
+            let unpaidInvoices = customerListVM.allCustomers.filter { $0.paidBill != true }
+            let paidInvoices = customerListVM.allCustomers.filter { $0.paidBill == true }
             ZStack {
                 AppColors.bg.ignoresSafeArea()
                 ScrollView {
@@ -71,12 +76,7 @@ struct StatsSummaryView: View {
                                 } tapped: {
                                     statDetailSheetItem = .invoice(invoice)
                                 }
-                                if index < invoiceVM.invoice.count - 1 {
-                                    Divider()
-                                        .padding(.horizontal)
-                                }
                             }
-                            
                         } else if selectedStat == .expenses {
                             ForEach(expenseVM.expenses.indices, id: \.self) { index in
                                 let expense = expenseVM.expenses[index]
@@ -90,10 +90,6 @@ struct StatsSummaryView: View {
                                     }
                                 } tapped: {
                                     statDetailSheetItem = .expense(expense)
-                                }
-                                if index < expenseVM.expenses.count - 1 {
-                                    Divider()
-                                        .padding(.horizontal)
                                 }
                             }
                         } else if selectedStat == .income {
@@ -123,34 +119,45 @@ struct StatsSummaryView: View {
                                 } tapped: {
                                     statDetailSheetItem = .quote(quoteItem)
                                 }
-                                if index < quoteVM.quotes.count - 1 {
-                                    Divider()
-                                        .padding(.horizontal)
-                                }
                             }
                         } else if selectedStat == .materials {
                             
                         } else if selectedStat == .customers {
-                                ForEach(customerListVM.allCustomers.indices, id: \.self) { index in
-                                    let customer = customerListVM.allCustomers[index]
-                                    CustomSectionView(headerTitle: customer.fullName ?? customer.firstName) {
-                                        VStack {
-                                            Text(customer.phone)
-                                            Divider()
-                                            Text(customer.address ?? "No Address Available")
-                                            Divider()
-                                            Text(customer.paidBill != nil ? "Paid" : "Unpaid")
+                            VStack (spacing: 10) {
+                                if paidStatus {
+                                    ForEach(paidInvoices.indices, id: \.self) { index in
+                                        let customer = paidInvoices[index]
+                                        CustomSectionView(headerTitle: customer.fullName ?? customer.firstName) {
+                                            VStack {
+                                                Text(customer.phone)
+                                                Divider()
+                                                Text(customer.address ?? "No Address Available")
+                                                Divider()
+                                                Text(customer.paidBill == true ? "Paid" : "Unpaid").foregroundStyle( AppColors.accent)
+                                            }
+                                        } tapped: {
+                                            navigateToCustomerDetail = customer
                                         }
-                                    } tapped: {
-                                        statDetailSheetItem = .customer(customer)
                                     }
-                                    if index < customerListVM.allCustomers.count - 1 {
-                                        Divider()
-                                            .padding(.horizontal)
+                                } else {
+                                    ForEach(unpaidInvoices.indices, id: \.self) { index in
+                                        let customer = unpaidInvoices[index]
+                                        CustomSectionView(headerTitle: customer.fullName ?? customer.firstName) {
+                                            VStack {
+                                                Text(customer.phone)
+                                                Divider()
+                                                Text(customer.address ?? "No Address Available")
+                                                Divider()
+                                                Text(customer.paidBill == false ? "unPaid" : "Paid").foregroundStyle( AppColors.accent)
+                                            }
+                                        } tapped: {
+                                            navigateToCustomerDetail = customer
+                                        }
                                     }
                                 }
-                            
-                            
+                                
+                                
+                            }
                         }
                         
                     }
@@ -158,43 +165,39 @@ struct StatsSummaryView: View {
                 .scrollContentBackground(.hidden)
                 .background(AppColors.bg)
             }
-            .ToolBarTitle(title: selectedStat.title, mainIconTapped: {
-                activeSheet = .user
-            })
-            .sheet(item: $statDetailSheetItem) { item in
-                switch item {
-                case .invoice(let invoice):
-                    StatsSummaryDetailView(
-                        selectedStat: $selectedStat,
-                        invoice: invoice,
-                        expense: nil,
-                        quote: nil,
-                        statDetailSheetItem: $statDetailSheetItem
+            .ToolBarTitle(
+                title: selectedStat.title,
+                iconName: nil,
+                mainIconTapped: nil
+            )
+            .safeAreaInset(edge: .top) {
+                if selectedStat == .customers {
+                    HStack (spacing: 10){
+                        StatButtonView(label: "Paid", value: Double(paidInvoices.count), tapAction: {
+                            paidStatus = true
+                        })
+                        StatButtonView(label: "Unpaid", value: Double(unpaidInvoices.count), tapAction: {
+                            paidStatus = false
+                        })
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        AppColors.bg
+                            .ignoresSafeArea()
+                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .shadow(color: .black.opacity(0.1), radius: 3, y: 2)
                     )
-                case .expense(let expense):
-                    StatsSummaryDetailView(
-                        selectedStat: $selectedStat,
-                        invoice: nil,
-                        expense: expense,
-                        quote: nil,
-                        statDetailSheetItem: $statDetailSheetItem
-                    )
-                case .income(_):
-                    Text("Income")
-                case .quote(_):
-                    Text("Quote")
-                case .customer(let customer):
-                    StatsSummaryDetailView(
-                        selectedStat: $selectedStat,
-                        invoice: nil,
-                        expense: nil,
-                        quote: nil,
-                        customer: customer,
-                        statDetailSheetItem: $statDetailSheetItem
-                    )
-                case .material(_):
-                    Text("Material")
+                    .padding(.horizontal)
                 }
+            }
+            .navigationDestination(item: $navigateToCustomerDetail) { customer in
+                CustomerDetailView(
+                    customer: CustomerDetailVM(customer: customer),
+                    userVM: userVM,
+                    activeSheet: $activeSheet
+                )
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

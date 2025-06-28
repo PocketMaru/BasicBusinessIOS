@@ -6,8 +6,13 @@
 //
 
 import Foundation
-
+/// Enumeration `ExpenseType` with a `name` property for string representation.
+/// Enumeration `ExpenseStatus` with a `name` property for string representation.
+/// Struct `ExpenseModel` defines the expense data structure.
+/// Extension to `ExpenseModel` provides sample data for previews/testing.
 enum ExpenseType {
+    // TODO: Add `icon` and `color` variables to support UI visuals.
+    // Used for SwiftUI labels, chip-style tags, and category-based styling.
     case food
     case gas
     case housing
@@ -51,10 +56,8 @@ enum ExpenseType {
 enum ExpenseStatus {
     case pending
     case confirmed
-}
-
-extension ExpenseStatus: CustomStringConvertible {
-    var description: String {
+    
+    var name: String {
         switch self {
         case .pending:
             return "Pending"
@@ -88,7 +91,7 @@ struct ExpenseModel: Identifiable {
         }
     }
 }
-// Extension for sample data.
+
 extension ExpenseModel {
     static let sample = ExpenseModel(
         id: UUID(),

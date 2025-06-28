@@ -16,11 +16,11 @@ struct StatButtonView: View {
         Button(action: tapAction) {
             VStack(spacing: 10) {
                 Text(label)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(AppColors.accent)
                 if let value = value {
                     Text(value.formatted(.number.precision(.fractionLength(0))))
-                        .font(.system(size: 32, weight: .bold))
+                        .font(.system(size: 28, weight: .bold))
                         .foregroundStyle(AppColors.secondaryText)
                 }
                 
@@ -72,10 +72,10 @@ struct LargeStatButtonView: View {
                 Button(action: tapActionOne) {
                     VStack(spacing: 4) {
                         Text(valueOne.formatted(.number.precision(.fractionLength(0))))
-                            .font(.system(size: 23, weight: .bold))
+                            .font(.system(size: 28, weight: .bold))
                             .foregroundStyle(AppColors.secondaryText)
                         Text(titleOne)
-                            .font(.system(size: 13, weight: .medium))
+                            .font(.system(size: 18, weight: .medium))
                             .foregroundStyle(AppColors.accent)
                     }
                 }
@@ -95,10 +95,10 @@ struct LargeStatButtonView: View {
                     Button(action: tapActionThree ?? { }) {
                         VStack(spacing: 4) {
                             Text(valueThree.formatted(.number.precision(.fractionLength(0))))
-                                .font(.system(size: 23, weight: .bold))
+                                .font(.system(size: 28, weight: .bold))
                                 .foregroundStyle(AppColors.secondaryText)
                             Text(titleThree)
-                                .font(.system(size: 13, weight: .medium))
+                                .font(.system(size: 18, weight: .medium))
                                 .foregroundStyle(AppColors.accent)
                         }
                     }
@@ -111,10 +111,10 @@ struct LargeStatButtonView: View {
                 Button(action: tapActionOne) {
                     VStack(spacing: 4) {
                         Text(valueOne.formatted(.number.precision(.fractionLength(0))))
-                            .font(.system(size: 30, weight: .bold))
+                            .font(.system(size: 35, weight: .bold))
                             .foregroundStyle(AppColors.secondaryText)
                         Text(titleOne)
-                            .font(.system(size: 20, weight: .medium))
+                            .font(.system(size: 25, weight: .medium))
                             .foregroundStyle(AppColors.accent)
                     }
                     .frame(maxWidth: .infinity)
@@ -123,10 +123,10 @@ struct LargeStatButtonView: View {
                 Button(action: tapActionTwo ?? { }) {
                     VStack(spacing: 4) {
                         Text(valueTwo.formatted(.number.precision(.fractionLength(0))))
-                            .font(.system(size: 30, weight: .bold))
+                            .font(.system(size: 35, weight: .bold))
                             .foregroundStyle(AppColors.secondaryText)
                         Text(titleTwo)
-                            .font(.system(size: 20, weight: .medium))
+                            .font(.system(size: 25, weight: .medium))
                             .foregroundStyle(AppColors.accent)
                     }
                     .frame(maxWidth: .infinity)

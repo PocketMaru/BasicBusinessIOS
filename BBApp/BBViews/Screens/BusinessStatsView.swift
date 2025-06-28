@@ -40,7 +40,7 @@ enum StatsSummaryViewType {
 }
 
 struct BusinessStatsView: View {
-    @Bindable var userVM: UserVM
+    var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
     
     @State private var showStatsSummary = false
@@ -140,6 +140,7 @@ struct BusinessStatsView: View {
                     quoteVM: quoteVM,
                     businessStatsVM: businessStatsVM,
                     customerListVM: customerListVM,
+                    userVM: userVM,
                     activeSheet: $activeSheet
                 )
             }
