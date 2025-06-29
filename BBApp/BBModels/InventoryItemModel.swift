@@ -8,6 +8,16 @@
 import Foundation
 
 // Units of Measurement
+
+struct InventoryItemModel: Identifiable {
+    var id: UUID = UUID()
+    var name: String
+    var cost: Double
+    var productQuantityType: ProductUnitTypes
+    var productQuantity: Double
+    var description: String?
+}
+
 enum ProductUnitTypes {
     case gram, ounce, pound, liter, gallon, bag, unit, piece
     
@@ -31,11 +41,3 @@ enum UnitCategory {
     case quantity
 }
 
-struct InventoryItemModel: Identifiable {
-    var id: UUID = UUID()
-    var name: String
-    var cost: Double
-    var productQuantityType: ProductUnitTypes
-    var productQuantity: Double
-    var description: String?
-}

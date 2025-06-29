@@ -6,9 +6,22 @@
 //
 
 import Foundation
-/// Enumeration `IndustryType` with a `displayName` property for string representation.
 /// Struct `UserModel` defines the user data structure.
+/// Enumeration `IndustryType` with a `displayName` property for string representation.
 /// Extension to `UserModel` provides sample data for previews/testing.
+
+struct UserModel: Identifiable {
+    var id: UUID = UUID()
+    var firstName: String
+    var lastName: String
+    var businessName: String
+    var industryType: IndustryType
+    var profileImageData: Data?
+    var fullName: String? {
+        "\(firstName) \(lastName)"
+    }
+}
+
 enum IndustryType: String, CaseIterable, Identifiable {
     case landscaping
     case pressureWashing
@@ -34,17 +47,6 @@ enum IndustryType: String, CaseIterable, Identifiable {
         case .productSales:
             return "Product Sales"
         }
-    }
-}
-struct UserModel: Identifiable {
-    var id: UUID = UUID()
-    var firstName: String
-    var lastName: String
-    var businessName: String
-    var industryType: IndustryType
-    var profileImageData: Data?
-    var fullName: String? {
-        "\(firstName) \(lastName)"
     }
 }
 

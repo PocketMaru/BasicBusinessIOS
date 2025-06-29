@@ -6,7 +6,11 @@
 //
 
 import Foundation
-// Model defining materials purchased for quotes, and materials on hand in inventory
+/// Struct `MaterialModel` defines reusable materials that can be referenced when building quotes.
+/// This is **not** an inventory tracker — instead, it stores commonly used materials and pricing
+/// to make quoting faster and more consistent.
+/// Each time a material is added to a quote, a new expense entry is created — quantities are not deducted or tracked.
+/// Extension to `MaterialModel` provides sample data for preview/testing
 struct MaterialModel: Identifiable {
     var id: UUID = UUID()
     var name: String
@@ -14,7 +18,7 @@ struct MaterialModel: Identifiable {
     var unitCost: Double
     var unitType: ProductUnitTypes
 }
-// Extension for sample data.
+
 extension MaterialModel {
     static let sample = MaterialModel(
         id: UUID(),

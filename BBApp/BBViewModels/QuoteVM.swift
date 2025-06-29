@@ -43,7 +43,7 @@ final class QuoteVM {
     }
     
     func saveDraftToQuote() {
-        guard let customer = selectedCustomer else { return }
+        guard selectedCustomer != nil else { return }
         if let quote = draftQuote {
             quotes.append(quote)
         }

@@ -6,10 +6,36 @@
 //
 
 import Foundation
+/// Struct `ExpenseModel` defines the expense data structure.
 /// Enumeration `ExpenseType` with a `name` property for string representation.
 /// Enumeration `ExpenseStatus` with a `name` property for string representation.
-/// Struct `ExpenseModel` defines the expense data structure.
 /// Extension to `ExpenseModel` provides sample data for previews/testing.
+
+struct ExpenseModel: Identifiable {
+    var id: UUID = UUID()
+    var name: String
+    var type: ExpenseType
+    var date: Date
+    var description: String?
+    var hoursWorked: Double?
+    var hourlyRate: Double?
+    var fixedRate: Double?
+    var expenseStatus: ExpenseStatus
+    var materialExpense: MaterialExpenseQM?
+    
+    var total: Double {
+        let material = materialExpense?.unitCost ?? 0
+        switch type {
+        case .food, .gas, .housing, .utilities, .healthcare, .clothing, .transportation, .entertainment, .other:
+            return (fixedRate ?? 0) + (material)
+        case .employeeWages:
+            return (hoursWorked ?? 0) * (hourlyRate ?? 0) + (material)
+        case .materialExpense:
+            return material
+        }
+    }
+}
+
 enum ExpenseType {
     // TODO: Add `icon` and `color` variables to support UI visuals.
     // Used for SwiftUI labels, chip-style tags, and category-based styling.
@@ -63,31 +89,6 @@ enum ExpenseStatus {
             return "Pending"
         case .confirmed:
             return "Confirmed"
-        }
-    }
-}
-
-struct ExpenseModel: Identifiable {
-    var id: UUID = UUID()
-    var name: String
-    var type: ExpenseType
-    var date: Date
-    var description: String?
-    var hoursWorked: Double?
-    var hourlyRate: Double?
-    var fixedRate: Double?
-    var expenseStatus: ExpenseStatus
-    var materialExpense: MaterialExpenseQM?
-    
-    var total: Double {
-        let material = materialExpense?.unitCost ?? 0
-        switch type {
-        case .food, .gas, .housing, .utilities, .healthcare, .clothing, .transportation, .entertainment, .other:
-            return (fixedRate ?? 0) + (material)
-        case .employeeWages:
-            return (hoursWorked ?? 0) * (hourlyRate ?? 0) + (material)
-        case .materialExpense:
-            return material
         }
     }
 }

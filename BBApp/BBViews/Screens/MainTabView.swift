@@ -20,7 +20,10 @@ struct MainTabView: View {
         
         TabView {
             NavigationStack {
-                BusinessStatsView(userVM: userVM, activeSheet: $activeSheet)
+                BusinessStatsView(
+                    userVM: userVM,
+                    activeSheet: $activeSheet
+                )
             }
             .tabItem {
                 Image(systemName: "chart.bar")
@@ -28,7 +31,11 @@ struct MainTabView: View {
             }
             
             NavigationStack {
-                CustomerView(customerListVM: customerListVM, userVM: userVM, activeSheet: $activeSheet )
+                CustomerView(
+                    customerListVM: customerListVM,
+                    userVM: userVM,
+                    activeSheet: $activeSheet
+                )
             }
             .tabItem {
                 Image(systemName: "person.3")
@@ -36,7 +43,10 @@ struct MainTabView: View {
             }
             
             NavigationStack {
-                QuoteView(userVM: userVM, activeSheet: $activeSheet)
+                QuoteView(
+                    userVM: userVM,
+                    activeSheet: $activeSheet
+                )
             }
             .tabItem {
                 Image(systemName: "book.pages")
@@ -44,7 +54,10 @@ struct MainTabView: View {
             }
             
             NavigationStack {
-                ExpenseView(userVM: userVM, activeSheet: $activeSheet)
+                ExpenseView(
+                    userVM: userVM,
+                    activeSheet: $activeSheet
+                )
             }
             .tabItem {
                 Image(systemName: "dollarsign.circle.fill")

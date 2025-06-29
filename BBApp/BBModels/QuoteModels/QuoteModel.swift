@@ -17,6 +17,35 @@ protocol Quoteable {
     var totalCost: Double? {get}
 }
 
+struct QuoteModel: Identifiable, Quoteable {
+    var id: UUID = UUID()
+    var customer: CustomerModel
+    var customerID: UUID {
+        customer.id
+    }
+    var industryType: IndustryType
+    var serviceType: ServiceType
+    var quoteType: QuoteType
+    var quoteDate: Date?
+    var installationDate: Date?
+    var serviceDate: Date?
+    var notes: String?
+    
+    var subscriptionTotal: Double?
+    var materialCost: Double?
+    var laborCost: Double?
+    var additionalFees: Double?
+    var totalCost: Double?
+    
+    var customFields: Data?
+    
+    var materialExpenses: [MaterialExpenseQM] = []
+    var materialTotalCost: Double? {
+        materialExpenses.reduce(0) { $0 + $1.unitCost }
+    }
+    var pendingExpenses: [MaterialExpensePreview] = []
+}
+
 enum ServiceType {
     case installation
     case maintenance
@@ -58,35 +87,6 @@ enum QuoteType {
             return "Subscription"
         }
     }
-}
-
-struct QuoteModel: Identifiable, Quoteable {
-    var id: UUID = UUID()
-    var customer: CustomerModel
-    var customerID: UUID {
-        customer.id
-    }
-    var industryType: IndustryType
-    var serviceType: ServiceType
-    var quoteType: QuoteType
-    var quoteDate: Date?
-    var installationDate: Date?
-    var serviceDate: Date?
-    var notes: String?
-    
-    var subscriptionTotal: Double?
-    var materialCost: Double?
-    var laborCost: Double?
-    var additionalFees: Double?
-    var totalCost: Double?
-    
-    var customFields: Data?
-    
-    var materialExpenses: [MaterialExpenseQM] = []
-    var materialTotalCost: Double? {
-        materialExpenses.reduce(0) { $0 + $1.unitCost }
-    }
-    var pendingExpenses: [MaterialExpensePreview] = []
 }
 
 extension QuoteModel {
@@ -132,5 +132,4 @@ extension QuoteModel {
             totalCost: 3000),
     ]
 }
-
 

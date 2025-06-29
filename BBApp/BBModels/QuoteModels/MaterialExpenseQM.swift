@@ -19,6 +19,14 @@ struct MaterialExpenseQM: Identifiable {
     var expenseStatus: ExpenseStatus = .pending
 }
 
+// Represents added materials as expenses prior to finalization through invoicing.
+struct MaterialExpensePreview: Identifiable {
+    var id = UUID()
+    var label: String
+    var estimatedCost: Double
+    var expenseStatus: ExpenseStatus = .pending
+}
+
 // Extension to MaterialExpensesQM allowing conversion of materials to expenses and adding the date.
 extension MaterialExpenseQM {
     func toExpense(date: Date = Date()) -> ExpenseModel? {
@@ -51,13 +59,6 @@ extension MaterialExpenseQM {
     }
 }
 
-// Represents added materials as expenses prior to finalization through invoicing.
-struct MaterialExpensePreview: Identifiable {
-    var id = UUID()
-    var label: String
-    var estimatedCost: Double
-    var expenseStatus: ExpenseStatus = .pending
-}
 // Extension for sample data.
 extension MaterialExpenseQM {
     static let sample = MaterialExpenseQM(
