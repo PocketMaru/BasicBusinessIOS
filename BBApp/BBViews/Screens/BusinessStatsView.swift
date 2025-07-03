@@ -191,10 +191,10 @@ struct BusinessStatsView: View {
                         .bubbleStyle()
                         .statButtonBG()
                 }
-//                Rectangle()
-//                    .frame(height: 2)
-//                    .foregroundStyle(AppColors.bg)
-//                    .statButtonBG()
+                Rectangle()
+                    .frame(height: 2)
+                    .foregroundStyle(AppColors.bg)
+                    .statButtonBG()
             }
             .padding(.horizontal)
             .background(AppColors.bg)
