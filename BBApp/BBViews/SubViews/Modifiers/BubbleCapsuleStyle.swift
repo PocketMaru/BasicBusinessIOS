@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BubbleCapsuleStyle: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
-
+    var textColor: Color
     func body(content: Content) -> some View {
         if colorScheme == .dark {
             content
@@ -21,7 +21,7 @@ struct BubbleCapsuleStyle: ViewModifier {
                     Capsule()
                         .stroke(Color.white.opacity(0.15), lineWidth: 1)
                 )
-                .foregroundStyle(AppColors.accent)
+                .foregroundStyle(textColor)
         } else {
             content
                 .font(.system(size: 20, weight: .semibold))
@@ -37,13 +37,13 @@ struct BubbleCapsuleStyle: ViewModifier {
                         .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
                         .shadow(color: Color.white.opacity(0.25), radius: 8, x: 0, y: 0)
                 )
-                .foregroundStyle(AppColors.accent)
+                .foregroundStyle(textColor)
         }
     }
 }
 
 extension View {
-    func bubbleStyle() -> some View {
-        self.modifier(BubbleCapsuleStyle())
+    func bubbleStyle(textColor: Color = AppColors.secondaryText) -> some View {
+        self.modifier(BubbleCapsuleStyle(textColor: textColor ))
     }
 }

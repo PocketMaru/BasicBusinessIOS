@@ -22,4 +22,6 @@ enum AppColors {
     static let accent = Color("PrimaryAccent")
     static let error = Color("ErrorBackground")
     static let success = Color("SuccessBackground")
+    static let buttonColor = Color("ButtonColor")
+    static let secondaryBG = Color("BackgroundSecondary")
 }

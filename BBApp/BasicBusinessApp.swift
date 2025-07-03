@@ -18,7 +18,7 @@ struct BasicBusinessApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView(
-                customerListVM: CustomerListVM(customers: CustomerModel.sampleList ),
+                customerListVM: CustomerListVM(),
                 customerDetailVM: CustomerDetailVM(customer: CustomerModel.sample),
                 quoteVM: QuoteVM(savedMaterials: MaterialModel.sampleList),
                 materialVM: MaterialVM(materials: MaterialModel.sampleList)

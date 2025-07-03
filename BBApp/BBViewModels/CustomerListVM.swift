@@ -6,13 +6,15 @@
 //
 
 import Foundation
+
+@MainActor
 @Observable
 final class CustomerListVM {
     var allCustomers: [CustomerModel] = []
     var allQuotes: [QuoteModel] = []
     
-    init(customers: [CustomerModel]) {
-        self.allCustomers = customers
+    init() {
+        self.allCustomers = loadCustomers()
     }
     
     func addCustomer(
@@ -20,6 +22,7 @@ final class CustomerListVM {
         lastName: String,
         email: String,
         address: String?,
+        zipCode: String?,
         phone: String,
         paidBill: Bool?
     ){
@@ -28,10 +31,12 @@ final class CustomerListVM {
             lastName: lastName,
             email: email,
             address: address,
+            zipCode: zipCode,
             phone: phone,
             paidBill: paidBill ?? false
         )
         allCustomers.append(newCustomer)
+        saveCustomers(allCustomers)
     }
     
     func searchCustomer(by name: String) -> [CustomerModel] {
@@ -46,6 +51,7 @@ final class CustomerListVM {
     
     func removeCustomer(at index: Int){
         allCustomers.remove(at: index)
+        saveCustomers(allCustomers)
     }
     
     func showAllCustomerQuotes(for customerID: UUID) -> [QuoteModel] {
@@ -55,6 +61,49 @@ final class CustomerListVM {
     func updateCustomer(with updated: CustomerModel) {
         if let index = allCustomers.firstIndex(where: { $0.id == updated.id }) {
             allCustomers[index] = updated
+            saveCustomers(allCustomers)
+        }
+    }
+    
+    func loadCustomers() -> [CustomerModel] {
+        let decoder = JSONDecoder()
+        do {
+            let data = try Data(contentsOf: FileStorage.customerFileURL)
+            let decoded = try decoder.decode([CustomerModel].self, from: data)
+            return decoded
+        } catch {
+            print("Failed to load customers:", error)
+            return []
+        }
+    }
+    
+    func saveCustomers(_ customers: [CustomerModel]) {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        
+        do {
+            let data = try encoder.encode(customers)
+            try data.write(to: FileStorage.customerFileURL, options: [.atomicWrite])
+            print("Saved to \(FileStorage.customerFileURL)")
+        } catch {
+            print("Failed to save customers:", error)
+        }
+    }
+    
+    func customerFileURL() -> URL {
+        FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("customers.json")
+    }
+    
+    func loadAndCleanCustomersFromDisk() {
+        let url = customerFileURL()
+        do {
+            let data = try JSONEncoder().encode(allCustomers)
+            try data.write(to: url)
+            print("Saved customers to disk.")
+        } catch {
+            print("Failed to save customers to disk: \(error)")
         }
     }
 }

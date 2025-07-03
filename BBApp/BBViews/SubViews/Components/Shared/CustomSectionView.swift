@@ -31,7 +31,7 @@ struct CustomSectionView<Content: View>: View {
                         VStack(spacing: 4) {
                             CustomHeader(title: headerTitle)
                             content
-                                .bubbleStyleBLKText()
+                                .bubbleStyle()
                                 .padding(.horizontal, 8)
                         }
                     }
@@ -39,7 +39,7 @@ struct CustomSectionView<Content: View>: View {
                     VStack(spacing: 4) {
                         CustomHeader(title: headerTitle)
                         content
-                            .bubbleStyleBLKText()
+                            .bubbleStyle()
                             .padding(.horizontal, 8)
                     }
                 }

@@ -23,7 +23,7 @@ struct QuoteView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarTitleDisplayMode(.inline)
-        .ToolBarTitle(title: userVM.user.businessName, mainIconTapped: {
+        .ToolBarTitle(title: userVM.user?.businessName ?? "", mainIconTapped: {
             activeSheet = .user
         })
     }

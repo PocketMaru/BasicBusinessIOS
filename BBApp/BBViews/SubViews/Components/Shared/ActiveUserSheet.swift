@@ -8,12 +8,12 @@
 import Foundation
 
 enum ActiveUserSheet: Identifiable {
-    case user, settings
+    case user, addCustomer
     
     var id: String {
         switch self {
         case .user: return "user"
-        case .settings: return "settings"
+        case .addCustomer: return "addCustomer"
         }
     }
 }

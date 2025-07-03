@@ -13,6 +13,7 @@ extension View {
         iconName: String? = "chart.bar",
         editIconName: String? = "person.circle.fill",
         editMode: Binding<Bool>? = nil,
+        editButtonColor: Color? = nil,
         mainIconTapped: (() -> Void)? = nil,
         editIconTapped: (() -> Void)? = nil
     ) -> some View {
@@ -21,7 +22,8 @@ extension View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text(title)
-                        .bubbleStyle()
+                        .bubbleStyle(textColor: AppColors.accent)
+                        .shadow(color: Color.black.opacity(0.08), radius: 2, x: 0, y: 1)
                 }
                 if let icon = iconName, !icon.isEmpty {
                     ToolbarItem(placement: .topBarLeading) {
@@ -39,12 +41,12 @@ extension View {
                         }
                     }
                 }
-                if let action = editIconTapped, let editIconName = editIconName {
+                if let action = editIconTapped, let editIconName = editIconName, let editButtonColor {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: action) {
                             Image(systemName: editIconName)
                                 .font(.title3.bold())
-                                .foregroundStyle(AppColors.accent)
+                                .foregroundStyle(editButtonColor)
                         }
                     }
                 }

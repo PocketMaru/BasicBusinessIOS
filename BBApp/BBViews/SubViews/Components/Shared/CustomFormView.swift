@@ -8,60 +8,82 @@
 import SwiftUI
 
 struct CustomFormView<Content: View>: View {
-    
-    let headerTitle: String
+    let shouldValidate: Bool
+    let errorMessage: String?
+    let header: String?
+    let fixedHeight: Bool
+    let text: String?
     let content: Content
     let tapped: (() -> Void)?
     
     init(
-        headerTitle: String,
+        shouldValidate: Bool = true,
+        errorMessage: String? = nil,
+        header: String? = nil,
+        fixedHeight: Bool = true,
+        text: String? = nil,
         @ViewBuilder content: () -> Content,
         tapped: (() -> Void)? = nil
     ) {
-        self.headerTitle = headerTitle
+        self.shouldValidate = shouldValidate
+        self.errorMessage = errorMessage
+        self.header = header
+        self.fixedHeight = fixedHeight
+        self.text = text
         self.content = content()
         self.tapped = tapped
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Group {
-                if let tapped = tapped {
-                    Button(action: tapped) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            CustomFormHeader(title: headerTitle)
-                            content
-                                .bubbleStyleBLKText()
-                                .padding(.horizontal, 2)
-                        }
-                    }
-                } else {
-                    VStack(alignment: .leading, spacing: 4) {
-                        CustomFormHeader(title: headerTitle)
-                        content
-                            .bubbleStyleBLKText()
-                            .padding(.horizontal, 2)
-                    }
+            if let header = header {
+                CustomHeader(title: header)
+                    .padding(.horizontal, 30)
+                    .padding(.vertical, 10)
+            }
+            if let tapped = tapped {
+                Button(action: tapped) {
+                    formFieldContent()
                 }
+            } else {
+                formFieldContent()
             }
         }
     }
-}
-
-struct CustomFormHeader: View {
-    var title: String
-    var icon: String? = nil
-    var body: some View {
-        HStack(spacing: 6) {
-            if let icon = icon {
-                Image(systemName: icon)
-                    .foregroundStyle(AppColors.secondaryText)
+    
+    @ViewBuilder
+    private func formFieldContent() -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            content
+                .if(fixedHeight) { view in
+                    view.frame(height: 48)
+                }
+                .bubbleStyle()
+                .padding(.horizontal, 2)
+            if shouldValidate, let errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(AppColors.error)
+                    .padding(.horizontal, 3)
             }
-            Text(title)
-                .font(.headline)
-                .foregroundStyle(AppColors.accent)
         }
-        .padding(.horizontal)
+        .padding(.horizontal, 20)
     }
+    
+    struct CustomFormHeader: View {
+        var title: String
+        var icon: String? = nil
+        var body: some View {
+            HStack(spacing: 6) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .foregroundStyle(AppColors.secondaryText)
+                }
+                Text(title)
+                    .font(.headline)
+                    .foregroundStyle(AppColors.accent)
+            }
+            .padding(.horizontal)
+        }
+    }
+    
 }
-

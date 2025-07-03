@@ -11,15 +11,19 @@ struct CustomerView: View {
     @Bindable var customerListVM: CustomerListVM
     @Bindable var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
+    @Binding var customerDetailVM: CustomerDetailVM
     var body: some View {
             ZStack {
                 AppColors.bg.ignoresSafeArea()
                 List {
-                    ForEach(customerListVM.allCustomers) { customer in
+                    ForEach(Array(customerListVM.allCustomers.enumerated()), id: \.element.id) { index, customer in
                         NavigationLink(
                             destination:CustomerDetailView(
                                 customer: CustomerDetailVM(
-                                    customer: customer),
+                                    customer: customer,
+                                    onSave: { updatedCustomer in
+                                    customerListVM.updateCustomer(with: updatedCustomer)
+                                }),
                                 userVM: userVM,
                                 activeSheet: $activeSheet
                             )) {
@@ -35,14 +39,29 @@ struct CustomerView: View {
                         }
                         .listRowBackground(AppColors.bg)
                     }
+                    .onDelete { IndexSet in
+                        for index in IndexSet {
+                            customerListVM.removeCustomer(at: index)
+                        }
+                    }
                 }
+                .padding(.top, 30)
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
                 .background(AppColors.bg)
             }
             .navigationBarTitleDisplayMode(.inline)
-            .ToolBarTitle(title: userVM.user.businessName, mainIconTapped: {
-                activeSheet = .user
+            .ToolBarTitle(
+                title: userVM.user?.businessName ?? "",
+                editIconName: "plus.circle",
+                editButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success,
+                mainIconTapped: {
+                    if activeSheet == nil {
+                        activeSheet = .user
+                    }
+            }, editIconTapped: {
+                customerDetailVM.customer = CustomerModel()
+                activeSheet = .addCustomer
             })
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

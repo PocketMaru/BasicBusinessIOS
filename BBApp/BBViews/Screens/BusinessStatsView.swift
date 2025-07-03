@@ -42,13 +42,21 @@ enum StatsSummaryViewType {
 struct BusinessStatsView: View {
     var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
-    
     @State private var showStatsSummary = false
     @State var selectedSummaryViewType: StatsSummaryViewType = .income
-    
-    var customerListVM = CustomerListVM(
-        customers: CustomerModel.sampleList
-    )
+    @State var customerListVM = CustomerListVM()
+    @State private var showStatsDetailDestination = false
+    @State private var hasAppeared: Bool = false
+    private func handleStatTap(_ type: StatsSummaryViewType ) {
+        selectedSummaryViewType = type
+        if type == .invoices || type == .quotes || type == .income{
+            showStatsSummary = true
+            showStatsDetailDestination = false
+        } else {
+            showStatsSummary = false
+            showStatsDetailDestination = true
+        }
+    }
     
     var invoiceVM = InvoiceVM(
         invoice: InvoiceModel.sampleList,
@@ -69,82 +77,145 @@ struct BusinessStatsView: View {
     var materialVM = MaterialVM(
         materials: MaterialModel.sampleList
     )
+    
     var body: some View {
-            ZStack{
-                AppColors.bg.ignoresSafeArea()
+        ZStack(alignment: .top){
+            AppColors.bg.ignoresSafeArea()
+            ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(alignment: .center, spacing: 10) {
-                        LargeStatButtonView(
-                            titleOne: "Customers",
-                            valueOne: Double(customerListVM.allCustomers.count),
-                            titleTwo: "Profit",
-                            valueTwo: businessStatsVM.totalProfit,
-                            titleThree: "Materials",
-                            valueThree: Double(materialVM.materials.count),
-                            tapActionOne: {
-                                selectedSummaryViewType = .customers
-                                showStatsSummary = true
-                            }, tapActionTwo: {
-                                selectedSummaryViewType = .income
-                                showStatsSummary = true
-                            }, tapActionThree: {
-                                selectedSummaryViewType = .materials
-                                showStatsSummary = true
-                            })
-                        HStack(spacing: 10) {
-                            StatButtonView(label: "Invoices",
-                                           value: Double(invoiceVM.invoice.count),
-                                           tapAction: {
-                                selectedSummaryViewType = .invoices
-                                showStatsSummary = true
-                            })
-                            
-                            StatButtonView(label: "Quotes",
-                                           value: Double(quoteVM.quotes.count),
-                                           tapAction: {
-                                selectedSummaryViewType = .quotes
-                                showStatsSummary = true
-                            })
-                        }
-                            HStack(spacing: 10) {
-                                StatButtonView(
-                                    label: "Expenses",
-                                    value: expenseVM.expenses.reduce(0) {$0 + ($1.total)},
-                                    tapAction: {
-                                    selectedSummaryViewType = .expenses
-                                    showStatsSummary = true
-                                } )
-                                
-                                StatButtonView(
-                                    label: "Forecasted \n Expenses",
-                                    value: businessStatsVM.forecastedExpenses,
-                                    tapAction: {
-                                    selectedSummaryViewType = .expensesForecast
-                                    showStatsSummary = true
-                                } )
+                    VStack(spacing: 16) {
+                        Color.clear
+                            .frame(height: 1)
+                            .id("top")
+                        Spacer().frame(height: 375)
+                        
+                        if showStatsSummary {
+                            Group {
+                                if selectedSummaryViewType == .invoices {
+                                    StatsSummaryView(
+                                        selectedStat: $selectedSummaryViewType,
+                                        invoiceVM: invoiceVM,
+                                        expenseVM: expenseVM,
+                                        quoteVM: quoteVM,
+                                        businessStatsVM: businessStatsVM,
+                                        customerListVM: customerListVM,
+                                        userVM: userVM,
+                                        activeSheet: $activeSheet
+                                    )
+                                } else if selectedSummaryViewType == .quotes {
+                                    StatsSummaryView(
+                                        selectedStat: $selectedSummaryViewType,
+                                        invoiceVM: invoiceVM,
+                                        expenseVM: expenseVM,
+                                        quoteVM: quoteVM,
+                                        businessStatsVM: businessStatsVM,
+                                        customerListVM: customerListVM,
+                                        userVM: userVM,
+                                        activeSheet: $activeSheet
+                                    )
+                                } else if selectedSummaryViewType == .income {
+                                    StatsSummaryView(
+                                        selectedStat: $selectedSummaryViewType,
+                                        invoiceVM: invoiceVM,
+                                        expenseVM: expenseVM,
+                                        quoteVM: quoteVM,
+                                        businessStatsVM: businessStatsVM,
+                                        customerListVM: customerListVM,
+                                        userVM: userVM,
+                                        activeSheet: $activeSheet
+                                    )
+                                }
                             }
+                                .id(selectedSummaryViewType)
+                                .padding(.horizontal)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .animation(.easeInOut, value: selectedSummaryViewType)
+                                .onAppear {
+                                    hasAppeared = true
+                                }
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 32)
+                }
+                .onChange(of: selectedSummaryViewType) {
+                    withAnimation {
+                        proxy.scrollTo("top", anchor: .top)
+                    }
                 }
             }
-            .ToolBarTitle(title: userVM.user.businessName, mainIconTapped: {
+            
+            VStack(alignment: .center, spacing: 10) {
+                Spacer().frame(height: 5)
+                LargeStatButtonView(
+                    titleOne: "Invoices",
+                    valueOne: Double(invoiceVM.invoice.count),
+                    titleTwo: "Profits",
+                    valueTwo: businessStatsVM.totalProfit,
+                    titleThree: "Quotes",
+                    valueThree: Double(quoteVM.quotes.count),
+                    tapActionOne: {
+                        handleStatTap(.invoices)
+                    }, tapActionTwo: {
+                        handleStatTap(.income)
+                    }, tapActionThree: {
+                        handleStatTap(.quotes)
+                    })
+                .statButtonBG()
+                
+                HStack(spacing: 10) {
+                    StatButtonView(label: "Customers",
+                                   value: Double(customerListVM.allCustomers.count),
+                                   tapAction: {
+                        handleStatTap(.customers)
+                    })
+                    .statButtonBG()
+                    StatButtonView(label: "Materials",
+                                   value: Double(materialVM.materials.count),
+                                   tapAction: {
+                        handleStatTap(.materials)
+                    })
+                    .statButtonBG()
+                }
+                if selectedSummaryViewType.title == "Invoices" {
+                    Text("\(selectedSummaryViewType.title)")
+                        .bubbleStyle()
+                        .statButtonBG()
+                } else if selectedSummaryViewType.title == "Quotes" {
+                    Text("\(selectedSummaryViewType.title)")
+                        .bubbleStyle()
+                        .statButtonBG()
+                } else {
+                    Text("Select a stat to view")
+                        .bubbleStyle()
+                        .statButtonBG()
+                }
+//                Rectangle()
+//                    .frame(height: 2)
+//                    .foregroundStyle(AppColors.bg)
+//                    .statButtonBG()
+            }
+            .padding(.horizontal)
+            .background(AppColors.bg)
+            .zIndex(1)
+        }
+        .ToolBarTitle(
+            title: userVM.user?.businessName ?? "",
+            mainIconTapped: {
                 activeSheet = .user
             })
-            
-            .navigationDestination(isPresented: $showStatsSummary) {
-                StatsSummaryView(
-                    selectedStat: $selectedSummaryViewType,
-                    invoiceVM: invoiceVM,
-                    expenseVM: expenseVM,
-                    quoteVM: quoteVM,
-                    businessStatsVM: businessStatsVM,
-                    customerListVM: customerListVM,
-                    userVM: userVM,
-                    activeSheet: $activeSheet
-                )
-            }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .navigationDestination(isPresented: $showStatsDetailDestination) {
+            StatsSummaryView(
+                selectedStat: $selectedSummaryViewType,
+                invoiceVM: invoiceVM,
+                expenseVM: expenseVM,
+                quoteVM: quoteVM,
+                businessStatsVM: businessStatsVM,
+                customerListVM: customerListVM,
+                userVM: userVM,
+                activeSheet: $activeSheet
+            )
+        }
     }
 }
-

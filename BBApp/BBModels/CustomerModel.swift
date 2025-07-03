@@ -8,14 +8,14 @@
 import Foundation
 /// Struct `CustomerModel` defines the customer data structure.
 /// Extension to `CustomerModel` provides sample data for previews/testing.
-struct CustomerModel: Identifiable, Hashable {
+struct CustomerModel: Identifiable, Hashable, Codable {
     var id: UUID = UUID()
     var firstName: String = ""
     var lastName: String = ""
     var email: String = ""
     var address: String? = nil
-    var phone: String = ""
     var zipCode: String? = nil
+    var phone: String = ""
     var paidBill: Bool? = false
     // MARK: - Pending Refactors
     // TODO: Replace all 'fullName` uses with `displayName` app-wide.
@@ -30,6 +30,15 @@ struct CustomerModel: Identifiable, Hashable {
         lastName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?
         firstName :
         "\(firstName) \(lastName)"
+    }
+}
+
+extension CustomerModel {
+    func isValid() -> Bool {
+        !firstName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !lastName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !phone.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 
@@ -49,8 +58,7 @@ extension CustomerModel {
             lastName: "Hauer",
             email: "joshuahauer@icloud.com",
             address: "43 Ginger Circle",
-            phone: "352-272-2099",
-            zipCode: "34748",
+            zipCode: "34748", phone: "352-272-2099",
             paidBill: false
         ),
         CustomerModel(
@@ -58,8 +66,7 @@ extension CustomerModel {
             lastName: "Hauer",
             email: "Kaleyhauer@icloud.com",
             address: "43 Ginger Circle",
-            phone: "408-808-2843",
-            zipCode: "34748",
+            zipCode: "34748", phone: "408-808-2843",
             paidBill: false
         ),
         CustomerModel(
@@ -67,8 +74,7 @@ extension CustomerModel {
             lastName: "Hauer",
             email: "ravenhauer@icloud.com",
             address: "43 Ginger Circle",
-            phone: "444-555-6666",
-            zipCode: "34748",
+            zipCode: "34748", phone: "444-555-6666",
             paidBill: false
         ),
         CustomerModel(
@@ -76,8 +82,7 @@ extension CustomerModel {
             lastName: "Hauer",
             email: "valkyriehauer@icloud.com",
             address: "43 Ginger Circle",
-            phone: "333-222-1111",
-            zipCode: "34748",
+            zipCode: "34748", phone: "333-222-1111",
             paidBill: false
         ),
         CustomerModel(
@@ -85,8 +90,7 @@ extension CustomerModel {
             lastName: "BABA",
             email: "goosebaba@icloud.com",
             address: "43 Ginger Circle",
-            phone: "111-222-3333",
-            zipCode: "34748",
+            zipCode: "34748", phone: "111-222-3333",
             paidBill: false
         ),
         CustomerModel(
@@ -94,8 +98,7 @@ extension CustomerModel {
             lastName: "Castro",
             email: "leocastro@icloud.com",
             address: "201 Palm Cove Drive",
-            phone: "305-123-4567",
-            zipCode: "33101",
+            zipCode: "33101", phone: "305-123-4567",
             paidBill: true
         ),
         CustomerModel(
@@ -103,8 +106,7 @@ extension CustomerModel {
             lastName: "Blake",
             email: "siennablake@icloud.com",
             address: "17 Ocean Breeze Lane",
-            phone: "727-456-7890",
-            zipCode: "33701",
+            zipCode: "33701", phone: "727-456-7890",
             paidBill: false
         ),
         CustomerModel(
@@ -112,8 +114,7 @@ extension CustomerModel {
             lastName: "Knight",
             email: "orionknight@icloud.com",
             address: "94 Sunset Trail",
-            phone: "813-987-6543",
-            zipCode: "33602",
+            zipCode: "33602", phone: "813-987-6543",
             paidBill: true
         ),
         CustomerModel(
@@ -121,8 +122,7 @@ extension CustomerModel {
             lastName: "Nguyen",
             email: "jadenguyen@icloud.com",
             address: "10 Lotus Park Drive",
-            phone: "352-321-8765",
-            zipCode: "34748",
+            zipCode: "34748", phone: "352-321-8765",
             paidBill: false
         ),
         CustomerModel(
@@ -130,8 +130,7 @@ extension CustomerModel {
             lastName: "Raynor",
             email: "milesraynor@icloud.com",
             address: "88 Pineapple Grove",
-            phone: "561-654-3210",
-            zipCode: "33401",
+            zipCode: "33401", phone: "561-654-3210",
             paidBill: true
         )
     ]

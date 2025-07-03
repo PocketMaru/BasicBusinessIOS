@@ -79,29 +79,34 @@ struct LargeStatButtonView: View {
                             .foregroundStyle(AppColors.accent)
                     }
                 }
+                
                 Divider()
+                
                 Button(action: tapActionTwo ?? { }) {
                     VStack(spacing: 4) {
                         Text(valueTwo.formatted(.number.precision(.fractionLength(0))))
-                            .font(.system(size: 33, weight: .bold))
+                            .font(.system(size: 31, weight: .bold))
                             .foregroundStyle(AppColors.secondaryText)
                         Text(titleTwo)
-                            .font(.system(size: 23, weight: .medium))
+                            .font(.system(size: 21, weight: .medium))
                             .foregroundStyle(AppColors.accent)
                     }
+                    .offset( y: -2)
                 }
-                Divider()
+                
                 if let valueThree = valueThree, let titleThree = titleThree {
-                    Button(action: tapActionThree ?? { }) {
-                        VStack(spacing: 4) {
-                            Text(valueThree.formatted(.number.precision(.fractionLength(0))))
-                                .font(.system(size: 28, weight: .bold))
-                                .foregroundStyle(AppColors.secondaryText)
-                            Text(titleThree)
-                                .font(.system(size: 18, weight: .medium))
-                                .foregroundStyle(AppColors.accent)
+                        Divider()
+                    
+                        Button(action: tapActionThree ?? { }) {
+                            VStack(spacing: 4) {
+                                Text(valueThree.formatted(.number.precision(.fractionLength(0))))
+                                    .font(.system(size: 28, weight: .bold))
+                                    .foregroundStyle(AppColors.secondaryText)
+                                Text(titleThree)
+                                    .font(.system(size: 18, weight: .medium))
+                                    .foregroundStyle(AppColors.accent)
+                            }
                         }
-                    }
                 }
             }
             .frame(width: 400, height: 120)

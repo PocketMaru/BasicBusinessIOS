@@ -17,6 +17,8 @@
 		538A03C62E0F04960001FACC /* LandscapeQV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03C52E0F04960001FACC /* LandscapeQV.swift */; };
 		538A03C82E0F04C40001FACC /* PressureWashQV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03C72E0F04C40001FACC /* PressureWashQV.swift */; };
 		538A03CB2E0F06B60001FACC /* ConsultingQV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CA2E0F06B60001FACC /* ConsultingQV.swift */; };
+		538A03CD2E1122200001FACC /* BBFileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CC2E1122200001FACC /* BBFileStorage.swift */; };
+		538A03CF2E1196B20001FACC /* AddCustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CE2E1196B20001FACC /* AddCustomerView.swift */; };
 		53B0E37C2DFA615A009C29A9 /* CustomerDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */; };
 		53B0E37E2DFC1CD5009C29A9 /* StatButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37D2DFC1CD5009C29A9 /* StatButtonView.swift */; };
 		53B0E3802DFC97F4009C29A9 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37F2DFC97F4009C29A9 /* UserModel.swift */; };
@@ -37,13 +39,12 @@
 		53BAE4102DF358A700862427 /* ExpenseItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE40F2DF358A700862427 /* ExpenseItemView.swift */; };
 		53BAE4142DF358CA00862427 /* QuoteFinalizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4132DF358CA00862427 /* QuoteFinalizeView.swift */; };
 		53BAE4162DF358DE00862427 /* MaterialListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4152DF358DE00862427 /* MaterialListView.swift */; };
-		53BAE4182DF358EE00862427 /* SaveQuoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4172DF358EE00862427 /* SaveQuoteButton.swift */; };
+		53BAE4182DF358EE00862427 /* SaveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4172DF358EE00862427 /* SaveButton.swift */; };
 		53BAE41D2DF3594500862427 /* InvoiceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE41C2DF3594500862427 /* InvoiceRow.swift */; };
 		53BAE41F2DF3595800862427 /* InvoiceSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE41E2DF3595800862427 /* InvoiceSummaryView.swift */; };
 		53BAE4222DF35A9B00862427 /* ExpenseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4212DF35A9B00862427 /* ExpenseRow.swift */; };
 		53BF84872DE3746E0042A983 /* InventoryItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BF84862DE3746E0042A983 /* InventoryItemModel.swift */; };
 		53BF84892DE3789F0042A983 /* InvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BF84882DE3789F0042A983 /* InvoiceModel.swift */; };
-		53C6CAB92E049073000A7229 /* CustomBubbleTextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C6CAB82E049073000A7229 /* CustomBubbleTextStyle.swift */; };
 		53C6CABB2E0540C1000A7229 /* StatsSummaryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C6CABA2E0540C1000A7229 /* StatsSummaryDetailView.swift */; };
 		53D1A24D2DC7DCB900E7A675 /* BasicBusinessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D1A24A2DC7DCB900E7A675 /* BasicBusinessApp.swift */; };
 		53D1A24E2DC7DCB900E7A675 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53D1A2482DC7DCB900E7A675 /* Assets.xcassets */; };
@@ -63,6 +64,10 @@
 		53E5A9ED2DDC61C500B66821 /* PressureWashQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5A9EC2DDC61C500B66821 /* PressureWashQM.swift */; };
 		53E5A9EF2DDC61DB00B66821 /* HandymanQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5A9EE2DDC61DB00B66821 /* HandymanQM.swift */; };
 		53E5A9F12DDC61E600B66821 /* ConsultingQM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5A9F02DDC61E600B66821 /* ConsultingQM.swift */; };
+		53EE9BAB2E15DE86008F3041 /* IfExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EE9BAA2E15DE86008F3041 /* IfExtension.swift */; };
+		53EE9BAD2E15EC12008F3041 /* HideKeyboardOnTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EE9BAC2E15EC12008F3041 /* HideKeyboardOnTap.swift */; };
+		53EE9BAF2E160BF1008F3041 /* CustomButtonBG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EE9BAE2E160BF1008F3041 /* CustomButtonBG.swift */; };
+		53EE9BB12E161A9C008F3041 /* StatButtonBG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EE9BB02E161A9C008F3041 /* StatButtonBG.swift */; };
 		53FA99222DE8CCC700EBA5C8 /* ProductSalesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FA99212DE8CCC700EBA5C8 /* ProductSalesVM.swift */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +99,8 @@
 		538A03C52E0F04960001FACC /* LandscapeQV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeQV.swift; sourceTree = "<group>"; };
 		538A03C72E0F04C40001FACC /* PressureWashQV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressureWashQV.swift; sourceTree = "<group>"; };
 		538A03CA2E0F06B60001FACC /* ConsultingQV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultingQV.swift; sourceTree = "<group>"; };
+		538A03CC2E1122200001FACC /* BBFileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BBFileStorage.swift; sourceTree = "<group>"; };
+		538A03CE2E1196B20001FACC /* AddCustomerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomerView.swift; sourceTree = "<group>"; };
 		53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerDetailVM.swift; sourceTree = "<group>"; };
 		53B0E37D2DFC1CD5009C29A9 /* StatButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatButtonView.swift; sourceTree = "<group>"; };
 		53B0E37F2DFC97F4009C29A9 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -114,13 +121,12 @@
 		53BAE40F2DF358A700862427 /* ExpenseItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseItemView.swift; sourceTree = "<group>"; };
 		53BAE4132DF358CA00862427 /* QuoteFinalizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteFinalizeView.swift; sourceTree = "<group>"; };
 		53BAE4152DF358DE00862427 /* MaterialListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialListView.swift; sourceTree = "<group>"; };
-		53BAE4172DF358EE00862427 /* SaveQuoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveQuoteButton.swift; sourceTree = "<group>"; };
+		53BAE4172DF358EE00862427 /* SaveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButton.swift; sourceTree = "<group>"; };
 		53BAE41C2DF3594500862427 /* InvoiceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRow.swift; sourceTree = "<group>"; };
 		53BAE41E2DF3595800862427 /* InvoiceSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceSummaryView.swift; sourceTree = "<group>"; };
 		53BAE4212DF35A9B00862427 /* ExpenseRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRow.swift; sourceTree = "<group>"; };
 		53BF84862DE3746E0042A983 /* InventoryItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryItemModel.swift; sourceTree = "<group>"; };
 		53BF84882DE3789F0042A983 /* InvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceModel.swift; sourceTree = "<group>"; };
-		53C6CAB82E049073000A7229 /* CustomBubbleTextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBubbleTextStyle.swift; sourceTree = "<group>"; };
 		53C6CABA2E0540C1000A7229 /* StatsSummaryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSummaryDetailView.swift; sourceTree = "<group>"; };
 		53D1A21E2DC7DC9200E7A675 /* BasicBusiness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicBusiness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D1A22B2DC7DC9300E7A675 /* BasicBusinessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BasicBusinessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +149,10 @@
 		53E5A9EC2DDC61C500B66821 /* PressureWashQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressureWashQM.swift; sourceTree = "<group>"; };
 		53E5A9EE2DDC61DB00B66821 /* HandymanQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandymanQM.swift; sourceTree = "<group>"; };
 		53E5A9F02DDC61E600B66821 /* ConsultingQM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultingQM.swift; sourceTree = "<group>"; };
+		53EE9BAA2E15DE86008F3041 /* IfExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IfExtension.swift; sourceTree = "<group>"; };
+		53EE9BAC2E15EC12008F3041 /* HideKeyboardOnTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardOnTap.swift; sourceTree = "<group>"; };
+		53EE9BAE2E160BF1008F3041 /* CustomButtonBG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonBG.swift; sourceTree = "<group>"; };
+		53EE9BB02E161A9C008F3041 /* StatButtonBG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatButtonBG.swift; sourceTree = "<group>"; };
 		53FA99212DE8CCC700EBA5C8 /* ProductSalesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSalesVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -230,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				53BAE4072DF3582500862427 /* CustomerDetailView.swift */,
+				538A03CE2E1196B20001FACC /* AddCustomerView.swift */,
 				53BAE4052DF3581900862427 /* CustomerSelector.swift */,
 			);
 			path = CustomerSubViews;
@@ -238,8 +249,10 @@
 		53BAE3FA2DF3547400862427 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
-				53BAE4172DF358EE00862427 /* SaveQuoteButton.swift */,
+				53BAE4172DF358EE00862427 /* SaveButton.swift */,
 				53B0E37D2DFC1CD5009C29A9 /* StatButtonView.swift */,
+				53EE9BB02E161A9C008F3041 /* StatButtonBG.swift */,
+				53EE9BAE2E160BF1008F3041 /* CustomButtonBG.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -247,8 +260,9 @@
 		53BAE3FB2DF354B800862427 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				53EE9BAC2E15EC12008F3041 /* HideKeyboardOnTap.swift */,
 				53BAE40D2DF3588600862427 /* BubbleCapsuleStyle.swift */,
-				53C6CAB82E049073000A7229 /* CustomBubbleTextStyle.swift */,
+				53EE9BAA2E15DE86008F3041 /* IfExtension.swift */,
 				53B0E3872DFDE3E6009C29A9 /* StatBubbleStyle.swift */,
 			);
 			path = Modifiers;
@@ -387,6 +401,7 @@
 		53D1A25B2DC7DDC900E7A675 /* BBStorage */ = {
 			isa = PBXGroup;
 			children = (
+				538A03CC2E1122200001FACC /* BBFileStorage.swift */,
 			);
 			path = BBStorage;
 			sourceTree = "<group>";
@@ -499,7 +514,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1630;
-				LastUpgradeCheck = 1630;
+				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					53D1A21D2DC7DC9200E7A675 = {
 						CreatedOnToolsVersion = 16.3;
@@ -583,15 +598,19 @@
 				53D1A2942DCE60A200E7A675 /* ToolBarTitle.swift in Sources */,
 				53BAE4142DF358CA00862427 /* QuoteFinalizeView.swift in Sources */,
 				53B0E3882DFDE3E6009C29A9 /* StatBubbleStyle.swift in Sources */,
+				53EE9BAF2E160BF1008F3041 /* CustomButtonBG.swift in Sources */,
 				53BF84892DE3789F0042A983 /* InvoiceModel.swift in Sources */,
+				538A03CD2E1122200001FACC /* BBFileStorage.swift in Sources */,
 				538A03CB2E0F06B60001FACC /* ConsultingQV.swift in Sources */,
 				5302158B2DD78BC6007F9E0B /* BusinessStatsVM .swift in Sources */,
+				53EE9BAB2E15DE86008F3041 /* IfExtension.swift in Sources */,
 				53BAE3F02DF353B700862427 /* CustomerView.swift in Sources */,
 				53B0E37E2DFC1CD5009C29A9 /* StatButtonView.swift in Sources */,
 				53D7F2512DDEB66D00579741 /* MaterialVM.swift in Sources */,
 				538A03C62E0F04960001FACC /* LandscapeQV.swift in Sources */,
 				538A03C82E0F04C40001FACC /* PressureWashQV.swift in Sources */,
 				530215922DD7AF83007F9E0B /* ExpenseVM.swift in Sources */,
+				53EE9BB12E161A9C008F3041 /* StatButtonBG.swift in Sources */,
 				53BAE4082DF3582500862427 /* CustomerDetailView.swift in Sources */,
 				53BF84872DE3746E0042A983 /* InventoryItemModel.swift in Sources */,
 				53FA99222DE8CCC700EBA5C8 /* ProductSalesVM.swift in Sources */,
@@ -599,6 +618,7 @@
 				53BAE4012DF356DF00862427 /* MainTabView.swift in Sources */,
 				53B0E3822DFC9A50009C29A9 /* UserVM.swift in Sources */,
 				530215902DD7AEBB007F9E0B /* ExpenseModel.swift in Sources */,
+				538A03CF2E1196B20001FACC /* AddCustomerView.swift in Sources */,
 				53BAE3EE2DF353A300862427 /* BusinessStatsView.swift in Sources */,
 				53B0E38A2DFDE47E009C29A9 /* CustomFormView.swift in Sources */,
 				53D1A2962DCE658800E7A675 /* CustomSectionView.swift in Sources */,
@@ -611,11 +631,11 @@
 				53BAE4062DF3581900862427 /* CustomerSelector.swift in Sources */,
 				53D7F2552DDEE17600579741 /* MaterialExpenseQM.swift in Sources */,
 				53318F9A2DFA082C0046B0F0 /* InvoiceVM.swift in Sources */,
-				53C6CAB92E049073000A7229 /* CustomBubbleTextStyle.swift in Sources */,
 				530215982DD86F4E007F9E0B /* QuoteModel.swift in Sources */,
 				53E5A9EB2DDC61AF00B66821 /* LandscapeQM.swift in Sources */,
-				53BAE4182DF358EE00862427 /* SaveQuoteButton.swift in Sources */,
+				53BAE4182DF358EE00862427 /* SaveButton.swift in Sources */,
 				532F96992DD9098A000EEAFF /* QuoteVM.swift in Sources */,
+				53EE9BAD2E15EC12008F3041 /* HideKeyboardOnTap.swift in Sources */,
 				53B0E3802DFC97F4009C29A9 /* UserModel.swift in Sources */,
 				53BAE4032DF357D100862427 /* StatsSummaryView.swift in Sources */,
 			);
@@ -713,6 +733,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -770,6 +791,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     var customerListVM: CustomerListVM
-    var customerDetailVM: CustomerDetailVM
+    @State var customerDetailVM = CustomerDetailVM(customer: CustomerModel())
     var quoteVM: QuoteVM
     var materialVM: MaterialVM
     var userVM = UserVM(user: UserModel.sample)
@@ -34,7 +34,8 @@ struct MainTabView: View {
                 CustomerView(
                     customerListVM: customerListVM,
                     userVM: userVM,
-                    activeSheet: $activeSheet
+                    activeSheet: $activeSheet,
+                    customerDetailVM: $customerDetailVM
                 )
             }
             .tabItem {
@@ -67,13 +68,24 @@ struct MainTabView: View {
         .tabViewStyle(DefaultTabViewStyle())
         .tint(.primaryAccent)
         .sheet(item: $activeSheet) { item in
-            if case .user = item {
+            switch item {
+            case .user:
                 UserView(
                     userVM: userVM,
                     isPresented: Binding(
                         get: { activeSheet != nil },
                         set: { if !$0 { activeSheet = nil } }
                     )
+                )
+            case .addCustomer:
+                AddCustomerView(
+                    customer: customerDetailVM,
+                    customerVM: customerListVM,
+                    isPresented: Binding(
+                        get: { activeSheet != nil },
+                        set: { if !$0 { activeSheet = nil } }
+                    ),
+                    activeSheet: $activeSheet
                 )
             }
         }

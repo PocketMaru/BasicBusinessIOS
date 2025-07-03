@@ -9,7 +9,7 @@ import Foundation
 
 @Observable
 final class UserVM {
-    var user: UserModel
+    var user: UserModel? = nil
     
     init(user: UserModel) {
         self.user = user
@@ -17,10 +17,5 @@ final class UserVM {
     
     func saveChanges() {
         print("Your changes have been saved")
-    }
-    
-    func updatedProfileImage(with data: Data) {
-        user.profileImageData = data
-        saveChanges()
     }
 }
