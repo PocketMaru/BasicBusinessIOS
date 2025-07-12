@@ -42,14 +42,14 @@ enum StatsSummaryViewType {
 struct BusinessStatsView: View {
     var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
-    @State private var showStatsSummary = false
+    @State private var showStatsSummary = true
     @State var selectedSummaryViewType: StatsSummaryViewType = .income
     @State var customerListVM = CustomerListVM()
     @State private var showStatsDetailDestination = false
     @State private var hasAppeared: Bool = false
     private func handleStatTap(_ type: StatsSummaryViewType ) {
         selectedSummaryViewType = type
-        if type == .invoices || type == .quotes || type == .income{
+        if type == .invoices || type == .quotes || type == .income {
             showStatsSummary = true
             showStatsDetailDestination = false
         } else {
@@ -96,7 +96,7 @@ struct BusinessStatsView: View {
                                         selectedStat: $selectedSummaryViewType,
                                         invoiceVM: invoiceVM,
                                         expenseVM: expenseVM,
-                                        quoteVM: quoteVM,
+                                        quoteVM: quoteVM, materialVM: materialVM,
                                         businessStatsVM: businessStatsVM,
                                         customerListVM: customerListVM,
                                         userVM: userVM,
@@ -107,7 +107,7 @@ struct BusinessStatsView: View {
                                         selectedStat: $selectedSummaryViewType,
                                         invoiceVM: invoiceVM,
                                         expenseVM: expenseVM,
-                                        quoteVM: quoteVM,
+                                        quoteVM: quoteVM, materialVM: materialVM,
                                         businessStatsVM: businessStatsVM,
                                         customerListVM: customerListVM,
                                         userVM: userVM,
@@ -118,7 +118,7 @@ struct BusinessStatsView: View {
                                         selectedStat: $selectedSummaryViewType,
                                         invoiceVM: invoiceVM,
                                         expenseVM: expenseVM,
-                                        quoteVM: quoteVM,
+                                        quoteVM: quoteVM, materialVM: materialVM,
                                         businessStatsVM: businessStatsVM,
                                         customerListVM: customerListVM,
                                         userVM: userVM,
@@ -131,7 +131,13 @@ struct BusinessStatsView: View {
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
                                 .animation(.easeInOut, value: selectedSummaryViewType)
                                 .onAppear {
-                                    hasAppeared = true
+                                    if !hasAppeared {
+                                        hasAppeared = true
+                                        if selectedSummaryViewType == .invoices || selectedSummaryViewType == .quotes || selectedSummaryViewType == .income {
+                                                    showStatsSummary = true
+                                                }
+                                    }
+                                    
                                 }
                         }
                     }
@@ -139,6 +145,7 @@ struct BusinessStatsView: View {
                     .padding(.horizontal, 16)
                     .padding(.bottom, 32)
                 }
+                .scrollIndicators(.hidden)
                 .onChange(of: selectedSummaryViewType) {
                     withAnimation {
                         proxy.scrollTo("top", anchor: .top)
@@ -146,12 +153,12 @@ struct BusinessStatsView: View {
                 }
             }
             
-            VStack(alignment: .center, spacing: 10) {
+            VStack(alignment: .center, spacing: 25) {
                 Spacer().frame(height: 5)
                 LargeStatButtonView(
                     titleOne: "Invoices",
                     valueOne: Double(invoiceVM.invoice.count),
-                    titleTwo: "Profits",
+                    titleTwo: "Income",
                     valueTwo: businessStatsVM.totalProfit,
                     titleThree: "Quotes",
                     valueThree: Double(quoteVM.quotes.count),
@@ -162,39 +169,39 @@ struct BusinessStatsView: View {
                     }, tapActionThree: {
                         handleStatTap(.quotes)
                     })
-                .statButtonBG()
                 
-                HStack(spacing: 10) {
-                    StatButtonView(label: "Customers",
+                HStack(spacing: 30) {
+                    StatButtonView(label: "Status",
                                    value: Double(customerListVM.allCustomers.count),
                                    tapAction: {
                         handleStatTap(.customers)
                     })
-                    .statButtonBG()
+
                     StatButtonView(label: "Materials",
                                    value: Double(materialVM.materials.count),
                                    tapAction: {
                         handleStatTap(.materials)
                     })
-                    .statButtonBG()
+
                 }
                 if selectedSummaryViewType.title == "Invoices" {
                     Text("\(selectedSummaryViewType.title)")
                         .bubbleStyle()
                         .statButtonBG()
+
                 } else if selectedSummaryViewType.title == "Quotes" {
                     Text("\(selectedSummaryViewType.title)")
                         .bubbleStyle()
                         .statButtonBG()
+                } else if selectedSummaryViewType.title == "Income Details"{
+                    Text("\(selectedSummaryViewType.title)")
+                        .bubbleStyle()
+                        .statButtonBG()
                 } else {
-                    Text("Select a stat to view")
+                    Text("Select a Summary")
                         .bubbleStyle()
                         .statButtonBG()
                 }
-                Rectangle()
-                    .frame(height: 2)
-                    .foregroundStyle(AppColors.bg)
-                    .statButtonBG()
             }
             .padding(.horizontal)
             .background(AppColors.bg)
@@ -211,6 +218,7 @@ struct BusinessStatsView: View {
                 invoiceVM: invoiceVM,
                 expenseVM: expenseVM,
                 quoteVM: quoteVM,
+                materialVM: materialVM,
                 businessStatsVM: businessStatsVM,
                 customerListVM: customerListVM,
                 userVM: userVM,

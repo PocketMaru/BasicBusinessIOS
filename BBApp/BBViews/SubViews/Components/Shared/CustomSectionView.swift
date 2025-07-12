@@ -31,7 +31,8 @@ struct CustomSectionView<Content: View>: View {
                         VStack(spacing: 4) {
                             CustomHeader(title: headerTitle)
                             content
-                                .bubbleStyle()
+                                .foregroundStyle(AppColors.secondaryText)
+                                .font(.system(size: 20, weight: .semibold))
                                 .padding(.horizontal, 8)
                         }
                     }
@@ -39,7 +40,8 @@ struct CustomSectionView<Content: View>: View {
                     VStack(spacing: 4) {
                         CustomHeader(title: headerTitle)
                         content
-                            .bubbleStyle()
+                            .foregroundStyle(AppColors.secondaryText)
+                            .font(.system(size: 20, weight: .semibold))
                             .padding(.horizontal, 8)
                     }
                 }
@@ -59,9 +61,11 @@ struct CustomHeader: View {
                 Image(systemName: icon)
                     .foregroundStyle(AppColors.secondaryText)
             }
-            Text(title)
-                .font(.headline)
-                .foregroundStyle(AppColors.accent)
+            VStack {
+                Text(title)
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(AppColors.accent)
+            }
         }
     }
 }

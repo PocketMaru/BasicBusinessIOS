@@ -6,31 +6,51 @@
 //
 
 import Foundation
-/// Struct `CustomerModel` defines the customer data structure.
+/// Struct `CustomerModel` defines the customer data structure across the app.
+/// Includes identity, contact info, and optional billing fields.
 /// Extension to `CustomerModel` provides sample data for previews/testing.
 struct CustomerModel: Identifiable, Hashable, Codable {
+    /// Unique identifier for customer id
     var id: UUID = UUID()
+    
+    /// Customer first name
     var firstName: String = ""
+    
+    /// Customer last name
     var lastName: String = ""
+    
+    /// Customer email address
     var email: String = ""
+    
+    /// Optional customer address, not every customer needs an address
     var address: String? = nil
+    
+    /// Optional customer zip code
     var zipCode: String? = nil
+    
+    /// Customer phone number
     var phone: String = ""
+    
+    /// Optional info on customer pay status
     var paidBill: Bool? = false
-    // MARK: - Pending Refactors
-    // TODO: Replace all 'fullName` uses with `displayName` app-wide.
-    // TODO: Consider making lastName optional if user editing stays flexible.
-    // TODO: Audit views using fullName to clean up fallback logic.
-    // When editing, `lastName` may be empty, so fullName looks awkward.
+    
+    /// Optional full name of customer when first and last exist.
     var fullName: String? {
         "\(firstName) \(lastName)"
     }
-    // Returns `firstName` if `lastName` is empty (after trimming whitespace); otherwise, returns "firstName lastName".
+    
+    /// Returns `firstName` if `lastName` is empty (after trimming whitespace); otherwise, returns "firstName lastName".
     var displayName: String {
         lastName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?
         firstName :
         "\(firstName) \(lastName)"
     }
+    
+    // MARK: - Pending Refactors
+    // TODO: Replace all 'fullName` uses with `displayName` app-wide.
+    // TODO: Consider making lastName optional if user editing stays flexible.
+    // TODO: Audit views using fullName to clean up fallback logic.
+    // When editing, `lastName` may be empty, so fullName looks awkward.
 }
 
 extension CustomerModel {

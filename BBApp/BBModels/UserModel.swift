@@ -11,17 +11,34 @@ import Foundation
 /// Extension to `UserModel` provides sample data for previews/testing.
 
 struct UserModel: Identifiable {
+    
+    /// Unique identifier for the user
     var id: UUID = UUID()
+    
+    /// User's first name
     var firstName: String
+    
+    /// User's last name
     var lastName: String
+    
+    /// User's business name
     var businessName: String
+    
+    /// User's industry type for business
     var industryType: IndustryType
+    
+    /// Optional user profile image stored as `Data`
     var profileImageData: Data?
+    
+    /// Optional full name - Returns first and last if both exist
     var fullName: String? {
         "\(firstName) \(lastName)"
     }
+    
+    // TODO: Add `displayName` property like customerModel to cleanly handle missing last names
+    // TODO: add `Codable` conformance for when persistence is added.
 }
-
+/// Defines supported industry types for the user's business
 enum IndustryType: String, CaseIterable, Identifiable {
     case landscaping
     case pressureWashing
@@ -30,8 +47,10 @@ enum IndustryType: String, CaseIterable, Identifiable {
     case HVAC
     case productSales
     
+    /// Raw value as ID for use in Picker or List
     var id: String {self.rawValue}
     
+    /// User-friendly string for each industry type
     var displayName: String {
         switch self {
         case .landscaping:

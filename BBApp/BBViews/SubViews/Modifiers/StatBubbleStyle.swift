@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct StatBubbleStyle: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
     func body(content: Content) -> some View {
         Group {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
+            if colorScheme == .dark {
                 content
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
                     .overlay(

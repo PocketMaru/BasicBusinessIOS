@@ -30,102 +30,83 @@ struct CustomerDetailView: View {
                 AppColors.bg.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing: 10) {
-                        CustomFormView(
-                            shouldValidate: attemptedEdit && !isFirstNameValid,
-                            errorMessage: "First name is required",
-                            header: "First name"
-                        ) {
-                            if isEditing {
+                        if isEditing {
+                            CustomFormView(
+                                shouldValidate: attemptedEdit && !isFirstNameValid,
+                                errorMessage: "First name is required",
+                                header: "First name"
+                            ) {
                                 TextField("First name", text: $customer.customer.firstName)
-                            } else {
-                                Text(customer.customer.firstName)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                        }
-                        .padding(.top, 16)
-                        .padding(5)
-                        
-                        CustomFormView(
-                            shouldValidate: attemptedEdit && !isLastNameValid,
-                            errorMessage: "Last name is required",
-                            header: "Last name"
-                        ) {
-                            if isEditing {
+                            .padding(.top, 16)
+                            .padding(5)
+                            CustomFormView(
+                                shouldValidate: attemptedEdit && !isLastNameValid,
+                                errorMessage: "Last name is required",
+                                header: "Last name"
+                            ) {
                                 TextField("Last name", text: $customer.customer.lastName)
-                            } else {
-                                Text(customer.customer.lastName)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                        }
-                        .padding(5)
-                        
-                        CustomFormView(
-                            shouldValidate: attemptedEdit && !isEmailValid,
-                            errorMessage: "Email is required",
-                            header: "Email"
-                        ) {
-                            if isEditing {
+                            .padding(5)
+                            CustomFormView(
+                                shouldValidate: attemptedEdit && !isEmailValid,
+                                errorMessage: "Email is required",
+                                header: "Email"
+                            ) {
                                 TextField("Email", text: $customer.customer.email)
                                     .keyboardType(.emailAddress)
-                            } else {
-                                Text(customer.customer.email)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                        }
-                        .padding(5)
-                        
-                        CustomFormView(
-                            shouldValidate: attemptedEdit && !isPhoneValid,
-                            errorMessage: "Phone number is required",
-                            header: "Phone number"
-                        ) {
-                            if isEditing {
+                            .padding(5)
+                            CustomFormView(
+                                shouldValidate: attemptedEdit && !isPhoneValid,
+                                errorMessage: "Phone number is required",
+                                header: "Phone number"
+                            ) {
                                 TextField("Phone", text: $customer.customer.phone)
-                            } else {
-                                Text(customer.customer.phone)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                        }
-                        .padding(5)
-                        
-                        CustomFormView(header: "Address") {
-                            if isEditing {
+                            .padding(5)
+                            CustomFormView(header: "Address") {
                                 TextField("Address", text: Binding (
                                     get: {customer.customer.address ?? ""},
                                     set: {customer.customer.address = $0.isEmpty ? nil : $0}))
-                            } else {
-                                Text(customer.customer.address ?? "")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                        }
-                        .padding(5)
-                        
-                        CustomFormView(header: "Zip Code") {
-                            if isEditing {
+                            .padding(5)
+                            CustomFormView(header: "Zip Code") {
                                 TextField("Zip Code", text: Binding(
                                     get: {customer.customer.zipCode ?? ""},
                                     set: {customer.customer.zipCode = $0.isEmpty ? nil : $0}
                                 ))
-                            } else {
-                                Text(customer.customer.zipCode ?? "")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                        }
-                        .padding(5)
-                        
-                        CustomFormView(header: "Paid Status") {
-                            if isEditing {
+                            .padding(5)
+                            CustomFormView(header: "Paid Status") {
                                 Toggle("Paid Status", isOn: Binding(
                                     get: {customer.customer.paidBill ?? false},
                                     set: {customer.customer.paidBill = $0}
                                 ))
-                            } else {
-                                Text(customer.customer.paidBill ?? false ? "Paid": "Unpaid")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
+                            .padding(5)
+                            
+                        } else {
+                            CustomMultiForm(
+                                titleOne: "First name",
+                                valueOne: customer.customer.firstName,
+                                titleTwo: "Last name",
+                                valueTwo: customer.customer.lastName,
+                                titleThree: "Email",
+                                valueThree: customer.customer.email,
+                                titleFour: "Phone",
+                                valueFour: customer.customer.phone,
+                                titleFive: "Address",
+                                valueFive: customer.customer.address ?? "",
+                                titleSix: "Zip Code",
+                                valueSix: customer.customer.zipCode ?? "",
+                                titleSeven: "Status",
+                                valueSeven: customer.customer.paidBill ?? false ? "Paid": "Unpaid"
+                            )
+                            .padding(.top, 16)
                         }
-                        .padding(5)
                     }
+                    .padding(.horizontal, 16)
                     .hideKeyboardOnTap()
                 }
             }

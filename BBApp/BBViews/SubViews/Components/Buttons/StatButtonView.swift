@@ -9,21 +9,75 @@ import SwiftUI
 
 struct StatButtonView: View {
     let label: String
+    let labelTwo:String?
+    let labelThree:String?
     let value: Double?
+    let valueTwo: Double?
     let tapAction: () -> Void
     
+    init(
+        label: String,
+        labelTwo:String? = nil,
+        labelThree:String? = nil,
+        value: Double? = nil,
+        valueTwo: Double? = nil,
+        tapAction: @escaping () -> Void
+    ) {
+        self.label = label
+        self.labelTwo = labelTwo
+        self.labelThree = labelThree
+        self.value = value
+        self.valueTwo = valueTwo
+        self.tapAction = tapAction
+    }
     var body: some View {
         Button(action: tapAction) {
             VStack(spacing: 10) {
-                Text(label)
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(AppColors.accent)
-                if let value = value {
-                    Text(value.formatted(.number.precision(.fractionLength(0))))
-                        .font(.system(size: 28, weight: .bold))
-                        .foregroundStyle(AppColors.secondaryText)
+                if let labelTwo, !labelTwo.isEmpty {
+                    VStack(alignment: .center, spacing: 5) {
+                        Text(label)
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundStyle(AppColors.accent)
+                        HStack {
+                            Spacer()
+                            VStack {
+                                
+                                Text(labelTwo)
+                                    .font(.system(size: 18, weight: .medium))
+                                    .foregroundStyle(AppColors.accent)
+                                
+                                if let value = value {
+                                    Text(value.formatted(.number.precision(.fractionLength(0))))
+                                        .font(.system(size: 28, weight: .bold))
+                                        .foregroundStyle(AppColors.secondaryText)
+                                }
+                            }
+                            Spacer()
+                            VStack {
+                                if let labelThree = labelThree {
+                                    Text(labelThree)
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundStyle(AppColors.accent)
+                                }
+                                if let valueTwo = valueTwo {
+                                    Text(valueTwo.formatted(.number.precision(.fractionLength(0))))
+                                        .font(.system(size: 28, weight: .bold))
+                                        .foregroundStyle(AppColors.secondaryText)
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Text(label)
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(AppColors.accent)
+                    if let value = value {
+                        Text(value.formatted(.number.precision(.fractionLength(0))))
+                            .font(.system(size: 28, weight: .bold))
+                            .foregroundStyle(AppColors.secondaryText)
+                    }
+                    
                 }
-                
             }
             .frame(width: 180, height: 120)
             .statBubbleStyle()
@@ -95,18 +149,18 @@ struct LargeStatButtonView: View {
                 }
                 
                 if let valueThree = valueThree, let titleThree = titleThree {
-                        Divider()
+                    Divider()
                     
-                        Button(action: tapActionThree ?? { }) {
-                            VStack(spacing: 4) {
-                                Text(valueThree.formatted(.number.precision(.fractionLength(0))))
-                                    .font(.system(size: 28, weight: .bold))
-                                    .foregroundStyle(AppColors.secondaryText)
-                                Text(titleThree)
-                                    .font(.system(size: 18, weight: .medium))
-                                    .foregroundStyle(AppColors.accent)
-                            }
+                    Button(action: tapActionThree ?? { }) {
+                        VStack(spacing: 4) {
+                            Text(valueThree.formatted(.number.precision(.fractionLength(0))))
+                                .font(.system(size: 28, weight: .bold))
+                                .foregroundStyle(AppColors.secondaryText)
+                            Text(titleThree)
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundStyle(AppColors.accent)
                         }
+                    }
                 }
             }
             .frame(width: 400, height: 120)

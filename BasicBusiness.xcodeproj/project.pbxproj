@@ -43,6 +43,7 @@
 		53BAE41D2DF3594500862427 /* InvoiceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE41C2DF3594500862427 /* InvoiceRow.swift */; };
 		53BAE41F2DF3595800862427 /* InvoiceSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE41E2DF3595800862427 /* InvoiceSummaryView.swift */; };
 		53BAE4222DF35A9B00862427 /* ExpenseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4212DF35A9B00862427 /* ExpenseRow.swift */; };
+		53BDAF912E183ACE0075C756 /* CustomMultiForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BDAF902E183ACE0075C756 /* CustomMultiForm.swift */; };
 		53BF84872DE3746E0042A983 /* InventoryItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BF84862DE3746E0042A983 /* InventoryItemModel.swift */; };
 		53BF84892DE3789F0042A983 /* InvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BF84882DE3789F0042A983 /* InvoiceModel.swift */; };
 		53C6CABB2E0540C1000A7229 /* StatsSummaryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C6CABA2E0540C1000A7229 /* StatsSummaryDetailView.swift */; };
@@ -125,6 +126,7 @@
 		53BAE41C2DF3594500862427 /* InvoiceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRow.swift; sourceTree = "<group>"; };
 		53BAE41E2DF3595800862427 /* InvoiceSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceSummaryView.swift; sourceTree = "<group>"; };
 		53BAE4212DF35A9B00862427 /* ExpenseRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRow.swift; sourceTree = "<group>"; };
+		53BDAF902E183ACE0075C756 /* CustomMultiForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMultiForm.swift; sourceTree = "<group>"; };
 		53BF84862DE3746E0042A983 /* InventoryItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryItemModel.swift; sourceTree = "<group>"; };
 		53BF84882DE3789F0042A983 /* InvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceModel.swift; sourceTree = "<group>"; };
 		53C6CABA2E0540C1000A7229 /* StatsSummaryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSummaryDetailView.swift; sourceTree = "<group>"; };
@@ -261,9 +263,9 @@
 			isa = PBXGroup;
 			children = (
 				53EE9BAC2E15EC12008F3041 /* HideKeyboardOnTap.swift */,
-				53BAE40D2DF3588600862427 /* BubbleCapsuleStyle.swift */,
 				53EE9BAA2E15DE86008F3041 /* IfExtension.swift */,
 				53B0E3872DFDE3E6009C29A9 /* StatBubbleStyle.swift */,
+				53BAE40D2DF3588600862427 /* BubbleCapsuleStyle.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -311,6 +313,7 @@
 				53B0E3852DFCA8E0009C29A9 /* ActiveUserSheet.swift */,
 				53D1A2952DCE658800E7A675 /* CustomSectionView.swift */,
 				53B0E3892DFDE47E009C29A9 /* CustomFormView.swift */,
+				53BDAF902E183ACE0075C756 /* CustomMultiForm.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -612,6 +615,7 @@
 				530215922DD7AF83007F9E0B /* ExpenseVM.swift in Sources */,
 				53EE9BB12E161A9C008F3041 /* StatButtonBG.swift in Sources */,
 				53BAE4082DF3582500862427 /* CustomerDetailView.swift in Sources */,
+				53BDAF912E183ACE0075C756 /* CustomMultiForm.swift in Sources */,
 				53BF84872DE3746E0042A983 /* InventoryItemModel.swift in Sources */,
 				53FA99222DE8CCC700EBA5C8 /* ProductSalesVM.swift in Sources */,
 				53E5A9EF2DDC61DB00B66821 /* HandymanQM.swift in Sources */,

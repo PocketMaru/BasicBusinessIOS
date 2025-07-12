@@ -12,17 +12,41 @@ import Foundation
 /// Extension to `ExpenseModel` provides sample data for previews/testing.
 
 struct ExpenseModel: Identifiable {
+    
+    /// Unique identifier for each expense
     var id: UUID = UUID()
+    
+    /// Expense name
     var name: String
+    
+    /// Expense type (e.g., gas or food)
     var type: ExpenseType
+    
+    /// Expense date
     var date: Date
+    
+    /// Optional expense description
     var description: String?
+    
+    /// Optional employee wage expense
     var hoursWorked: Double?
+    
+    /// Optional employee hourly rate expense
     var hourlyRate: Double?
+    
+    /// Optional employee fixed rate expense
     var fixedRate: Double?
+    
+    /// Expense Status for pending and confirmed expenses
     var expenseStatus: ExpenseStatus
+    
+    /// Optional for expenses related to materials used
     var materialExpense: MaterialExpenseQM?
     
+    /// Computed property for expense total - Calculated from expense type
+    ///  - If `.employeeWages`: total = hours x rage + material cost
+    ///  - If `.materialExpense`: total = material cost only
+    ///  - Else: total = fixed rate + material cost
     var total: Double {
         let material = materialExpense?.unitCost ?? 0
         switch type {
@@ -36,6 +60,7 @@ struct ExpenseModel: Identifiable {
     }
 }
 
+/// Enumeration defining the expense types included within the app
 enum ExpenseType {
     // TODO: Add `icon` and `color` variables to support UI visuals.
     // Used for SwiftUI labels, chip-style tags, and category-based styling.
@@ -51,6 +76,7 @@ enum ExpenseType {
     case materialExpense
     case other
     
+    /// User-friendly string for each expense type
     var name: String {
         switch self {
         case .food:
@@ -79,6 +105,7 @@ enum ExpenseType {
     }
 }
 
+/// Enum for pending and confirmed expenses
 enum ExpenseStatus {
     case pending
     case confirmed
@@ -93,6 +120,7 @@ enum ExpenseStatus {
     }
 }
 
+/// Extension for expense sample data
 extension ExpenseModel {
     static let sample = ExpenseModel(
         id: UUID(),

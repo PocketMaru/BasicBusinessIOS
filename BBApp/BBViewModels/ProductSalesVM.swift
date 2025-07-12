@@ -12,17 +12,6 @@ final class ProductSalesVM {
     init(inventory: [InventoryItemModel]) {
         self.inventory = inventory
     }
-    // Function categorizing the units stored.
-    func category(for unit: ProductUnitTypes) -> UnitCategory {
-        switch unit {
-        case .gram, .ounce, .pound:
-            return .weight
-        case .gallon, .liter:
-            return .volume
-        case .bag, .unit, .piece:
-            return .quantity
-        }
-    }
     // Function converting the stored product to a base unit.
     func convertToBaseUnit(quantity: Double,to unit: ProductUnitTypes) -> Double {
         switch unit {

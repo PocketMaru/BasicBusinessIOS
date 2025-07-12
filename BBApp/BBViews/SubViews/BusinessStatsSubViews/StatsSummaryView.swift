@@ -43,6 +43,7 @@ struct StatsSummaryView: View {
     var invoiceVM: InvoiceVM
     var expenseVM: ExpenseVM
     var quoteVM: QuoteVM
+    var materialVM: MaterialVM
     var businessStatsVM: BusinessStatsVM
     var customerDetailVM: CustomerDetailVM?
     var customerListVM: CustomerListVM
@@ -61,24 +62,27 @@ struct StatsSummaryView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         if selectedStat == .invoices {
-                            ForEach(invoiceVM.invoice.indices, id: \.self) { index in
-                                let invoice = invoiceVM.invoice[index]
-                                CustomSectionView(
-                                    headerTitle: invoice.customer.fullName ?? invoice.customer.firstName
-                                ) {
-                                    VStack {
-                                        Text(invoice.customer.phone)
-                                        Divider()
-                                        Text(String(invoice.invoiceDate?.formatted(date: .abbreviated, time: .omitted) ?? Date().formatted(date: .abbreviated, time: .omitted)))
-                                        Divider()
-                                        Text(String(invoice.totalCost ?? 0))
-                                        Spacer()
+                                ForEach(invoiceVM.invoice.indices, id: \.self) { index in
+                                    let invoice = invoiceVM.invoice[index]
+                                    CustomSectionView(
+                                        headerTitle: invoice.customer.fullName ?? invoice.customer.firstName
+                                    ) {
+                                        VStack {
+                                            Text(invoice.customer.phone)
+                                            Divider()
+                                            Text(String(invoice.invoiceDate?.formatted(date: .abbreviated, time: .omitted) ?? Date().formatted(date: .abbreviated, time: .omitted)))
+                                            
+                                            Divider()
+                                            Text(String(invoice.totalCost ?? 0))
+                                            
+                                            Spacer()
+                                        }
+                                    } tapped: {
+                                        statDetailSheetItem = .invoice(invoice)
                                     }
-                                } tapped: {
-                                    statDetailSheetItem = .invoice(invoice)
+                                    .statBubbleStyle()
+                                    .statButtonBG()
                                 }
-                                
-                            }
                         } else if selectedStat == .expenses {
                             ForEach(expenseVM.expenses.indices, id: \.self) { index in
                                 let expense = expenseVM.expenses[index]
@@ -97,19 +101,23 @@ struct StatsSummaryView: View {
                                 }
                             }
                         } else if selectedStat == .income {
-                            CustomSectionView(
-                                headerTitle:"Totals"
-                            ) {
-                                VStack {
-                                    Text("Total Invoices: \n \(invoiceVM.invoice.count)")
-                                    Divider()
-                                    Text("Total Quotes: \n \(quoteVM.quotes.count)")
-                                    Divider()
-                                    Text("ForeCasted Revenue: \n \(quoteVM.quotes.reduce(0) { $0 + ($1.totalCost ?? 0)})")
-                                    Divider()
-                                    Text("Actual Revenue: \n \(invoiceVM.invoice.reduce(0) { $0 + ($1.totalCost ?? 0)})")
-                                }
-                            }
+                            CustomMultiForm(
+                                titleOne: "Revenue",
+                                valueOne: "\(businessStatsVM.invoicedRevenue)",
+                                titleTwo: "Expenses",
+                                valueTwo: "\(businessStatsVM.confirmedExpenses)",
+                                titleThree: "Forecasted Revenue",
+                                valueThree: "\(businessStatsVM.forecastedProfit)",
+                                titleFour: "Forecasted Expenses",
+                                valueFour: "\(businessStatsVM.forecastedExpenses)",
+                                titleFive: nil,
+                                valueFive: nil,
+                                titleSix: nil,
+                                valueSix: nil,
+                                titleSeven: nil,
+                                valueSeven: nil
+                            )
+                            .statButtonBG()
                         } else if selectedStat == .quotes {
                             ForEach(quoteVM.quotes.indices, id: \.self) { index in
                                 let quoteItem = quoteVM.quotes[index]
@@ -127,28 +135,54 @@ struct StatsSummaryView: View {
                                 } tapped: {
                                     statDetailSheetItem = .quote(quoteItem)
                                 }
-                                
+                                .statBubbleStyle()
+                                .statButtonBG()
                             }
                         } else if selectedStat == .materials {
-                            
+                            ForEach(materialVM.materials.indices, id: \.self) { index in
+                                let materialItem = materialVM.materials[index]
+                                CustomSectionView(
+                                    headerTitle: materialItem.name
+                                ) {
+                                    VStack {
+                                        Text("\(materialItem.unitCost)")
+                                        Divider()
+                                        Text(materialItem.unitType.displayName)
+                                        Divider()
+                                        Text(materialItem.description ?? "")
+                                        Spacer()
+                                    }
+                                } tapped: {
+                                    statDetailSheetItem = .material(materialItem)
+                                }
+                                .statBubbleStyle()
+                                .statButtonBG()
+                            }
                         } else if selectedStat == .customers {
                             VStack (spacing: 10) {
                                 if paidStatus {
                                     ForEach(paidInvoices.indices, id: \.self) { index in
                                         let customer = paidInvoices[index]
-                                        CustomSectionView(
-                                            headerTitle: customer.fullName ?? customer.firstName
-                                        ) {
-                                            VStack {
-                                                Text(customer.phone)
-                                                Divider()
-                                                Text(customer.address ?? "No Address Available")
-                                                Divider()
-                                                Text(customer.paidBill == true ? "Paid" : "Unpaid").foregroundStyle( AppColors.accent)
+                                        NavigationLink(destination: CustomerDetailView(
+                                            customer: CustomerDetailVM(customer: customer),
+                                            userVM: userVM,
+                                            activeSheet: $activeSheet
+                                        )) {
+                                            CustomSectionView(
+                                                headerTitle: customer.fullName ?? customer.firstName
+                                            ) {
+                                                VStack {
+                                                    Text(customer.phone)
+                                                    Divider()
+                                                    Text(customer.address ?? "No Address Available")
+                                                    Divider()
+                                                    Text(customer.paidBill == true ? "Paid" : "Unpaid").foregroundStyle( AppColors.accent)
+                                                }
                                             }
-                                        } tapped: {
-                                            navigateToCustomerDetail = customer
+                                            .statBubbleStyle()
+                                            .statButtonBG()
                                         }
+                                        
                                     }
                                 } else {
                                     ForEach(unpaidInvoices.indices, id: \.self) { index in
@@ -166,12 +200,15 @@ struct StatsSummaryView: View {
                                         } tapped: {
                                             navigateToCustomerDetail = customer
                                         }
+                                        .statBubbleStyle()
+                                        .statButtonBG()
                                     }
                                 }
                             }
                         }
                     }
                 }
+                .padding(.horizontal, 16)
                 .scrollContentBackground(.hidden)
                 .background(AppColors.bg)
             }
@@ -196,15 +233,7 @@ struct StatsSummaryView: View {
                             paidStatus = false
                         })
                     }
-                    .customButtonBG()
                 }
-            }
-            .navigationDestination(item: $navigateToCustomerDetail) { customer in
-                CustomerDetailView(
-                    customer: CustomerDetailVM(customer: customer),
-                    userVM: userVM,
-                    activeSheet: $activeSheet
-                )
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
