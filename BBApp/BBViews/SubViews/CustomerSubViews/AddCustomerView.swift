@@ -12,7 +12,11 @@ struct AddCustomerView: View {
     @Binding var isPresented: Bool
     @Binding var activeSheet: ActiveUserSheet?
     @State private var attemptedSave: Bool = false
-    @State var draftCustomer = CustomerModel()
+    @State private var vm = CustomerFormVM(
+        customer: CustomerModel(),
+        mode: .add,
+        saveUseCase: SaveCustomerInteractor(fileStorage: FileStorageManager())
+    )
     var body: some View {
         NavigationStack {
             ZStack {
@@ -21,24 +25,24 @@ struct AddCustomerView: View {
                     VStack(spacing: 10) {
                         CustomFormView(
                             shouldValidate: attemptedSave,
-                            errorMessage: customerListVM.firstNameError
+                            errorMessage: vm.firstNameError
                         ) {
-                            TextField("First Name", text: $draftCustomer.firstName)
+                            TextField("First Name", text: $vm.draft.firstName)
                         }
                         .padding(.top,16)
                         .padding(5)
                         CustomFormView(
                             shouldValidate: attemptedSave,
-                            errorMessage: customerListVM.lastNameError
+                            errorMessage: vm.lastNameError
                         ) {
-                            TextField("Last Name", text: $draftCustomer.lastName)
+                            TextField("Last Name", text: $vm.draft.lastName)
                         }
                         .padding(5)
                         CustomFormView(
                             shouldValidate: attemptedSave,
                             errorMessage: customerListVM.emailError
                         ) {
-                            TextField("Email", text: $draftCustomer.email)
+                            TextField("Email", text: $vm.draft.email)
                                 .keyboardType(.emailAddress)
                         }
                         .padding(5)
@@ -46,35 +50,35 @@ struct AddCustomerView: View {
                             shouldValidate: attemptedSave,
                             errorMessage: customerListVM.phoneError
                         ) {
-                            TextField("Phone", text: $draftCustomer.phone)
+                            TextField("Phone", text: $vm.draft.phone)
                                 .keyboardType(.numberPad)
                         }
                         .padding(5)
                         CustomFormView() {
                             TextField("Address", text: Binding (
-                                get: {draftCustomer.address ?? ""},
-                                set: {draftCustomer.address = $0.isEmpty ? nil : $0}))
+                                get: {vm.draft.address ?? ""},
+                                set: {vm.draft.address = $0.isEmpty ? nil : $0}))
                         }
                         .padding(5)
                         CustomFormView() {
                             TextField("Zip Code", text: Binding(
-                                get: {draftCustomer.zipCode ?? ""},
-                                set: {draftCustomer.zipCode = $0.isEmpty ? nil : $0}
+                                get: {vm.draft.zipCode ?? ""},
+                                set: {vm.draft.zipCode = $0.isEmpty ? nil : $0}
                             ))
                         }
                         .padding(5)
                         SaveButton(name: "Add Customer", tapAction: {
                             let didSave = customerListVM.addCustomer(
-                                firstName: draftCustomer.firstName,
-                                lastName: draftCustomer.lastName,
-                                email: draftCustomer.email,
-                                address: draftCustomer.address ?? "",
-                                zipCode: draftCustomer.zipCode ?? "",
-                                phone: draftCustomer.phone,
-                                paidBill: draftCustomer.paidBill ?? false
+                                firstName: vm.draft.firstName,
+                                lastName: vm.draft.lastName,
+                                email: vm.draft.email,
+                                address: vm.draft.address ?? "",
+                                zipCode: vm.draft.zipCode ?? "",
+                                phone: vm.draft.phone,
+                                paidBill: vm.draft.paidBill ?? false
                             )
                             if didSave {
-                                draftCustomer = CustomerModel()
+                                vm.cancelEdits()
                                 isPresented.toggle()
                             }
                         })

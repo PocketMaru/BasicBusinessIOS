@@ -7,16 +7,25 @@
 
 import Foundation
 
+enum CustomerFormMode {
+    case add
+    case edit
+}
+
 @MainActor
 @Observable
 final class CustomerFormVM {
     
-    private let saveUseCase: SaveCustomerUseCase
+    let mode: CustomerFormMode
     
+    private let saveUseCase: SaveCustomerUseCase
     private let setStatusMessage: ((String) -> Void)?
     
     private(set) var original: CustomerModel
-    var draft: CustomerModel
+    
+    var draft: CustomerModel {
+        didSet {validateLive()}
+    }
     
     private(set) var errors: SaveCustomerValidationErrors?
     
@@ -26,11 +35,17 @@ final class CustomerFormVM {
     var phoneError: String? { errors?.phone}
     var generalError: String? { errors?.generalMessage}
     
+    var isDirty: Bool {
+        original != draft
+    }
+    
     init(
         customer: CustomerModel,
+        mode: CustomerFormMode,
         saveUseCase: SaveCustomerUseCase,
         setStatusMessage: ((String) -> Void)? = nil
     ) {
+        self.mode = mode
         self.original = customer
         self.draft = customer
         self.saveUseCase = saveUseCase
@@ -40,6 +55,10 @@ final class CustomerFormVM {
     func cancelEdits() {
         draft = original
         errors = nil
+    }
+    
+    func validateLive() {
+        errors = saveUseCase.validateOnly(customer: draft)
     }
     
     @discardableResult

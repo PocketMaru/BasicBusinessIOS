@@ -8,6 +8,7 @@
 import Foundation
 protocol SaveCustomerUseCase {
     func execute(customer: CustomerModel) -> Result<Void, SaveCustomerValidationErrors>
+    func validateOnly(customer: CustomerModel) -> SaveCustomerValidationErrors?
 }
 
 enum SaveCustomerError: Error {
@@ -81,18 +82,21 @@ struct SaveCustomerInteractor: SaveCustomerUseCase {
         return errors
     }
     
+    func validateOnly(customer: CustomerModel) -> SaveCustomerValidationErrors? {
+        let errors = validateInput(customer: customer)
+        return errors.isEmpty ? nil : SaveCustomerValidationErrors(errors: errors)
+    }
+    
     func execute(customer: CustomerModel) -> Result<Void, SaveCustomerValidationErrors> {
         
-        let validationErrors = validateInput(customer: customer)
-        if !validationErrors.isEmpty {
-            return .failure(SaveCustomerValidationErrors(errors:validationErrors))
+        if let v = validateOnly(customer: customer) {
+            return .failure(v)
         }
-        
         do {
             try fileStorage.saveCustomer(customer)
             return .success(())
         } catch {
-            return .failure(SaveCustomerValidationErrors(errors: [.writeFailed(reason: String(describing: error))]))
+            return .failure(.init(errors: [.writeFailed(reason: String(describing: error))]))
         }
     }
 }

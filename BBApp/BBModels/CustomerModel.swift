@@ -15,7 +15,7 @@ import Foundation
 // TODO: Consider making lastName optional if user editing stays flexible.
 // TODO: Audit views using fullName to clean up fallback logic.
 // When editing, `lastName` may be empty, so fullName looks awkward.
-struct CustomerModel: Identifiable, Hashable, Codable {
+struct CustomerModel: Identifiable, Hashable, Codable, Equatable {
     /// Unique identifier for customer id
     var id: UUID = UUID()
     
