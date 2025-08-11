@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CustomerDetailView: View {
     
-    @Bindable var customer: CustomerDetailVM
+    @Bindable var customer: CustomerFormVM
     @Binding var activeSheet: ActiveUserSheet?
     @State private var isEditing = false
     @State private var attemptedEdit = false

@@ -21,7 +21,7 @@
 		538A03CB2E0F06B60001FACC /* ConsultingQV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CA2E0F06B60001FACC /* ConsultingQV.swift */; };
 		538A03CD2E1122200001FACC /* CustomerListStorageManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CC2E1122200001FACC /* CustomerListStorageManaging.swift */; };
 		538A03CF2E1196B20001FACC /* AddCustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CE2E1196B20001FACC /* AddCustomerView.swift */; };
-		53B0E37C2DFA615A009C29A9 /* CustomerDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */; };
+		53B0E37C2DFA615A009C29A9 /* CustomerFormVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37B2DFA615A009C29A9 /* CustomerFormVM.swift */; };
 		53B0E37E2DFC1CD5009C29A9 /* StatButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37D2DFC1CD5009C29A9 /* StatButtonView.swift */; };
 		53B0E3802DFC97F4009C29A9 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37F2DFC97F4009C29A9 /* UserModel.swift */; };
 		53B0E3822DFC9A50009C29A9 /* UserVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3812DFC9A50009C29A9 /* UserVM.swift */; };
@@ -107,7 +107,7 @@
 		538A03CA2E0F06B60001FACC /* ConsultingQV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultingQV.swift; sourceTree = "<group>"; };
 		538A03CC2E1122200001FACC /* CustomerListStorageManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerListStorageManaging.swift; sourceTree = "<group>"; };
 		538A03CE2E1196B20001FACC /* AddCustomerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomerView.swift; sourceTree = "<group>"; };
-		53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerDetailVM.swift; sourceTree = "<group>"; };
+		53B0E37B2DFA615A009C29A9 /* CustomerFormVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerFormVM.swift; sourceTree = "<group>"; };
 		53B0E37D2DFC1CD5009C29A9 /* StatButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatButtonView.swift; sourceTree = "<group>"; };
 		53B0E37F2DFC97F4009C29A9 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		53B0E3812DFC9A50009C29A9 /* UserVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVM.swift; sourceTree = "<group>"; };
@@ -193,7 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				53B0E3812DFC9A50009C29A9 /* UserVM.swift */,
-				53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */,
+				53B0E37B2DFA615A009C29A9 /* CustomerFormVM.swift */,
 				530215862DD78B60007F9E0B /* CustomerListVM.swift */,
 				530215912DD7AF83007F9E0B /* ExpenseVM.swift */,
 				53FA99212DE8CCC700EBA5C8 /* ProductSalesVM.swift */,
@@ -649,7 +649,7 @@
 				53D1A2892DCABB7E00E7A675 /* CustomerModel.swift in Sources */,
 				53BAE41F2DF3595800862427 /* InvoiceSummaryView.swift in Sources */,
 				53E5A9F12DDC61E600B66821 /* ConsultingQM.swift in Sources */,
-				53B0E37C2DFA615A009C29A9 /* CustomerDetailVM.swift in Sources */,
+				53B0E37C2DFA615A009C29A9 /* CustomerFormVM.swift in Sources */,
 				53BAE4102DF358A700862427 /* ExpenseItemView.swift in Sources */,
 				53BAE41D2DF3594500862427 /* InvoiceRow.swift in Sources */,
 				53BAE4062DF3581900862427 /* CustomerSelector.swift in Sources */,

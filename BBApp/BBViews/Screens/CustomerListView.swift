@@ -59,8 +59,8 @@ struct CustomerListView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
-    private func configuredDetailVM(for customer: CustomerModel) -> CustomerDetailVM {
+    private func configuredDetailVM(for customer: CustomerModel) -> CustomerFormVM {
         let useCase = SaveCustomerInteractor(fileStorage: FileStorageManager())
-        return CustomerDetailVM(customer: customer, saveUseCase: useCase )
+        return CustomerFormVM(customer: customer, saveUseCase: useCase )
     }
 }

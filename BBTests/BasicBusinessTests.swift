@@ -20,7 +20,7 @@ struct BasicBusinessTests {
             customerListStorage: mockStorage
             )
         
-        let customerDetailVM = CustomerDetailVM(
+        let customerDetailVM = CustomerFormVM(
             customer: CustomerModel(),
             saveUseCase: saveCustomer,
             )
