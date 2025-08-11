@@ -240,7 +240,7 @@ struct StatsSummaryView: View {
     private func configuredDetailVM(for customer: CustomerModel) -> CustomerFormVM {
         let useCase = SaveCustomerInteractor(fileStorage: FileStorageManager())
         let customerDetail = CustomerFormVM(
-            customer: customer,
+            customer: customer, mode: .edit,
             saveUseCase: useCase
         )
         return customerDetail

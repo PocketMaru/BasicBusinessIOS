@@ -61,6 +61,6 @@ struct CustomerListView: View {
     
     private func configuredDetailVM(for customer: CustomerModel) -> CustomerFormVM {
         let useCase = SaveCustomerInteractor(fileStorage: FileStorageManager())
-        return CustomerFormVM(customer: customer, saveUseCase: useCase )
+        return CustomerFormVM(customer: customer, mode: .edit, saveUseCase: useCase )
     }
 }
