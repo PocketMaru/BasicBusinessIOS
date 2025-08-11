@@ -32,7 +32,7 @@ final class QuoteVM {
             customer: customer,
             industryType: .landscaping,
             serviceType: .maintenance,
-            quoteType: .fixedRate
+            pricingMethod: .fixedRate
         )
         quoteMaterials.removeAll()
     }

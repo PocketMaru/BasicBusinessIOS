@@ -22,6 +22,8 @@ struct CustomMultiForm: View {
     let valueSix: String?
     let titleSeven: String?
     let valueSeven: String?
+    let titleEight: String?
+    let valueEight: String?
     
     init(
         titleOne: String,
@@ -37,7 +39,9 @@ struct CustomMultiForm: View {
         titleSix: String?,
         valueSix: String?,
         titleSeven: String?,
-        valueSeven: String?
+        valueSeven: String?,
+        titleEight: String?,
+        valueEight: String?
     ) {
         self.titleOne = titleOne
         self.valueOne = valueOne
@@ -53,6 +57,8 @@ struct CustomMultiForm: View {
         self.valueSix = valueSix
         self.titleSeven = titleSeven
         self.valueSeven = valueSeven
+        self.titleEight = titleEight
+        self.valueEight = valueEight
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -138,6 +144,17 @@ struct CustomMultiForm: View {
             }
             if let valueSeven = valueSeven {
                 Text(valueSeven)
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(AppColors.secondaryText)
+            }
+            if let titleEight = titleEight {
+                Divider()
+                Text(titleEight)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(AppColors.accent)
+            }
+            if let valueEight = valueEight {
+                Text(valueEight)
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(AppColors.secondaryText)
             }

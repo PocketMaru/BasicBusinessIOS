@@ -14,17 +14,16 @@ struct LandscapeQM: Quoteable {
     var fixedRate: Double?
     var subscription: Double?
     var customer: CustomerModel
-    
     var id: UUID
     var customerID: UUID {
         customer.id
     }
     var industryType: IndustryType = .landscaping
-    var quoteType: QuoteType = .fixedRate
-    var quoteDate: Date?
+    var pricingMethod: PricingMethod = .fixedRate
+    var quoteDate: Date = Date()
     var notes: String?
     var totalCost: Double? {
-        switch quoteType {
+        switch pricingMethod {
         case .fixedRate:
             return fixedRate
         case .squareFootage:

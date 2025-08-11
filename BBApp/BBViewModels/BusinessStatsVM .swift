@@ -32,7 +32,7 @@ final class BusinessStatsVM {
     // Total of all pending expenses in quotes.
     var forecastedExpenses: Double {
         guard let quotes = quoteData else {return 0}
-        return quotes.reduce(0) { $0 + $1.pendingExpenses.reduce(0) { $0 + $1.estimatedCost}}
+        return quotes.reduce(0) { $0 + $1.pendingMaterialExpense.reduce(0) { $0 + $1.estimatedCost}}
     }
     // Total of all confirmed expenses.
     var confirmedExpenses: Double {

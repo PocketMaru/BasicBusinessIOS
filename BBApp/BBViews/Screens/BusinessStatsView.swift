@@ -44,7 +44,7 @@ struct BusinessStatsView: View {
     @Binding var activeSheet: ActiveUserSheet?
     @State private var showStatsSummary = true
     @State var selectedSummaryViewType: StatsSummaryViewType = .income
-    @State var customerListVM = CustomerListVM()
+    var customerListVM: CustomerListVM
     @State private var showStatsDetailDestination = false
     @State private var hasAppeared: Bool = false
     private func handleStatTap(_ type: StatsSummaryViewType ) {
@@ -99,7 +99,6 @@ struct BusinessStatsView: View {
                                         quoteVM: quoteVM, materialVM: materialVM,
                                         businessStatsVM: businessStatsVM,
                                         customerListVM: customerListVM,
-                                        userVM: userVM,
                                         activeSheet: $activeSheet
                                     )
                                 } else if selectedSummaryViewType == .quotes {
@@ -110,7 +109,6 @@ struct BusinessStatsView: View {
                                         quoteVM: quoteVM, materialVM: materialVM,
                                         businessStatsVM: businessStatsVM,
                                         customerListVM: customerListVM,
-                                        userVM: userVM,
                                         activeSheet: $activeSheet
                                     )
                                 } else if selectedSummaryViewType == .income {
@@ -121,7 +119,6 @@ struct BusinessStatsView: View {
                                         quoteVM: quoteVM, materialVM: materialVM,
                                         businessStatsVM: businessStatsVM,
                                         customerListVM: customerListVM,
-                                        userVM: userVM,
                                         activeSheet: $activeSheet
                                     )
                                 }
@@ -221,7 +218,6 @@ struct BusinessStatsView: View {
                 materialVM: materialVM,
                 businessStatsVM: businessStatsVM,
                 customerListVM: customerListVM,
-                userVM: userVM,
                 activeSheet: $activeSheet
             )
         }

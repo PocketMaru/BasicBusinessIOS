@@ -6,9 +6,11 @@
 //
 
 import Foundation
-/// Struct `InvoiceModel` defines what an invoice consists of.
-/// It includes customer info, service details, associated costs, and optional custom fields.
-/// Extension to `InvoiceModel` provides sample data for preview/testing.
+// MARK: — InvoiceModel
+/// Struct `InvoiceModel` stores all details of a created invoice
+
+// MARK: InvoiceModel + Sample
+/// Adds sample data for preview/testing.
 struct InvoiceModel: Identifiable {
     
     /// Unique identifier for the invoice
@@ -29,10 +31,10 @@ struct InvoiceModel: Identifiable {
     var serviceType: ServiceType
     
     /// The structure of the quote (e.g., fixed rate or hourly)
-    var quoteType: QuoteType
+    var pricingMethod: PricingMethod
     
     /// The official date the invoice was generated.
-    var invoiceDate: Date?
+    var invoiceDate: Date = Date()
     
     /// Date of installation if applicable
     var installationDate: Date?
@@ -61,15 +63,18 @@ struct InvoiceModel: Identifiable {
     /// Optional data for user defined fields.
     var customFields: Data?
     
-    // TODO: Make this `Codable` when persistence is added
-    // TODO: Create helper functions to handle encoding/decoding `customFields` if used.
+    var materialExpenses: [MaterialExpenseQM]? = nil
+    
+    var materialTotalCost: Double? {
+        materialExpenses?.reduce(0) {$0 + $1.unitCost}
+    }
 }
 
 
 
 // Extension for sample data.
 extension InvoiceModel {
-    static let sample = InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, quoteType: .subscription)
+    static let sample = InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, pricingMethod: .subscription)
     
     static let sampleList: [InvoiceModel] = [
         .sample,
@@ -78,7 +83,7 @@ extension InvoiceModel {
             customer: CustomerModel.sample,
             industryType: .landscaping,
             serviceType: .recurring,
-            quoteType: .subscription,
+            pricingMethod: .subscription,
             invoiceDate: Date(),
             totalCost: 750.16
         ),
@@ -87,7 +92,7 @@ extension InvoiceModel {
             customer: CustomerModel.sample,
             industryType: .landscaping,
             serviceType: .recurring,
-            quoteType: .subscription,
+            pricingMethod: .subscription,
             invoiceDate: Date(),
             totalCost: 3500.97
         ),
@@ -96,7 +101,7 @@ extension InvoiceModel {
             customer: CustomerModel.sample,
             industryType: .landscaping,
             serviceType: .recurring,
-            quoteType: .subscription,
+            pricingMethod: .subscription,
             invoiceDate: Date(),
             totalCost: 1500.14
         ),
@@ -105,7 +110,7 @@ extension InvoiceModel {
             customer: CustomerModel.sample,
             industryType: .landscaping,
             serviceType: .recurring,
-            quoteType: .subscription,
+            pricingMethod: .subscription,
             invoiceDate: Date(),
             totalCost: 1200.50
         ),
@@ -114,7 +119,7 @@ extension InvoiceModel {
             customer: CustomerModel.sample,
             industryType: .landscaping,
             serviceType: .recurring,
-            quoteType: .subscription,
+            pricingMethod: .subscription,
             invoiceDate: Date(),
             totalCost: 5500.65
         ),

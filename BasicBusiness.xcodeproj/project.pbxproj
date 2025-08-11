@@ -12,12 +12,14 @@
 		530215902DD7AEBB007F9E0B /* ExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302158F2DD7AEBB007F9E0B /* ExpenseModel.swift */; };
 		530215922DD7AF83007F9E0B /* ExpenseVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530215912DD7AF83007F9E0B /* ExpenseVM.swift */; };
 		530215982DD86F4E007F9E0B /* QuoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530215972DD86F4E007F9E0B /* QuoteModel.swift */; };
+		532EB8642E41FC5E008FE712 /* FileStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532EB8632E41FC5E008FE712 /* FileStorageManager.swift */; };
+		532EB8662E41FCB7008FE712 /* CustomerStorageManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532EB8652E41FCB7008FE712 /* CustomerStorageManaging.swift */; };
 		532F96992DD9098A000EEAFF /* QuoteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532F96982DD9098A000EEAFF /* QuoteVM.swift */; };
 		53318F9A2DFA082C0046B0F0 /* InvoiceVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53318F992DFA082C0046B0F0 /* InvoiceVM.swift */; };
 		538A03C62E0F04960001FACC /* LandscapeQV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03C52E0F04960001FACC /* LandscapeQV.swift */; };
 		538A03C82E0F04C40001FACC /* PressureWashQV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03C72E0F04C40001FACC /* PressureWashQV.swift */; };
 		538A03CB2E0F06B60001FACC /* ConsultingQV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CA2E0F06B60001FACC /* ConsultingQV.swift */; };
-		538A03CD2E1122200001FACC /* BBFileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CC2E1122200001FACC /* BBFileStorage.swift */; };
+		538A03CD2E1122200001FACC /* CustomerListStorageManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CC2E1122200001FACC /* CustomerListStorageManaging.swift */; };
 		538A03CF2E1196B20001FACC /* AddCustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A03CE2E1196B20001FACC /* AddCustomerView.swift */; };
 		53B0E37C2DFA615A009C29A9 /* CustomerDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */; };
 		53B0E37E2DFC1CD5009C29A9 /* StatButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E37D2DFC1CD5009C29A9 /* StatButtonView.swift */; };
@@ -27,8 +29,9 @@
 		53B0E3862DFCA8E0009C29A9 /* ActiveUserSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3852DFCA8E0009C29A9 /* ActiveUserSheet.swift */; };
 		53B0E3882DFDE3E6009C29A9 /* StatBubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3872DFDE3E6009C29A9 /* StatBubbleStyle.swift */; };
 		53B0E38A2DFDE47E009C29A9 /* CustomFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0E3892DFDE47E009C29A9 /* CustomFormView.swift */; };
+		53B448F62E41C43D008BFA86 /* SaveCustomerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B448F52E41C43D008BFA86 /* SaveCustomerInteractor.swift */; };
 		53BAE3EE2DF353A300862427 /* BusinessStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3ED2DF353A300862427 /* BusinessStatsView.swift */; };
-		53BAE3F02DF353B700862427 /* CustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3EF2DF353B700862427 /* CustomerView.swift */; };
+		53BAE3F02DF353B700862427 /* CustomerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3EF2DF353B700862427 /* CustomerListView.swift */; };
 		53BAE3F22DF353C400862427 /* ExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3F12DF353C400862427 /* ExpenseView.swift */; };
 		53BAE3FF2DF3554000862427 /* QuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE3FE2DF3554000862427 /* QuoteView.swift */; };
 		53BAE4012DF356DF00862427 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BAE4002DF356DF00862427 /* MainTabView.swift */; };
@@ -95,12 +98,14 @@
 		5302158F2DD7AEBB007F9E0B /* ExpenseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseModel.swift; sourceTree = "<group>"; };
 		530215912DD7AF83007F9E0B /* ExpenseVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseVM.swift; sourceTree = "<group>"; };
 		530215972DD86F4E007F9E0B /* QuoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteModel.swift; sourceTree = "<group>"; };
+		532EB8632E41FC5E008FE712 /* FileStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStorageManager.swift; sourceTree = "<group>"; };
+		532EB8652E41FCB7008FE712 /* CustomerStorageManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerStorageManaging.swift; sourceTree = "<group>"; };
 		532F96982DD9098A000EEAFF /* QuoteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteVM.swift; sourceTree = "<group>"; };
 		53318F992DFA082C0046B0F0 /* InvoiceVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceVM.swift; sourceTree = "<group>"; };
 		538A03C52E0F04960001FACC /* LandscapeQV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeQV.swift; sourceTree = "<group>"; };
 		538A03C72E0F04C40001FACC /* PressureWashQV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressureWashQV.swift; sourceTree = "<group>"; };
 		538A03CA2E0F06B60001FACC /* ConsultingQV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultingQV.swift; sourceTree = "<group>"; };
-		538A03CC2E1122200001FACC /* BBFileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BBFileStorage.swift; sourceTree = "<group>"; };
+		538A03CC2E1122200001FACC /* CustomerListStorageManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerListStorageManaging.swift; sourceTree = "<group>"; };
 		538A03CE2E1196B20001FACC /* AddCustomerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomerView.swift; sourceTree = "<group>"; };
 		53B0E37B2DFA615A009C29A9 /* CustomerDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerDetailVM.swift; sourceTree = "<group>"; };
 		53B0E37D2DFC1CD5009C29A9 /* StatButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatButtonView.swift; sourceTree = "<group>"; };
@@ -110,8 +115,9 @@
 		53B0E3852DFCA8E0009C29A9 /* ActiveUserSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveUserSheet.swift; sourceTree = "<group>"; };
 		53B0E3872DFDE3E6009C29A9 /* StatBubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatBubbleStyle.swift; sourceTree = "<group>"; };
 		53B0E3892DFDE47E009C29A9 /* CustomFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFormView.swift; sourceTree = "<group>"; };
+		53B448F52E41C43D008BFA86 /* SaveCustomerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveCustomerInteractor.swift; sourceTree = "<group>"; };
 		53BAE3ED2DF353A300862427 /* BusinessStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessStatsView.swift; sourceTree = "<group>"; };
-		53BAE3EF2DF353B700862427 /* CustomerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerView.swift; sourceTree = "<group>"; };
+		53BAE3EF2DF353B700862427 /* CustomerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerListView.swift; sourceTree = "<group>"; };
 		53BAE3F12DF353C400862427 /* ExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseView.swift; sourceTree = "<group>"; };
 		53BAE3FE2DF3554000862427 /* QuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteView.swift; sourceTree = "<group>"; };
 		53BAE4002DF356DF00862427 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -199,13 +205,21 @@
 			path = BBViewModels;
 			sourceTree = "<group>";
 		};
+		53B448F42E41C3F9008BFA86 /* Interactors */ = {
+			isa = PBXGroup;
+			children = (
+				53B448F52E41C43D008BFA86 /* SaveCustomerInteractor.swift */,
+			);
+			path = Interactors;
+			sourceTree = "<group>";
+		};
 		53BAE3EC2DF3537900862427 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				53B0E3832DFC9D50009C29A9 /* UserView.swift */,
 				53BAE4002DF356DF00862427 /* MainTabView.swift */,
 				53BAE3ED2DF353A300862427 /* BusinessStatsView.swift */,
-				53BAE3EF2DF353B700862427 /* CustomerView.swift */,
+				53BAE3EF2DF353B700862427 /* CustomerListView.swift */,
 				53BAE3FE2DF3554000862427 /* QuoteView.swift */,
 				53BAE3F12DF353C400862427 /* ExpenseView.swift */,
 				53BAE4152DF358DE00862427 /* MaterialListView.swift */,
@@ -345,6 +359,7 @@
 				53D1A2582DC7DCE300E7A675 /* BBModels */,
 				530215852DD78AB8007F9E0B /* BBViewModels */,
 				53D1A2572DC7DCD000E7A675 /* BBViews */,
+				53B448F42E41C3F9008BFA86 /* Interactors */,
 				53D1A25A2DC7DDAE00E7A675 /* BBServices */,
 				53D1A25B2DC7DDC900E7A675 /* BBStorage */,
 				53D1A25C2DC7DDEB00E7A675 /* BBResources */,
@@ -404,7 +419,9 @@
 		53D1A25B2DC7DDC900E7A675 /* BBStorage */ = {
 			isa = PBXGroup;
 			children = (
-				538A03CC2E1122200001FACC /* BBFileStorage.swift */,
+				532EB8632E41FC5E008FE712 /* FileStorageManager.swift */,
+				532EB8652E41FCB7008FE712 /* CustomerStorageManaging.swift */,
+				538A03CC2E1122200001FACC /* CustomerListStorageManaging.swift */,
 			);
 			path = BBStorage;
 			sourceTree = "<group>";
@@ -598,22 +615,25 @@
 				53BAE4162DF358DE00862427 /* MaterialListView.swift in Sources */,
 				53C6CABB2E0540C1000A7229 /* StatsSummaryDetailView.swift in Sources */,
 				53D7F24D2DDE66FB00579741 /* HVACQM.swift in Sources */,
+				532EB8662E41FCB7008FE712 /* CustomerStorageManaging.swift in Sources */,
 				53D1A2942DCE60A200E7A675 /* ToolBarTitle.swift in Sources */,
 				53BAE4142DF358CA00862427 /* QuoteFinalizeView.swift in Sources */,
 				53B0E3882DFDE3E6009C29A9 /* StatBubbleStyle.swift in Sources */,
 				53EE9BAF2E160BF1008F3041 /* CustomButtonBG.swift in Sources */,
+				53B448F62E41C43D008BFA86 /* SaveCustomerInteractor.swift in Sources */,
 				53BF84892DE3789F0042A983 /* InvoiceModel.swift in Sources */,
-				538A03CD2E1122200001FACC /* BBFileStorage.swift in Sources */,
+				538A03CD2E1122200001FACC /* CustomerListStorageManaging.swift in Sources */,
 				538A03CB2E0F06B60001FACC /* ConsultingQV.swift in Sources */,
 				5302158B2DD78BC6007F9E0B /* BusinessStatsVM .swift in Sources */,
 				53EE9BAB2E15DE86008F3041 /* IfExtension.swift in Sources */,
-				53BAE3F02DF353B700862427 /* CustomerView.swift in Sources */,
+				53BAE3F02DF353B700862427 /* CustomerListView.swift in Sources */,
 				53B0E37E2DFC1CD5009C29A9 /* StatButtonView.swift in Sources */,
 				53D7F2512DDEB66D00579741 /* MaterialVM.swift in Sources */,
 				538A03C62E0F04960001FACC /* LandscapeQV.swift in Sources */,
 				538A03C82E0F04C40001FACC /* PressureWashQV.swift in Sources */,
 				530215922DD7AF83007F9E0B /* ExpenseVM.swift in Sources */,
 				53EE9BB12E161A9C008F3041 /* StatButtonBG.swift in Sources */,
+				532EB8642E41FC5E008FE712 /* FileStorageManager.swift in Sources */,
 				53BAE4082DF3582500862427 /* CustomerDetailView.swift in Sources */,
 				53BDAF912E183ACE0075C756 /* CustomMultiForm.swift in Sources */,
 				53BF84872DE3746E0042A983 /* InventoryItemModel.swift in Sources */,
@@ -905,7 +925,7 @@
 				DEVELOPMENT_TEAM = B9QLNQS5QW;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Swaycodes.LawnProUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Swaycodes.BasicBusinessUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -922,7 +942,7 @@
 				DEVELOPMENT_TEAM = B9QLNQS5QW;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Swaycodes.LawnProUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Swaycodes.BasicBusinessUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;

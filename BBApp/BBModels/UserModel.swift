@@ -6,10 +6,18 @@
 //
 
 import Foundation
-/// Struct `UserModel` defines the user data structure.
-/// Enumeration `IndustryType` with a `displayName` property for string representation.
-/// Extension to `UserModel` provides sample data for previews/testing.
 
+// MARK: — UserModel
+/// Struct `UserModel` defines the user data structure.
+
+// MARK: — IndustryType
+/// Enumeration `IndustryType` with a `displayName` property for string representation.
+
+// MARK: — UserModel + Sample
+/// Adds sample data for previews/testing.
+
+// TODO: Add `displayName` property like customerModel to cleanly handle missing last names
+// TODO: add `Codable` conformance for when persistence is added.
 struct UserModel: Identifiable {
     
     /// Unique identifier for the user
@@ -35,8 +43,7 @@ struct UserModel: Identifiable {
         "\(firstName) \(lastName)"
     }
     
-    // TODO: Add `displayName` property like customerModel to cleanly handle missing last names
-    // TODO: add `Codable` conformance for when persistence is added.
+    
 }
 /// Defines supported industry types for the user's business
 enum IndustryType: String, CaseIterable, Identifiable {

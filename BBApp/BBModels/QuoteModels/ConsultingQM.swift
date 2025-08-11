@@ -19,11 +19,11 @@ struct ConsultingQM: Quoteable {
         customer.id
     }
     var industryType: IndustryType = .consulting
-    var quoteType: QuoteType
-    var quoteDate: Date?
+    var pricingMethod: PricingMethod
+    var quoteDate: Date = Date()
     var notes: String?
     var totalCost: Double? {
-        switch quoteType {
+        switch pricingMethod {
             case .fixedRate:
             return fixedRate
         case .hourlyRate:

@@ -20,8 +20,8 @@ struct HVACQM {
     }
     
     var industryType: IndustryType = .HVAC
-    var quoteType: QuoteType = .fixedRate
-    var quoteDate: Date?
+    var quoteType: PricingMethod = .fixedRate
+    var quoteDate: Date = Date()
     var notes: String?
     var totalCost: Double? {
         switch quoteType {

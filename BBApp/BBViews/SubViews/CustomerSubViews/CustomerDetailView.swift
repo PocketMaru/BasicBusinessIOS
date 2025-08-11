@@ -10,21 +10,10 @@ import SwiftUI
 struct CustomerDetailView: View {
     
     @Bindable var customer: CustomerDetailVM
-    @Bindable var userVM: UserVM
-    
     @Binding var activeSheet: ActiveUserSheet?
     @State private var isEditing = false
     @State private var attemptedEdit = false
     var body: some View {
-        
-        var isFirstNameValid: Bool { !customer.customer.firstName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty}
-        
-        var isLastNameValid: Bool { !customer.customer.lastName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty}
-        
-        var isEmailValid: Bool { !customer.customer.email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty}
-        
-        var isPhoneValid: Bool { !customer.customer.phone.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty}
-        
         NavigationStack {
             ZStack {
                 AppColors.bg.ignoresSafeArea()
@@ -32,56 +21,56 @@ struct CustomerDetailView: View {
                     VStack(spacing: 10) {
                         if isEditing {
                             CustomFormView(
-                                shouldValidate: attemptedEdit && !isFirstNameValid,
-                                errorMessage: "First name is required",
+                                shouldValidate: attemptedEdit,
+                                errorMessage: customer.firstNameError,
                                 header: "First name"
                             ) {
-                                TextField("First name", text: $customer.customer.firstName)
+                                TextField("First name", text: $customer.draft.firstName)
                             }
                             .padding(.top, 16)
                             .padding(5)
                             CustomFormView(
-                                shouldValidate: attemptedEdit && !isLastNameValid,
-                                errorMessage: "Last name is required",
+                                shouldValidate: attemptedEdit,
+                                errorMessage: customer.lastNameError,
                                 header: "Last name"
                             ) {
-                                TextField("Last name", text: $customer.customer.lastName)
+                                TextField("Last name", text: $customer.draft.lastName)
                             }
                             .padding(5)
                             CustomFormView(
-                                shouldValidate: attemptedEdit && !isEmailValid,
-                                errorMessage: "Email is required",
+                                shouldValidate: attemptedEdit,
+                                errorMessage: customer.emailError,
                                 header: "Email"
                             ) {
-                                TextField("Email", text: $customer.customer.email)
+                                TextField("Email", text: $customer.draft.email)
                                     .keyboardType(.emailAddress)
                             }
                             .padding(5)
                             CustomFormView(
-                                shouldValidate: attemptedEdit && !isPhoneValid,
-                                errorMessage: "Phone number is required",
+                                shouldValidate: attemptedEdit,
+                                errorMessage: customer.phoneError,
                                 header: "Phone number"
                             ) {
-                                TextField("Phone", text: $customer.customer.phone)
+                                TextField("Phone", text: $customer.draft.phone)
                             }
                             .padding(5)
                             CustomFormView(header: "Address") {
                                 TextField("Address", text: Binding (
-                                    get: {customer.customer.address ?? ""},
-                                    set: {customer.customer.address = $0.isEmpty ? nil : $0}))
+                                    get: {customer.draft.address ?? ""},
+                                    set: {customer.draft.address = $0.isEmpty ? nil : $0}))
                             }
                             .padding(5)
                             CustomFormView(header: "Zip Code") {
                                 TextField("Zip Code", text: Binding(
-                                    get: {customer.customer.zipCode ?? ""},
-                                    set: {customer.customer.zipCode = $0.isEmpty ? nil : $0}
+                                    get: {customer.draft.zipCode ?? ""},
+                                    set: {customer.draft.zipCode = $0.isEmpty ? nil : $0}
                                 ))
                             }
                             .padding(5)
                             CustomFormView(header: "Paid Status") {
                                 Toggle("Paid Status", isOn: Binding(
-                                    get: {customer.customer.paidBill ?? false},
-                                    set: {customer.customer.paidBill = $0}
+                                    get: {customer.draft.paidBill ?? false},
+                                    set: {customer.draft.paidBill = $0}
                                 ))
                             }
                             .padding(5)
@@ -89,19 +78,21 @@ struct CustomerDetailView: View {
                         } else {
                             CustomMultiForm(
                                 titleOne: "First name",
-                                valueOne: customer.customer.firstName,
+                                valueOne: customer.original.firstName,
                                 titleTwo: "Last name",
-                                valueTwo: customer.customer.lastName,
+                                valueTwo: customer.original.lastName,
                                 titleThree: "Email",
-                                valueThree: customer.customer.email,
+                                valueThree: customer.original.email,
                                 titleFour: "Phone",
-                                valueFour: customer.customer.phone,
+                                valueFour: customer.original.phone,
                                 titleFive: "Address",
-                                valueFive: customer.customer.address ?? "",
+                                valueFive: customer.original.address ?? "",
                                 titleSix: "Zip Code",
-                                valueSix: customer.customer.zipCode ?? "",
+                                valueSix: customer.original.zipCode ?? "",
                                 titleSeven: "Status",
-                                valueSeven: customer.customer.paidBill ?? false ? "Paid": "Unpaid"
+                                valueSeven: customer.original.paidBill ?? false ? "Paid": "Unpaid",
+                                titleEight: "Loyalty Date",
+                                valueEight: String("\(customer.original.loyaltyDate)")
                             )
                             .padding(.top, 16)
                         }
@@ -115,18 +106,23 @@ struct CustomerDetailView: View {
             .scrollContentBackground(.hidden)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ToolBarTitle(
-                title: customer.customer.firstName + " " + customer.customer.lastName,
+                title: customer.draft.firstName + " " + customer.draft.lastName,
                 iconName: nil,
                 editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
                 editButtonColor: isEditing ? AppColors.success : AppColors.accent,
                 editIconTapped: {
-                    attemptedEdit = true
-                    if !isFirstNameValid {return}
-                    if !isLastNameValid {return}
-                    if !isEmailValid {return}
-                    if !isPhoneValid {return}
-                    isEditing.toggle()
-                    customer.saveChanges()
+                    if isEditing {
+                        attemptedEdit = true
+                        
+                        if customer.saveChanges(successMessage: "Customer Updated") {
+                            isEditing = false
+                            attemptedEdit = false
+                        }
+                    } else {
+                        customer.cancelEdits()
+                        isEditing = true
+                        attemptedEdit = false
+                    }
                 })
         }
     }

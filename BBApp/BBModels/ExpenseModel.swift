@@ -6,41 +6,30 @@
 //
 
 import Foundation
-/// Struct `ExpenseModel` defines the expense data structure.
-/// Enumeration `ExpenseType` with a `name` property for string representation.
-/// Enumeration `ExpenseStatus` with a `name` property for string representation.
-/// Extension to `ExpenseModel` provides sample data for previews/testing.
+
+// MARK: — ExpenseModel
+/// Struct `ExpenseModel` stores all details of a created expense
+
+// MARK: — ExpenseType
+/// Enumeration `ExpenseType` represents the type of expense (e.g., Food, Gas, Entertainment, etc.)
+
+// MARK: — ExpenseStatus
+/// Enumeration `ExpenseStatus` represents the status of an expense (e.g., Pending, Confirmed)
+
+// MARK: — ExpenseModel + Sample
+/// Adds sample data for previews and test cases
 
 struct ExpenseModel: Identifiable {
-    
-    /// Unique identifier for each expense
+
     var id: UUID = UUID()
-    
-    /// Expense name
     var name: String
-    
-    /// Expense type (e.g., gas or food)
     var type: ExpenseType
-    
-    /// Expense date
     var date: Date
-    
-    /// Optional expense description
     var description: String?
-    
-    /// Optional employee wage expense
     var hoursWorked: Double?
-    
-    /// Optional employee hourly rate expense
     var hourlyRate: Double?
-    
-    /// Optional employee fixed rate expense
     var fixedRate: Double?
-    
-    /// Expense Status for pending and confirmed expenses
     var expenseStatus: ExpenseStatus
-    
-    /// Optional for expenses related to materials used
     var materialExpense: MaterialExpenseQM?
     
     /// Computed property for expense total - Calculated from expense type

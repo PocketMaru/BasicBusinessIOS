@@ -7,8 +7,19 @@
 
 import Foundation
 
-// Creating Material Expenses.
-// This allows a user to convert materials needed for a quote to expenses.
+// MARK: — MaterialExpenseQM
+/// Struct `MaterialExpenseQM` defines expenses related to materials that are created when building quotes
+
+// MARK: — MaterialExpensePreview
+/// Struct `MaterialExpensePreview` represents added materials as expenses prior to finalization through invoicing.
+
+// MARK: — MaterialExpenseQM + toExpense
+/// Adds the conversion of materials added to a quote to expenses.
+
+// MARK: — MaterialExpenseQM + addedAsExpense
+/// Adds an initializer to `MaterialExpenseQM` that creates a new instance from an existing `MaterialModel`.
+/// Includes the `addedAsExpense` parameter to specify whether the material should be logged as an expense.
+
 struct MaterialExpenseQM: Identifiable {
     var id: UUID
     var name: String
@@ -19,15 +30,6 @@ struct MaterialExpenseQM: Identifiable {
     var expenseStatus: ExpenseStatus = .pending
 }
 
-// Represents added materials as expenses prior to finalization through invoicing.
-struct MaterialExpensePreview: Identifiable {
-    var id = UUID()
-    var label: String
-    var estimatedCost: Double
-    var expenseStatus: ExpenseStatus = .pending
-}
-
-// Extension to MaterialExpensesQM allowing conversion of materials to expenses and adding the date.
 extension MaterialExpenseQM {
     func toExpense(date: Date = Date()) -> ExpenseModel? {
         guard addedAsExpense else {return nil}
@@ -45,10 +47,7 @@ extension MaterialExpenseQM {
             
         )
     }
-}
-
-// Extension for taking a material from storage, adding it to a quote, and choosing wether or not it is an expense.
-extension MaterialExpenseQM {
+    
     init(from material: MaterialModel, addedAsExpense: Bool = false) {
         self.id = material.id
         self.name = material.name
@@ -59,7 +58,22 @@ extension MaterialExpenseQM {
     }
 }
 
-// Extension for sample data.
+struct MaterialExpensePreview: Identifiable {
+    var id = UUID()
+    var label: String
+    var estimatedCost: Double
+    var expenseStatus: ExpenseStatus = .pending
+}
+
+extension MaterialExpensePreview {
+    init (from expense: MaterialExpenseQM) {
+        self.id = expense.id
+        self.label = expense.name
+        self.estimatedCost = expense.unitCost
+        self.expenseStatus = expense.expenseStatus
+    }
+}
+
 extension MaterialExpenseQM {
     static let sample = MaterialExpenseQM(
         id: UUID(),

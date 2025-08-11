@@ -9,7 +9,6 @@ import SwiftUI
 /// Entry point for the Basic Business app.
 /// Injects shared view models into `MainTabView`
 /// - `CustomerListVM`
-/// - `CustomerDetailVM`
 /// - `QuoteVM`
 /// - `MaterialVM`
 /// Applies `.accentColor(ThemeColors.logoColor)` to tint controls app-wide via view hierarchy inheritance.
@@ -17,9 +16,17 @@ import SwiftUI
 struct BasicBusinessApp: App {
     var body: some Scene {
         WindowGroup {
+            
+            let fileStorage = FileStorageManager()
+            let saveCustomer = SaveCustomerInteractor(fileStorage: fileStorage)
+            
+            let listVM = CustomerListVM(
+                saveCustomer: saveCustomer,
+                customerListStorage: fileStorage
+            )
+            
             MainTabView(
-                customerListVM: CustomerListVM(),
-                customerDetailVM: CustomerDetailVM(customer: CustomerModel.sample),
+                customerListVM: listVM,
                 quoteVM: QuoteVM(savedMaterials: MaterialModel.sampleList),
                 materialVM: MaterialVM(materials: MaterialModel.sampleList)
             )

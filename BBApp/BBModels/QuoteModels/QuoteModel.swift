@@ -7,12 +7,27 @@
 
 import Foundation
 
+// MARK: — Quoteable Protocol
+/// Protocol `Quoteable` defines shared properties for all quote types
+
+// MARK: — QuoteModel
+/// Struct `QuoteModel` stores all details of a created quote and conforms to `Quoteable`
+
+// MARK: — ServiceType
+/// Enumeration `ServiceType` represents the category of work being preformed (e.g., Installation, Maintenance, etc.)
+
+// MARK: — PricingMethod
+/// Enumeration `PricingMethod` represents how the quote will be priced (e.g., Fixed Rate, Subscription, etc.)
+
+// MARK: — QuoteModel + Sample
+/// Adds sample data for previews and test cases
+
 protocol Quoteable {
     var id: UUID {get}
     var customerID: UUID {get}
     var industryType: IndustryType {get}
-    var quoteType: QuoteType {get}
-    var quoteDate: Date? {get}
+    var pricingMethod: PricingMethod {get}
+    var quoteDate: Date {get}
     var notes: String? {get}
     var totalCost: Double? {get}
 }
@@ -25,25 +40,61 @@ struct QuoteModel: Identifiable, Quoteable {
     }
     var industryType: IndustryType
     var serviceType: ServiceType
-    var quoteType: QuoteType
-    var quoteDate: Date?
+    var pricingMethod: PricingMethod
+    var quoteDate: Date = Date()
     var installationDate: Date?
     var serviceDate: Date?
     var notes: String?
-    
     var subscriptionTotal: Double?
     var materialCost: Double?
     var laborCost: Double?
     var additionalFees: Double?
     var totalCost: Double?
-    
     var customFields: Data?
-    
-    var materialExpenses: [MaterialExpenseQM] = []
+    var materialExpenses: [MaterialExpenseQM]? = nil
     var materialTotalCost: Double? {
-        materialExpenses.reduce(0) { $0 + $1.unitCost }
+        materialExpenses?.reduce(0) { $0 + $1.unitCost }
     }
-    var pendingExpenses: [MaterialExpensePreview] = []
+    // Pending expenses, these are expenses tied to quotes, this allows the user to see what expenses will be when a job converts to invoice, allowing forecasting of future expenses from jobs.
+    var pendingMaterialExpense: [MaterialExpensePreview] = []
+    
+    init(
+        id: UUID = UUID(),
+        customer: CustomerModel,
+        industryType: IndustryType,
+        serviceType: ServiceType,
+        pricingMethod: PricingMethod,
+        quoteDate: Date = Date(),
+        installationDate: Date? = nil,
+        serviceDate: Date? = nil,
+        notes: String? = nil,
+        subscriptionTotal: Double? = nil,
+        materialCost: Double? = nil,
+        laborCost: Double? = nil,
+        additionalFees: Double? = nil,
+        totalCost: Double? = nil,
+        customFields: Data? = nil,
+        materialExpenses: [MaterialExpenseQM]? = nil,
+        pendingExpenses: [MaterialExpensePreview] = []
+    ) {
+        self.id = id
+        self.customer = customer
+        self.industryType = industryType
+        self.serviceType = serviceType
+        self.pricingMethod = pricingMethod
+        self.quoteDate = quoteDate
+        self.installationDate = installationDate
+        self.serviceDate = serviceDate
+        self.notes = notes
+        self.subscriptionTotal = subscriptionTotal
+        self.materialCost = materialCost
+        self.laborCost = laborCost
+        self.additionalFees = additionalFees
+        self.totalCost = totalCost
+        self.customFields = customFields
+        self.materialExpenses = materialExpenses
+        self.pendingMaterialExpense = pendingExpenses
+    }
 }
 
 enum ServiceType {
@@ -69,7 +120,7 @@ enum ServiceType {
     }
 }
 
-enum QuoteType {
+enum PricingMethod {
     case fixedRate
     case hourlyRate
     case squareFootage
@@ -94,7 +145,7 @@ extension QuoteModel {
         customer: .sample,
         industryType: .landscaping,
         serviceType: .installation,
-        quoteType: .fixedRate,
+        pricingMethod: .fixedRate,
         notes: "This is a sample quote."
     )
     
@@ -104,31 +155,31 @@ extension QuoteModel {
             customer: CustomerModel.sample,
             industryType: .landscaping,
             serviceType: .maintenance,
-            quoteType: .subscription,
+            pricingMethod: .subscription,
             totalCost: 300),
         QuoteModel(
             customer: CustomerModel.sample,
             industryType: .pressureWashing,
             serviceType: .maintenance,
-            quoteType: .fixedRate,
+            pricingMethod: .fixedRate,
             totalCost: 3000),
         QuoteModel(
             customer: CustomerModel.sample,
             industryType: .HVAC,
             serviceType: .maintenance,
-            quoteType: .fixedRate,
+            pricingMethod: .fixedRate,
             totalCost: 1000),
         QuoteModel(
             customer: CustomerModel.sample,
             industryType: .consulting,
             serviceType: .custom("Consulting Services"),
-            quoteType: .fixedRate,
+            pricingMethod: .fixedRate,
             totalCost: 250),
         QuoteModel(
             customer: CustomerModel.sample,
             industryType: .handyman,
             serviceType: .maintenance,
-            quoteType: .fixedRate,
+            pricingMethod: .fixedRate,
             totalCost: 3000),
     ]
 }

@@ -8,82 +8,75 @@
 import SwiftUI
 
 struct AddCustomerView: View {
-    @Bindable var customer: CustomerDetailVM
-    @Bindable var customerVM: CustomerListVM
+    @Bindable var customerListVM: CustomerListVM
     @Binding var isPresented: Bool
     @Binding var activeSheet: ActiveUserSheet?
     @State private var attemptedSave: Bool = false
-    
+    @State var draftCustomer = CustomerModel()
     var body: some View {
-        var isFirstNameValid: Bool { !customer.customer.firstName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty}
-        var isLastNameValid: Bool { !customer.customer.lastName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty}
-        var isEmailValid: Bool { !customer.customer.email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty}
-        var isPhoneValid: Bool { !customer.customer.phone.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty}
         NavigationStack {
             ZStack {
                 AppColors.bg.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing: 10) {
                         CustomFormView(
-                            shouldValidate: attemptedSave && !isFirstNameValid,
-                            errorMessage: "First name is required"
+                            shouldValidate: attemptedSave,
+                            errorMessage: customerListVM.firstNameError
                         ) {
-                            TextField("First Name", text: $customer.customer.firstName)
+                            TextField("First Name", text: $draftCustomer.firstName)
                         }
                         .padding(.top,16)
                         .padding(5)
                         CustomFormView(
-                            shouldValidate: attemptedSave && !isLastNameValid,
-                            errorMessage: "Last name is required"
+                            shouldValidate: attemptedSave,
+                            errorMessage: customerListVM.lastNameError
                         ) {
-                            TextField("Last Name", text: $customer.customer.lastName)
+                            TextField("Last Name", text: $draftCustomer.lastName)
                         }
                         .padding(5)
                         CustomFormView(
-                            shouldValidate: attemptedSave && !isEmailValid,
-                            errorMessage: "Email is required"
+                            shouldValidate: attemptedSave,
+                            errorMessage: customerListVM.emailError
                         ) {
-                            TextField("Email", text: $customer.customer.email)
-                            .keyboardType(.emailAddress)
+                            TextField("Email", text: $draftCustomer.email)
+                                .keyboardType(.emailAddress)
                         }
                         .padding(5)
                         CustomFormView(
-                            shouldValidate: attemptedSave && !isPhoneValid,
-                            errorMessage: "Phone number is required"
+                            shouldValidate: attemptedSave,
+                            errorMessage: customerListVM.phoneError
                         ) {
-                            TextField("Phone", text: $customer.customer.phone)
-                            .keyboardType(.numberPad)
+                            TextField("Phone", text: $draftCustomer.phone)
+                                .keyboardType(.numberPad)
                         }
                         .padding(5)
                         CustomFormView() {
                             TextField("Address", text: Binding (
-                                get: {customer.customer.address ?? ""},
-                                set: {customer.customer.address = $0.isEmpty ? nil : $0}))
+                                get: {draftCustomer.address ?? ""},
+                                set: {draftCustomer.address = $0.isEmpty ? nil : $0}))
                         }
                         .padding(5)
                         CustomFormView() {
                             TextField("Zip Code", text: Binding(
-                                get: {customer.customer.zipCode ?? ""},
-                                set: {customer.customer.zipCode = $0.isEmpty ? nil : $0}
+                                get: {draftCustomer.zipCode ?? ""},
+                                set: {draftCustomer.zipCode = $0.isEmpty ? nil : $0}
                             ))
                         }
                         .padding(5)
                         SaveButton(name: "Add Customer", tapAction: {
-                            attemptedSave = true
-                            if !isFirstNameValid {return}
-                            if !isLastNameValid {return}
-                            if !isEmailValid {return}
-                            if !isPhoneValid {return}
-                            customerVM.addCustomer(
-                                firstName: customer.customer.firstName,
-                                lastName: customer.customer.lastName,
-                                email: customer.customer.email,
-                                address: customer.customer.address ?? "",
-                                zipCode: customer.customer.zipCode ?? "",
-                                phone: customer.customer.phone,
-                                paidBill: customer.customer.paidBill ?? false
+                            let didSave = customerListVM.addCustomer(
+                                firstName: draftCustomer.firstName,
+                                lastName: draftCustomer.lastName,
+                                email: draftCustomer.email,
+                                address: draftCustomer.address ?? "",
+                                zipCode: draftCustomer.zipCode ?? "",
+                                phone: draftCustomer.phone,
+                                paidBill: draftCustomer.paidBill ?? false
                             )
-                            isPresented.toggle()
+                            if didSave {
+                                draftCustomer = CustomerModel()
+                                isPresented.toggle()
+                            }
                         })
                     }
                     .hideKeyboardOnTap()
@@ -100,6 +93,6 @@ struct AddCustomerView: View {
     
 }
 
-    
+
 
 

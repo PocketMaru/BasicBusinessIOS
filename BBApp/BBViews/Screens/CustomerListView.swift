@@ -7,24 +7,18 @@
 
 import SwiftUI
 
-struct CustomerView: View {
-    @Bindable var customerListVM: CustomerListVM
+struct CustomerListView: View {
+    var customerListVM: CustomerListVM
     @Bindable var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
-    @Binding var customerDetailVM: CustomerDetailVM
     var body: some View {
             ZStack {
                 AppColors.bg.ignoresSafeArea()
                 List {
-                    ForEach(Array(customerListVM.allCustomers.enumerated()), id: \.element.id) { index, customer in
+                    ForEach(customerListVM.allCustomers, id: \.id) { customer in
                         NavigationLink(
                             destination:CustomerDetailView(
-                                customer: CustomerDetailVM(
-                                    customer: customer,
-                                    onSave: { updatedCustomer in
-                                    customerListVM.updateCustomer(with: updatedCustomer)
-                                }),
-                                userVM: userVM,
+                                customer: configuredDetailVM(for: customer),
                                 activeSheet: $activeSheet
                             )) {
                             HStack {
@@ -39,8 +33,8 @@ struct CustomerView: View {
                         }
                         .listRowBackground(AppColors.bg)
                     }
-                    .onDelete { IndexSet in
-                        for index in IndexSet {
+                    .onDelete { indexSet in
+                        for index in indexSet{
                             customerListVM.removeCustomer(at: index)
                         }
                     }
@@ -60,9 +54,13 @@ struct CustomerView: View {
                         activeSheet = .user
                     }
             }, editIconTapped: {
-                customerDetailVM.customer = CustomerModel()
                 activeSheet = .addCustomer
             })
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    private func configuredDetailVM(for customer: CustomerModel) -> CustomerDetailVM {
+        let useCase = SaveCustomerInteractor(fileStorage: FileStorageManager())
+        return CustomerDetailVM(customer: customer, saveUseCase: useCase )
     }
 }

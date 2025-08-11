@@ -6,13 +6,23 @@
 //
 
 import Foundation
-/// Struct `MaterialModel` defines reusable materials that can be referenced when building quotes.
-/// This is **not** an inventory tracker — instead, it stores commonly used materials and pricing
-/// to make quoting faster and more consistent.
-/// Each time a material is added to a quote, a new expense entry is created — quantities are not deducted or tracked.
-/// Enumeration `ProductUnitTypes`defining the units of measurement of materials within the app
-/// Enumeration `UnitCategory` defining the type of measurement of the material (e.g., Volume, Quantity)
-/// Extension to `MaterialModel` provides sample data for preview/testing
+
+// MARK: — MaterialModel
+/// `MaterialModel` defines reusable materials that can be referenced when building quotes.
+///
+/// This is **not** an inventory tracker.
+/// Instead, it stores commonly used materials and pricing to make quoting faster and more consistent.
+/// Quantities on hand are not deducted or tracked, only quantities chosen.
+
+// MARK: — ProductUnitTypes
+/// `ProductUnitTypes` defines the specific units of measurement used when quantifying a material (e.g., `.gram`, `.ounce`, `.pound`).
+
+// MARK: — UnitCategory
+/// `UnitCategory` defines the material measurement used (e.g., `.volume`,`.quantity`).
+
+// MARK: — MaterialModel + Sample
+/// Adds sample data for preview/testing.
+
 struct MaterialModel: Identifiable {
     
     /// Unique identifier for materials
@@ -68,7 +78,6 @@ enum UnitCategory {
     case quantity
 }
 
-/// Extension of `MaterialModel` for samples
 extension MaterialModel {
     static let sample = MaterialModel(
         id: UUID(),

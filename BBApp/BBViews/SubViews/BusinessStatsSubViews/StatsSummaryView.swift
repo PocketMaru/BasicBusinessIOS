@@ -45,18 +45,14 @@ struct StatsSummaryView: View {
     var quoteVM: QuoteVM
     var materialVM: MaterialVM
     var businessStatsVM: BusinessStatsVM
-    var customerDetailVM: CustomerDetailVM?
     var customerListVM: CustomerListVM
     @State private var statDetailSheetItem: StatDetailSheetItem?
     @State private var paidStatus: Bool = true
     @State private var navigateToCustomerDetail: CustomerModel? = nil
-    var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
     
     var body: some View {
         NavigationStack {
-            let unpaidInvoices = customerListVM.allCustomers.filter { $0.paidBill != true }
-            let paidInvoices = customerListVM.allCustomers.filter { $0.paidBill == true }
             ZStack {
                 AppColors.bg.ignoresSafeArea()
                 ScrollView {
@@ -70,7 +66,7 @@ struct StatsSummaryView: View {
                                         VStack {
                                             Text(invoice.customer.phone)
                                             Divider()
-                                            Text(String(invoice.invoiceDate?.formatted(date: .abbreviated, time: .omitted) ?? Date().formatted(date: .abbreviated, time: .omitted)))
+                                            Text(String(invoice.invoiceDate.formatted(date: .abbreviated, time: .omitted)))
                                             
                                             Divider()
                                             Text(String(invoice.totalCost ?? 0))
@@ -115,7 +111,9 @@ struct StatsSummaryView: View {
                                 titleSix: nil,
                                 valueSix: nil,
                                 titleSeven: nil,
-                                valueSeven: nil
+                                valueSeven: nil,
+                                titleEight: nil,
+                                valueEight: nil
                             )
                             .statButtonBG()
                         } else if selectedStat == .quotes {
@@ -127,7 +125,7 @@ struct StatsSummaryView: View {
                                     VStack {
                                         Text(quoteItem.customer.phone)
                                         Divider()
-                                        Text(String(quoteItem.quoteDate?.formatted(date: .abbreviated, time: .omitted) ?? Date().formatted(date: .abbreviated, time: .omitted)))
+                                        Text(String(quoteItem.quoteDate.formatted(date: .abbreviated, time: .omitted)))
                                         Divider()
                                         Text(String(quoteItem.totalCost ?? 0))
                                         Spacer()
@@ -161,13 +159,12 @@ struct StatsSummaryView: View {
                         } else if selectedStat == .customers {
                             VStack (spacing: 10) {
                                 if paidStatus {
-                                    ForEach(paidInvoices.indices, id: \.self) { index in
-                                        let customer = paidInvoices[index]
+                                    ForEach(customerListVM.paidCustomers, id: \.id) { customer in
                                         NavigationLink(destination: CustomerDetailView(
-                                            customer: CustomerDetailVM(customer: customer),
-                                            userVM: userVM,
+                                            customer: configuredDetailVM(for: customer),
                                             activeSheet: $activeSheet
-                                        )) {
+                                        )
+                                        ) {
                                             CustomSectionView(
                                                 headerTitle: customer.fullName ?? customer.firstName
                                             ) {
@@ -185,23 +182,25 @@ struct StatsSummaryView: View {
                                         
                                     }
                                 } else {
-                                    ForEach(unpaidInvoices.indices, id: \.self) { index in
-                                        let customer = unpaidInvoices[index]
-                                        CustomSectionView(
-                                            headerTitle: customer.fullName ?? customer.firstName
-                                        ) {
-                                            VStack {
-                                                Text(customer.phone)
-                                                Divider()
-                                                Text(customer.address ?? "No Address Available")
-                                                Divider()
-                                                Text(customer.paidBill == false ? "unPaid" : "Paid").foregroundStyle( AppColors.accent)
+                                    ForEach(customerListVM.unpaidCustomers, id: \.id) { customer in
+                                        NavigationLink(destination: CustomerDetailView(
+                                            customer: configuredDetailVM(for: customer),
+                                            activeSheet: $activeSheet
+                                        )) {
+                                            CustomSectionView(
+                                                headerTitle: customer.fullName ?? customer.firstName
+                                            ) {
+                                                VStack {
+                                                    Text(customer.phone)
+                                                    Divider()
+                                                    Text(customer.address ?? "No Address Available")
+                                                    Divider()
+                                                    Text(customer.paidBill == false ? "unPaid" : "Paid").foregroundStyle( AppColors.accent)
+                                                }
                                             }
-                                        } tapped: {
-                                            navigateToCustomerDetail = customer
+                                            .statBubbleStyle()
+                                            .statButtonBG()
                                         }
-                                        .statBubbleStyle()
-                                        .statButtonBG()
                                     }
                                 }
                             }
@@ -222,13 +221,13 @@ struct StatsSummaryView: View {
                     HStack (spacing: 10){
                         StatButtonView(
                             label: "Paid",
-                            value: Double(paidInvoices.count),
+                            value: Double(customerListVM.paidCustomers.count),
                             tapAction: {
                             paidStatus = true
                         })
                         StatButtonView(
                             label: "Unpaid",
-                            value: Double(unpaidInvoices.count),
+                            value: Double(customerListVM.unpaidCustomers.count),
                             tapAction: {
                             paidStatus = false
                         })
@@ -237,5 +236,13 @@ struct StatsSummaryView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    private func configuredDetailVM(for customer: CustomerModel) -> CustomerDetailVM {
+        let useCase = SaveCustomerInteractor(fileStorage: FileStorageManager())
+        let customerDetail = CustomerDetailVM(
+            customer: customer,
+            saveUseCase: useCase
+        )
+        return customerDetail
     }
 }

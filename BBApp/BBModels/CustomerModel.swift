@@ -9,6 +9,12 @@ import Foundation
 /// Struct `CustomerModel` defines the customer data structure across the app.
 /// Includes identity, contact info, and optional billing fields.
 /// Extension to `CustomerModel` provides sample data for previews/testing.
+
+// MARK: - Pending Refactors
+// TODO: Replace all 'fullName` uses with `displayName` app-wide.
+// TODO: Consider making lastName optional if user editing stays flexible.
+// TODO: Audit views using fullName to clean up fallback logic.
+// When editing, `lastName` may be empty, so fullName looks awkward.
 struct CustomerModel: Identifiable, Hashable, Codable {
     /// Unique identifier for customer id
     var id: UUID = UUID()
@@ -46,20 +52,7 @@ struct CustomerModel: Identifiable, Hashable, Codable {
         "\(firstName) \(lastName)"
     }
     
-    // MARK: - Pending Refactors
-    // TODO: Replace all 'fullName` uses with `displayName` app-wide.
-    // TODO: Consider making lastName optional if user editing stays flexible.
-    // TODO: Audit views using fullName to clean up fallback logic.
-    // When editing, `lastName` may be empty, so fullName looks awkward.
-}
-
-extension CustomerModel {
-    func isValid() -> Bool {
-        !firstName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-        !lastName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-        !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-        !phone.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
+    var loyaltyDate: Date = Date()
 }
 
 extension CustomerModel {

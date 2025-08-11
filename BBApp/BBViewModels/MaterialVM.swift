@@ -38,7 +38,7 @@ final class MaterialVM {
         quoteMaterials.append(quoteMaterial)
     }
     // Adding materials from quote to material storage
-    func saveToMaterials(from expense: MaterialExpenseQM) {
+    func addMaterialExpenseToStorage(_ expense: MaterialExpenseQM) {
         addMaterial(
             id: expense.id,
             name: expense.name,

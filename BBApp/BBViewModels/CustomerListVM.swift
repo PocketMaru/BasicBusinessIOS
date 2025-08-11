@@ -13,8 +13,30 @@ final class CustomerListVM {
     var allCustomers: [CustomerModel] = []
     var allQuotes: [QuoteModel] = []
     
-    init() {
-        self.allCustomers = loadCustomers()
+    var statusMessage: String?
+    
+    var firstNameError: String?
+    var lastNameError: String?
+    var emailError: String?
+    var phoneError: String?
+    var generalError: String?
+    
+    var paidCustomers: [CustomerModel] {
+        allCustomers.filter { $0.paidBill == true }
+    }
+    
+    var unpaidCustomers: [CustomerModel] {
+        allCustomers.filter { $0.paidBill != true }
+    }
+    
+    private let saveCustomer: SaveCustomerUseCase
+    
+    private let customerListStorage: CustomerListStorageManager
+    
+    init(saveCustomer: SaveCustomerUseCase, customerListStorage: CustomerListStorageManager) {
+        self.saveCustomer = saveCustomer
+        self.customerListStorage = customerListStorage
+        self.allCustomers = (try? customerListStorage.loadCustomers()) ?? []
     }
     
     func addCustomer(
@@ -24,8 +46,10 @@ final class CustomerListVM {
         address: String?,
         zipCode: String?,
         phone: String,
-        paidBill: Bool?
-    ){
+        paidBill: Bool?,
+        loyaltyDate: Date = Date()
+    ) -> Bool {
+        
         let newCustomer = CustomerModel(
             firstName: firstName,
             lastName: lastName,
@@ -33,10 +57,39 @@ final class CustomerListVM {
             address: address,
             zipCode: zipCode,
             phone: phone,
-            paidBill: paidBill ?? false
+            paidBill: paidBill ?? false,
+            loyaltyDate: loyaltyDate
         )
-        allCustomers.append(newCustomer)
-        saveCustomers(allCustomers)
+        
+        let result = saveCustomer.execute(customer: newCustomer)
+        
+        if handleValidationResult(result, successMessage: "Customer added successfully!") {
+            allCustomers.append(newCustomer)
+            try? customerListStorage.saveCustomers(allCustomers)
+            return true
+        }
+        return false
+    }
+    
+    func updateCustomer(with updated: CustomerModel) -> Bool {
+        guard let index = allCustomers.firstIndex(where: { $0.id == updated.id }) else {
+            return false
+        }
+        
+        let result = saveCustomer.execute(customer: updated)
+        
+        if handleValidationResult(result, successMessage: "Customer edited successfully!") {
+            let oldCustomer = allCustomers[index]
+            allCustomers[index] = updated
+            do {
+                try customerListStorage.saveCustomers(allCustomers)
+                return true
+            } catch {
+                allCustomers[index] = oldCustomer
+                _ = handleValidationResult(.failure(.init(errors: [.writeFailed(reason: error.localizedDescription)])), successMessage: "")
+            }
+        }
+        return false
     }
     
     func searchCustomer(by name: String) -> [CustomerModel] {
@@ -51,59 +104,49 @@ final class CustomerListVM {
     
     func removeCustomer(at index: Int){
         allCustomers.remove(at: index)
-        saveCustomers(allCustomers)
+        try? customerListStorage.saveCustomers(allCustomers)
     }
     
     func showAllCustomerQuotes(for customerID: UUID) -> [QuoteModel] {
         allQuotes.filter { $0.customerID == customerID }
     }
     
-    func updateCustomer(with updated: CustomerModel) {
-        if let index = allCustomers.firstIndex(where: { $0.id == updated.id }) {
-            allCustomers[index] = updated
-            saveCustomers(allCustomers)
-        }
+    func clearErrorMessages() {
+        firstNameError = nil
+        lastNameError = nil
+        emailError = nil
+        phoneError = nil
+        generalError = nil
     }
     
-    func loadCustomers() -> [CustomerModel] {
-        let decoder = JSONDecoder()
-        do {
-            let data = try Data(contentsOf: FileStorage.customerFileURL)
-            let decoded = try decoder.decode([CustomerModel].self, from: data)
-            return decoded
-        } catch {
-            print("Failed to load customers:", error)
-            return []
-        }
-    }
-    
-    func saveCustomers(_ customers: [CustomerModel]) {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
+    private func handleValidationResult (
+        _ result: Result<Void, SaveCustomerValidationErrors>,
+        successMessage: String
+    ) -> Bool {
+        clearErrorMessages()
         
-        do {
-            let data = try encoder.encode(customers)
-            try data.write(to: FileStorage.customerFileURL, options: [.atomicWrite])
-            print("Saved to \(FileStorage.customerFileURL)")
-        } catch {
-            print("Failed to save customers:", error)
+        switch result {
+        case .success:
+            statusMessage = successMessage
+            return true
+            
+        case .failure(let validationErrors):
+            for error in validationErrors.errors {
+                switch error {
+                case .missingFirstName:
+                    firstNameError = error.message
+                case .missingLastName:
+                    lastNameError = error.message
+                case .missingEmail:
+                    emailError = error.message
+                case .missingPhoneNumber:
+                    phoneError = error.message
+                case .writeFailed:
+                    generalError = error.message
+                }
+            }
+            return false
         }
-    }
-    
-    func customerFileURL() -> URL {
-        FileManager.default
-            .urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("customers.json")
-    }
-    
-    func loadAndCleanCustomersFromDisk() {
-        let url = customerFileURL()
-        do {
-            let data = try JSONEncoder().encode(allCustomers)
-            try data.write(to: url)
-            print("Saved customers to disk.")
-        } catch {
-            print("Failed to save customers to disk: \(error)")
-        }
+        
     }
 }

@@ -9,12 +9,10 @@ import SwiftUI
 
 struct MainTabView: View {
     var customerListVM: CustomerListVM
-    @State var customerDetailVM = CustomerDetailVM(customer: CustomerModel())
     var quoteVM: QuoteVM
     var materialVM: MaterialVM
     var userVM = UserVM(user: UserModel.sample)
     @State private var activeSheet: ActiveUserSheet?
-    
     
     var body: some View {
         
@@ -22,7 +20,8 @@ struct MainTabView: View {
             NavigationStack {
                 BusinessStatsView(
                     userVM: userVM,
-                    activeSheet: $activeSheet
+                    activeSheet: $activeSheet,
+                    customerListVM: customerListVM
                 )
             }
             .tabItem {
@@ -31,11 +30,10 @@ struct MainTabView: View {
             }
             
             NavigationStack {
-                CustomerView(
+                CustomerListView(
                     customerListVM: customerListVM,
                     userVM: userVM,
                     activeSheet: $activeSheet,
-                    customerDetailVM: $customerDetailVM
                 )
             }
             .tabItem {
@@ -79,8 +77,7 @@ struct MainTabView: View {
                 )
             case .addCustomer:
                 AddCustomerView(
-                    customer: customerDetailVM,
-                    customerVM: customerListVM,
+                    customerListVM: customerListVM,
                     isPresented: Binding(
                         get: { activeSheet != nil },
                         set: { if !$0 { activeSheet = nil } }
