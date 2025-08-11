@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 @Observable
-final class CustomerDetailVM {
+final class CustomerFormVM {
     
     private let saveUseCase: SaveCustomerUseCase
     
