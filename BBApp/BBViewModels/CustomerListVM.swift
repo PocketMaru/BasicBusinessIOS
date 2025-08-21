@@ -9,29 +9,39 @@ import Foundation
 
 @MainActor
 @Observable
+
 final class CustomerListVM {
     var allCustomers: [CustomerModel] = []
+
     var allQuotes: [QuoteModel] = []
     
     var statusMessage: String?
     
-    var firstNameError: String?
-    var lastNameError: String?
-    var emailError: String?
-    var phoneError: String?
-    var generalError: String?
-    
     var paidCustomers: [CustomerModel] {
         allCustomers.filter { $0.paidBill == true }
     }
-    
     var unpaidCustomers: [CustomerModel] {
-        allCustomers.filter { $0.paidBill != true }
+        allCustomers.filter { $0.paidBill == false }
     }
     
     private let saveCustomer: SaveCustomerUseCase
-    
     private let customerListStorage: CustomerListStorageManager
+    private var formVMCache: [UUID: CustomerFormVM] = [:]
+    
+    func detailVM(for customer: CustomerModel) -> CustomerFormVM {
+        if let vm = formVMCache[customer.id] {
+            print("✅ cache HIT for \(customer.id)")
+            return vm
+        }
+        print("🆕 cache MISS → creating VM for \(customer.id)")
+        let vm = CustomerFormVM(
+            customer: customer,
+            mode: .edit,
+            saveUseCase: saveCustomer
+        )
+        formVMCache[customer.id] = vm
+        return vm
+    }
     
     init(saveCustomer: SaveCustomerUseCase, customerListStorage: CustomerListStorageManager) {
         self.saveCustomer = saveCustomer
@@ -39,6 +49,7 @@ final class CustomerListVM {
         self.allCustomers = (try? customerListStorage.loadCustomers()) ?? []
     }
     
+    @discardableResult
     func addCustomer(
         firstName: String,
         lastName: String,
@@ -60,93 +71,73 @@ final class CustomerListVM {
             paidBill: paidBill ?? false,
             loyaltyDate: loyaltyDate
         )
-        
-        let result = saveCustomer.execute(customer: newCustomer)
-        
-        if handleValidationResult(result, successMessage: "Customer added successfully!") {
-            allCustomers.append(newCustomer)
-            try? customerListStorage.saveCustomers(allCustomers)
-            return true
-        }
-        return false
+
+        let result = saveCustomer.executeSaveNewCustomer(
+            newCustomer: newCustomer,
+            currentList: allCustomers
+        )
+            
+            switch result {
+            case .success(let newList):
+                allCustomers = newList
+                _ = handleValidationResult(.success(()),successMessage: "Customer added successfully")
+                return true
+            case .failure:
+                _ = handleValidationResult(result,successMessage: "")
+                return false
+            }
     }
     
+    @discardableResult
     func updateCustomer(with updated: CustomerModel) -> Bool {
-        guard let index = allCustomers.firstIndex(where: { $0.id == updated.id }) else {
+        let result = saveCustomer.executeUpdateCustomer(updated: updated, currentList: allCustomers)
+        
+        switch result {
+        case .success(let newList):
+            allCustomers = newList
+            _ = handleValidationResult(.success(()),successMessage: "Customer updated successfully")
+            return true
+            
+        case .failure:
+            _ = handleValidationResult(result,successMessage: "")
             return false
         }
-        
-        let result = saveCustomer.execute(customer: updated)
-        
-        if handleValidationResult(result, successMessage: "Customer edited successfully!") {
-            let oldCustomer = allCustomers[index]
-            allCustomers[index] = updated
-            do {
-                try customerListStorage.saveCustomers(allCustomers)
-                return true
-            } catch {
-                allCustomers[index] = oldCustomer
-                _ = handleValidationResult(.failure(.init(errors: [.writeFailed(reason: error.localizedDescription)])), successMessage: "")
-            }
-        }
-        return false
     }
-    
+
     func searchCustomer(by name: String) -> [CustomerModel] {
         let query = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        
+
         return allCustomers.filter {
             $0.firstName.lowercased().contains(query) ||
             $0.lastName.lowercased().contains(query) ||
             "\($0.firstName) \($0.lastName)".lowercased().contains(query)
         }
     }
-    
+
     func removeCustomer(at index: Int){
+        let removed = allCustomers[index]
+        formVMCache[removed.id] = nil
         allCustomers.remove(at: index)
         try? customerListStorage.saveCustomers(allCustomers)
     }
-    
+
     func showAllCustomerQuotes(for customerID: UUID) -> [QuoteModel] {
         allQuotes.filter { $0.customerID == customerID }
     }
     
-    func clearErrorMessages() {
-        firstNameError = nil
-        lastNameError = nil
-        emailError = nil
-        phoneError = nil
-        generalError = nil
-    }
-    
-    private func handleValidationResult (
-        _ result: Result<Void, SaveCustomerValidationErrors>,
+    func handleValidationResult<T> (
+        _ result: Result<T, SaveCustomerValidationErrors>,
         successMessage: String
     ) -> Bool {
-        clearErrorMessages()
         
         switch result {
         case .success:
             statusMessage = successMessage
             return true
             
-        case .failure(let validationErrors):
-            for error in validationErrors.errors {
-                switch error {
-                case .missingFirstName:
-                    firstNameError = error.message
-                case .missingLastName:
-                    lastNameError = error.message
-                case .missingEmail:
-                    emailError = error.message
-                case .missingPhoneNumber:
-                    phoneError = error.message
-                case .writeFailed:
-                    generalError = error.message
-                }
-            }
+        case .failure:
+            statusMessage = "Please fix the highlighted fields."
             return false
         }
-        
     }
 }

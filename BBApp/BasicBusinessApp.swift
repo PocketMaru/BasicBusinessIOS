@@ -18,7 +18,7 @@ struct BasicBusinessApp: App {
         WindowGroup {
             
             let fileStorage = FileStorageManager()
-            let saveCustomer = SaveCustomerInteractor(fileStorage: fileStorage)
+            let saveCustomer = SaveCustomer(fileStorage: fileStorage)
             
             let listVM = CustomerListVM(
                 saveCustomer: saveCustomer,

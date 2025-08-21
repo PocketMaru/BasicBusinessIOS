@@ -7,43 +7,65 @@
 
 import Foundation
 protocol SaveCustomerUseCase {
-    func executeUpdateCustomer(new: CustomerModel, current: [CustomerModel]) -> Result<Void, SaveCustomerValidationErrors>
-    func liveEditValidation(customer: CustomerModel) -> Result<Void, SaveCustomerValidationErrors>
+    func executeSaveNewCustomer(newCustomer: CustomerModel, currentList: [CustomerModel]) -> Result<[CustomerModel], SaveCustomerValidationErrors>
+    func executeUpdateCustomer(updated: CustomerModel, currentList: [CustomerModel]) -> Result<[CustomerModel], SaveCustomerValidationErrors>
 }
 
 struct SaveCustomer: SaveCustomerUseCase {
     private let fileStorage: CustomerListStorageManager
     
-    init(fileStorage: CustomerListStorageManager) {
+    init (fileStorage: CustomerListStorageManager) {
         self.fileStorage = fileStorage
     }
-    
-    func validateInput(customer: CustomerModel) -> [SaveCustomerError] {
-        var errors: [SaveCustomerError] = []
-        let first = customer.firstName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let last = customer.lastName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let email = customer.email.trimmingCharacters(in: .whitespacesAndNewlines)
-        let phone = customer.phone.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if first.isEmpty {errors.append(.missingFirstName)}
-        if last.isEmpty {errors.append(.missingLastName)}
-        if email.isEmpty {errors.append(.missingEmail)}
-        if phone.isEmpty {errors.append(.missingPhoneNumber)}
-        return errors
-    }
-    // Live input validation during user interaction with input field
-    func liveEditValidation(customer: CustomerModel) -> Result<Void, SaveCustomerValidationErrors> {
-        let errors = validateInput(customer: customer)
-        return errors.isEmpty
-        ? .success(())
-        : .failure(SaveCustomerValidationErrors(errors: errors))
-    }
-    
-    func executeUpdateCustomer(new: CustomerModel, current: [CustomerModel]) -> Result<Void, SaveCustomerValidationErrors> {
-        
-        
-        
 
+    func executeSaveNewCustomer(
+        newCustomer: CustomerModel,
+        currentList: [CustomerModel]
+    ) -> Result<[CustomerModel],SaveCustomerValidationErrors> {
+        
+        let validateResult = validateCustomerInput(customer: newCustomer)
+        if !validateResult.isEmpty {
+            return .failure(.init(errors: validateResult))
+        }
+        
+        if currentList.contains(where: {$0.id == newCustomer.id}) {
+            return .failure(.init(errors: [.writeFailed(reason: "Customer already exists")]))
+        }
+        
+        var snapshot = currentList + [newCustomer]
+        
+        do {
+            try fileStorage.saveCustomers(snapshot)
+            return .success(snapshot)
+        } catch {
+            return .failure(.init(errors: [.writeFailed(reason: "Failed to save customer")]))
+        }
+    }
+    
+    func executeUpdateCustomer(
+        updated: CustomerModel,
+        currentList: [CustomerModel]
+    ) -> Result<[CustomerModel], SaveCustomerValidationErrors> {
+        
+        let errs = validateCustomerInput(customer: updated)
+        if !errs.isEmpty {
+                return .failure(.init(errors: errs))
+        }
+        
+        guard let index = currentList.firstIndex(where: {$0.id == updated.id}) else {
+            return .failure(.init(errors: [.writeFailed(reason: "Customer not found")]))
+        }
+        
+        var snapshot = currentList
+        snapshot[index] = updated
+        
+        do {
+            try fileStorage.saveCustomers(snapshot)
+            return .success(snapshot)
+        } catch {
+            return .failure(.init(errors: [.writeFailed(reason: error.localizedDescription)]))
+        }
+        
     }
 }
 

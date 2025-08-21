@@ -162,6 +162,7 @@ struct StatsSummaryView: View {
                                     ForEach(customerListVM.paidCustomers, id: \.id) { customer in
                                         NavigationLink(destination: CustomerDetailView(
                                             customer: configuredDetailVM(for: customer),
+                                            listVM: customerListVM,
                                             activeSheet: $activeSheet
                                         )
                                         ) {
@@ -185,6 +186,7 @@ struct StatsSummaryView: View {
                                     ForEach(customerListVM.unpaidCustomers, id: \.id) { customer in
                                         NavigationLink(destination: CustomerDetailView(
                                             customer: configuredDetailVM(for: customer),
+                                            listVM: customerListVM,
                                             activeSheet: $activeSheet
                                         )) {
                                             CustomSectionView(
@@ -238,7 +240,7 @@ struct StatsSummaryView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     private func configuredDetailVM(for customer: CustomerModel) -> CustomerFormVM {
-        let useCase = SaveCustomerInteractor(fileStorage: FileStorageManager())
+        let useCase = SaveCustomer(fileStorage: FileStorageManager())
         let customerDetail = CustomerFormVM(
             customer: customer, mode: .edit,
             saveUseCase: useCase

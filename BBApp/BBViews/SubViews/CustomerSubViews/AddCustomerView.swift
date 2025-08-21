@@ -15,7 +15,7 @@ struct AddCustomerView: View {
     @State private var vm = CustomerFormVM(
         customer: CustomerModel(),
         mode: .add,
-        saveUseCase: SaveCustomerInteractor(fileStorage: FileStorageManager())
+        saveUseCase: SaveCustomer(fileStorage: FileStorageManager())
     )
     var body: some View {
         NavigationStack {
@@ -40,7 +40,7 @@ struct AddCustomerView: View {
                         .padding(5)
                         CustomFormView(
                             shouldValidate: attemptedSave,
-                            errorMessage: customerListVM.emailError
+                            errorMessage: vm.emailError
                         ) {
                             TextField("Email", text: $vm.draft.email)
                                 .keyboardType(.emailAddress)
@@ -48,7 +48,7 @@ struct AddCustomerView: View {
                         .padding(5)
                         CustomFormView(
                             shouldValidate: attemptedSave,
-                            errorMessage: customerListVM.phoneError
+                            errorMessage: vm.phoneError
                         ) {
                             TextField("Phone", text: $vm.draft.phone)
                                 .keyboardType(.numberPad)

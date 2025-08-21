@@ -17,10 +17,14 @@ struct CustomerListView: View {
                 List {
                     ForEach(customerListVM.allCustomers, id: \.id) { customer in
                         NavigationLink(
-                            destination:CustomerDetailView(
-                                customer: configuredDetailVM(for: customer),
-                                activeSheet: $activeSheet
-                            )) {
+                            destination: LazyView {
+                                CustomerDetailView(
+                                    customer: customerListVM.detailVM(for: customer),
+                                    listVM: customerListVM,
+                                    activeSheet: $activeSheet
+                                )
+                            }
+                                ) {
                             HStack {
                                 Image(systemName: "person.circle.fill")
                                     .foregroundColor(AppColors.accent)
@@ -57,10 +61,5 @@ struct CustomerListView: View {
                 activeSheet = .addCustomer
             })
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-    
-    private func configuredDetailVM(for customer: CustomerModel) -> CustomerFormVM {
-        let useCase = SaveCustomerInteractor(fileStorage: FileStorageManager())
-        return CustomerFormVM(customer: customer, mode: .edit, saveUseCase: useCase )
     }
 }

@@ -13,7 +13,7 @@ struct BasicBusinessTests {
 
     @Test func customerDependencyInjectionWorks() async throws {
         let mockStorage = InMemoryCustomerStorage()
-        let saveCustomer = SaveCustomerInteractor(fileStorage: mockStorage)
+        let saveCustomer = SaveCustomer(fileStorage: mockStorage)
         
         let customerListVM = CustomerListVM(
             saveCustomer: saveCustomer,

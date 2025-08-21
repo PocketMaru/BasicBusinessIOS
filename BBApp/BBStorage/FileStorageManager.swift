@@ -17,13 +17,6 @@ struct FileStorageManager {
     }
 }
 
-extension FileStorageManager: SingleCustomerStorageManager {
-    func saveCustomer(_ customer: CustomerModel) throws {
-        let data = try JSONEncoder().encode(customer)
-        try data.write(to: FileStorageManager.fileURL(for: "singleCustomer.json"), options: [.atomic, .completeFileProtection])
-    }
-}
-
 extension FileStorageManager: CustomerListStorageManager {
     func saveCustomers(_ customers: [CustomerModel]) throws {
         let data = try JSONEncoder().encode(customers)

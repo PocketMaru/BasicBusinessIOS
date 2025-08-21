@@ -15,7 +15,7 @@ import Foundation
 // TODO: Consider making lastName optional if user editing stays flexible.
 // TODO: Audit views using fullName to clean up fallback logic.
 // When editing, `lastName` may be empty, so fullName looks awkward.
-struct CustomerModel: Identifiable, Hashable, Codable, Equatable {
+struct CustomerModel: Identifiable, Hashable, Codable {
     /// Unique identifier for customer id
     var id: UUID = UUID()
     
@@ -51,8 +51,20 @@ struct CustomerModel: Identifiable, Hashable, Codable, Equatable {
         firstName :
         "\(firstName) \(lastName)"
     }
-    
+    /// Date customer is added to storage.
     var loyaltyDate: Date = Date()
+}
+
+extension CustomerModel {
+    func equalsForEdit(_ other: CustomerModel) -> Bool {
+        func norm(_ s: String) -> String {
+            s.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return norm(firstName) == norm(other.firstName) &&
+        norm(lastName) == norm(other.lastName) &&
+        norm(email) == norm(other.email) &&
+        norm(phone) == norm(other.phone)
+    }
 }
 
 extension CustomerModel {

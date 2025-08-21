@@ -63,8 +63,10 @@ struct InvoiceModel: Identifiable {
     /// Optional data for user defined fields.
     var customFields: Data?
     
+    /// Optional list of materials on invoice.
     var materialExpenses: [MaterialExpenseQM]? = nil
     
+    /// Computed property for total cost of materials.
     var materialTotalCost: Double? {
         materialExpenses?.reduce(0) {$0 + $1.unitCost}
     }

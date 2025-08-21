@@ -7,12 +7,7 @@
 
 import SwiftUI
 
-struct LazyView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    LazyView()
+struct LazyView<Content: View>: View {
+    let build: () -> Content
+    var body: some View { build() }
 }
