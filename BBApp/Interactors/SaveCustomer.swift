@@ -7,8 +7,8 @@
 
 import Foundation
 protocol SaveCustomerUseCase {
-    func executeSaveNewCustomer(newCustomer: CustomerModel, currentList: [CustomerModel]) -> Result<[CustomerModel], SaveCustomerValidationErrors>
-    func executeUpdateCustomer(updated: CustomerModel, currentList: [CustomerModel]) -> Result<[CustomerModel], SaveCustomerValidationErrors>
+    func create(from draft: CustomerModel, currentList: [CustomerModel]) -> Result<[CustomerModel], SaveCustomerValidationErrors>
+    func update(with updated: CustomerModel, currentList: [CustomerModel]) -> Result<[CustomerModel], SaveCustomerValidationErrors>
 }
 
 struct SaveCustomer: SaveCustomerUseCase {
@@ -17,39 +17,37 @@ struct SaveCustomer: SaveCustomerUseCase {
     init (fileStorage: CustomerListStorageManager) {
         self.fileStorage = fileStorage
     }
-
-    func executeSaveNewCustomer(
-        newCustomer: CustomerModel,
+    
+    func create(
+        from draft: CustomerModel,
         currentList: [CustomerModel]
-    ) -> Result<[CustomerModel],SaveCustomerValidationErrors> {
-        
-        let validateResult = validateCustomerInput(customer: newCustomer)
+    ) -> Result<[CustomerModel], SaveCustomerValidationErrors> {
+        let validateResult = validateCustomerInput(customer: draft)
         if !validateResult.isEmpty {
             return .failure(.init(errors: validateResult))
         }
         
-        if currentList.contains(where: {$0.id == newCustomer.id}) {
+        if currentList.contains(where: {$0.id == draft.id}) {
             return .failure(.init(errors: [.writeFailed(reason: "Customer already exists")]))
         }
         
-        var snapshot = currentList + [newCustomer]
+        let newList = currentList + [draft]
         
         do {
-            try fileStorage.saveCustomers(snapshot)
-            return .success(snapshot)
+            try fileStorage.saveCustomers(newList)
+            return .success(newList)
         } catch {
-            return .failure(.init(errors: [.writeFailed(reason: "Failed to save customer")]))
+            return .failure(.init(errors: [.writeFailed(reason: error.localizedDescription)]))
         }
     }
     
-    func executeUpdateCustomer(
-        updated: CustomerModel,
+    func update(
+        with updated: CustomerModel,
         currentList: [CustomerModel]
     ) -> Result<[CustomerModel], SaveCustomerValidationErrors> {
-        
         let errs = validateCustomerInput(customer: updated)
         if !errs.isEmpty {
-                return .failure(.init(errors: errs))
+            return .failure(.init(errors: errs))
         }
         
         guard let index = currentList.firstIndex(where: {$0.id == updated.id}) else {
@@ -65,7 +63,6 @@ struct SaveCustomer: SaveCustomerUseCase {
         } catch {
             return .failure(.init(errors: [.writeFailed(reason: error.localizedDescription)]))
         }
-        
     }
 }
 

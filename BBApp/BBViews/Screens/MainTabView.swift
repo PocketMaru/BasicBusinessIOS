@@ -13,6 +13,7 @@ struct MainTabView: View {
     var materialVM: MaterialVM
     var userVM = UserVM(user: UserModel.sample)
     @State private var activeSheet: ActiveUserSheet?
+    @State private var addCustomerVM: CustomerFormVM? = nil
     
     var body: some View {
         
@@ -32,8 +33,12 @@ struct MainTabView: View {
             NavigationStack {
                 CustomerListView(
                     customerListVM: customerListVM,
+                    createAddCustomerVM: {
+                        addCustomerVM = customerListVM.addVM()
+                    },
                     userVM: userVM,
-                    activeSheet: $activeSheet,
+                    activeSheet: $activeSheet
+                    
                 )
             }
             .tabItem {
@@ -76,14 +81,19 @@ struct MainTabView: View {
                     )
                 )
             case .addCustomer:
-                AddCustomerView(
-                    customerListVM: customerListVM,
-                    isPresented: Binding(
-                        get: { activeSheet != nil },
-                        set: { if !$0 { activeSheet = nil } }
-                    ),
-                    activeSheet: $activeSheet
-                )
+                if let vm = addCustomerVM {
+                    AddCustomerView(
+                        customerListVM: customerListVM,
+                        newCustomer: vm,
+                        isPresented: Binding(
+                            get: {activeSheet != nil},
+                            set: {if !$0 {activeSheet = nil}}
+                        ),
+                        activeSheet: $activeSheet
+                    )
+                } else {
+                    EmptyView()
+                }
             }
         }
     }

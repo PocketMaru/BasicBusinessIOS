@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CustomerListView: View {
     var customerListVM: CustomerListVM
+    var createAddCustomerVM: () -> Void
     @Bindable var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
     var body: some View {
@@ -17,13 +18,12 @@ struct CustomerListView: View {
                 List {
                     ForEach(customerListVM.allCustomers, id: \.id) { customer in
                         NavigationLink(
-                            destination: LazyView {
+                            destination:
                                 CustomerDetailView(
-                                    customer: customerListVM.detailVM(for: customer),
+                                    customer: customerListVM.editVM(for: customer),
                                     listVM: customerListVM,
                                     activeSheet: $activeSheet
                                 )
-                            }
                                 ) {
                             HStack {
                                 Image(systemName: "person.circle.fill")
@@ -58,6 +58,7 @@ struct CustomerListView: View {
                         activeSheet = .user
                     }
             }, editIconTapped: {
+                createAddCustomerVM()
                 activeSheet = .addCustomer
             })
         .frame(maxWidth: .infinity, maxHeight: .infinity)

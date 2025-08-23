@@ -27,19 +27,45 @@ final class CustomerListVM {
     private let saveCustomer: SaveCustomerUseCase
     private let customerListStorage: CustomerListStorageManager
     private var formVMCache: [UUID: CustomerFormVM] = [:]
+    private let addFormKey = UUID()
     
-    func detailVM(for customer: CustomerModel) -> CustomerFormVM {
+    func editVM(for customer: CustomerModel) -> CustomerFormVM {
         if let vm = formVMCache[customer.id] {
-            print("✅ cache HIT for \(customer.id)")
+            print("cache HIT for \(customer.id)")
             return vm
         }
-        print("🆕 cache MISS → creating VM for \(customer.id)")
+        print("cache MISS → creating VM for \(customer.id)")
         let vm = CustomerFormVM(
             customer: customer,
             mode: .edit,
-            saveUseCase: saveCustomer
+            saveUseCase: saveCustomer,
+            setStatusMessage: { [weak self] msg in self?.statusMessage = msg },
+            onSubmit: { [weak self] draft in
+                self?.updateCustomer(from: draft) ?? .failure(.init(errors: [.writeFailed(reason: "Unknown error")]))
+            }
         )
         formVMCache[customer.id] = vm
+        return vm
+    }
+    
+    func addVM() -> CustomerFormVM {
+        let newCustomer = CustomerModel()
+        print("Creating AddVM for new customer")
+        let vm = CustomerFormVM(
+            customer: newCustomer,
+            mode: .add,
+            saveUseCase: saveCustomer,
+            setStatusMessage: { [weak self] msg in self?.statusMessage = msg },
+            onSubmit: { [weak self] draft in
+                guard let self else {
+                    return .failure(.init(errors: [.writeFailed(reason: "Unknown error")]))
+                }
+                let result = self.addCustomer(from: draft)
+                self.formVMCache[addFormKey] = nil
+                return result
+            }
+        )
+        formVMCache[addFormKey] = vm
         return vm
     }
     
@@ -50,58 +76,39 @@ final class CustomerListVM {
     }
     
     @discardableResult
-    func addCustomer(
-        firstName: String,
-        lastName: String,
-        email: String,
-        address: String?,
-        zipCode: String?,
-        phone: String,
-        paidBill: Bool?,
-        loyaltyDate: Date = Date()
-    ) -> Bool {
+    func addCustomer(from draft: CustomerModel) -> Result<Void, SaveCustomerValidationErrors>  {
+        let result = saveCustomer.create(from: draft, currentList: allCustomers)
         
-        let newCustomer = CustomerModel(
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            address: address,
-            zipCode: zipCode,
-            phone: phone,
-            paidBill: paidBill ?? false,
-            loyaltyDate: loyaltyDate
-        )
-
-        let result = saveCustomer.executeSaveNewCustomer(
-            newCustomer: newCustomer,
-            currentList: allCustomers
-        )
-            
-            switch result {
-            case .success(let newList):
-                allCustomers = newList
-                _ = handleValidationResult(.success(()),successMessage: "Customer added successfully")
-                return true
-            case .failure:
-                _ = handleValidationResult(result,successMessage: "")
-                return false
-            }
+        switch result {
+        case .success(let updated):
+            allCustomers = updated
+            return .success(())
+        case .failure(let errors):
+            return .failure(errors)
+        }
     }
     
     @discardableResult
-    func updateCustomer(with updated: CustomerModel) -> Bool {
-        let result = saveCustomer.executeUpdateCustomer(updated: updated, currentList: allCustomers)
+    func submitNewCustomer(from draft: CustomerModel) -> Bool {
+        handleValidationResult(addCustomer(from: draft), successMessage: "Customer added successfully.")
+    }
+    
+    @discardableResult
+    func updateCustomer(from draft: CustomerModel) -> Result<Void, SaveCustomerValidationErrors> {
+        let result = saveCustomer.update(with: draft, currentList: allCustomers)
         
         switch result {
         case .success(let newList):
             allCustomers = newList
-            _ = handleValidationResult(.success(()),successMessage: "Customer updated successfully")
-            return true
-            
-        case .failure:
-            _ = handleValidationResult(result,successMessage: "")
-            return false
+            return .success(())
+        case .failure(let errors):
+            return .failure(errors)
         }
+    }
+    
+    @discardableResult
+    func submitCustomerEdits(from draft: CustomerModel) -> Bool {
+        handleValidationResult(updateCustomer(from: draft), successMessage: "Customer updated successfully.")
     }
 
     func searchCustomer(by name: String) -> [CustomerModel] {
@@ -125,8 +132,8 @@ final class CustomerListVM {
         allQuotes.filter { $0.customerID == customerID }
     }
     
-    func handleValidationResult<T> (
-        _ result: Result<T, SaveCustomerValidationErrors>,
+    func handleValidationResult (
+        _ result: Result<Void, SaveCustomerValidationErrors>,
         successMessage: String
     ) -> Bool {
         

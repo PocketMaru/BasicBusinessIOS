@@ -115,19 +115,13 @@ struct CustomerDetailView: View {
             editIconTapped: {
                 if isEditing {
                     attemptedEdit = true
-                    // Need to apply is dirty
                     if customer.isDirty {
                         guard customer.errors == nil else { return }
                     }
-                    let result = customer.submit(currentList: listVM.allCustomers)
-                    switch result {
-                    case .success(let newList):
-                        listVM.allCustomers = newList
-                        _ = listVM.handleValidationResult(result, successMessage: "Customer updated successfully!")
+                    let success = customer.trySubmit()
+                    if success {
                         isEditing = false
                         attemptedEdit = false
-                    case .failure:
-                        _ = listVM.handleValidationResult(result, successMessage: "")
                     }
                 } else {
                     customer.cancelEdits()

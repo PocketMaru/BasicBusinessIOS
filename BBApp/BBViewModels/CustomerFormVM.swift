@@ -26,7 +26,7 @@ final class CustomerFormVM {
         
         didSet {
             if oldValue.equalsForEdit(draft) { return }
-            print("🟡 draft changed:", draft.firstName, draft.lastName)
+            print("draft changed:", draft.firstName, draft.lastName)
             validateLiveAndUpdateErrors()}
     }
     
@@ -42,17 +42,21 @@ final class CustomerFormVM {
         !draft.equalsForEdit(original)
     }
     
+    private let onSubmit: (CustomerModel) -> Result<Void, SaveCustomerValidationErrors>
+    
     init(
         customer: CustomerModel,
         mode: CustomerFormMode,
         saveUseCase: SaveCustomerUseCase,
-        setStatusMessage: ((String) -> Void)? = nil
+        setStatusMessage: ((String) -> Void)? = nil,
+        onSubmit: @escaping (CustomerModel) -> Result<Void, SaveCustomerValidationErrors>
     ) {
         self.mode = mode
         self.original = customer
         self.draft = customer
         self.saveUseCase = saveUseCase
         self.setStatusMessage = setStatusMessage
+        self.onSubmit = onSubmit
         print("FormVM INIT id=\(customer.id) name=\(customer.firstName) \(customer.lastName)")
     }
     
@@ -78,32 +82,17 @@ final class CustomerFormVM {
     }
     
     @discardableResult
-    func validateLive() -> Result<Void, SaveCustomerValidationErrors> {
-        let errors = validateCustomerInput(customer: draft)
-        return errors.isEmpty
-            ? .success(())
-            : .failure(SaveCustomerValidationErrors(errors: errors))
-    }
-    
-    @discardableResult
-    func submit(currentList: [CustomerModel]) -> Result<[CustomerModel], SaveCustomerValidationErrors> {
-        print("SUBMIT mode=\(mode) draft.id=\(draft.id) original.id=\(original.id) listCount=\(currentList.count)")
-        let result: Result<[CustomerModel], SaveCustomerValidationErrors>
-        switch mode {
-        case .add:
-            result = saveUseCase.executeSaveNewCustomer(newCustomer: draft, currentList: currentList)
-        case .edit:
-            result = saveUseCase.executeUpdateCustomer(updated: draft, currentList: currentList)
-        }
-        print("SUBMIT result=\(result)")
+    func trySubmit() -> Bool {
+        let result = onSubmit(draft)
+        
         switch result {
         case .success:
-            errors = nil
             original = draft
-            setStatusMessage?("Customer saved successfully")
+            errors = nil
+            return true
         case .failure(let e):
-            errors = e
+            self.errors = e
+            return false
         }
-        return result
     }
 }

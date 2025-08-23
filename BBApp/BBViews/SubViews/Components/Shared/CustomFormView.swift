@@ -13,7 +13,7 @@ struct CustomFormView<Content: View>: View {
     let header: String?
     let fixedHeight: Bool
     let text: String?
-    let content: Content
+    let content: () -> Content
     let tapped: (() -> Void)?
     
     init(
@@ -22,7 +22,7 @@ struct CustomFormView<Content: View>: View {
         header: String? = nil,
         fixedHeight: Bool = true,
         text: String? = nil,
-        @ViewBuilder content: () -> Content,
+        @ViewBuilder content: @escaping () -> Content,
         tapped: (() -> Void)? = nil
     ) {
         self.shouldValidate = shouldValidate
@@ -30,7 +30,7 @@ struct CustomFormView<Content: View>: View {
         self.header = header
         self.fixedHeight = fixedHeight
         self.text = text
-        self.content = content()
+        self.content = content
         self.tapped = tapped
     }
     
@@ -54,7 +54,7 @@ struct CustomFormView<Content: View>: View {
     @ViewBuilder
     private func formFieldContent() -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            content
+            content()
                 .if(fixedHeight) { view in
                     view.frame(height: 48)
                 }

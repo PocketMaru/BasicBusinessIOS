@@ -161,7 +161,7 @@ struct StatsSummaryView: View {
                                 if paidStatus {
                                     ForEach(customerListVM.paidCustomers, id: \.id) { customer in
                                         NavigationLink(destination: CustomerDetailView(
-                                            customer: configuredDetailVM(for: customer),
+                                            customer: customerListVM.editVM(for: customer),
                                             listVM: customerListVM,
                                             activeSheet: $activeSheet
                                         )
@@ -185,7 +185,7 @@ struct StatsSummaryView: View {
                                 } else {
                                     ForEach(customerListVM.unpaidCustomers, id: \.id) { customer in
                                         NavigationLink(destination: CustomerDetailView(
-                                            customer: configuredDetailVM(for: customer),
+                                            customer: customerListVM.editVM(for: customer),
                                             listVM: customerListVM,
                                             activeSheet: $activeSheet
                                         )) {
@@ -238,13 +238,5 @@ struct StatsSummaryView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-    private func configuredDetailVM(for customer: CustomerModel) -> CustomerFormVM {
-        let useCase = SaveCustomer(fileStorage: FileStorageManager())
-        let customerDetail = CustomerFormVM(
-            customer: customer, mode: .edit,
-            saveUseCase: useCase
-        )
-        return customerDetail
     }
 }
