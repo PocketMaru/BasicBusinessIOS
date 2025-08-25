@@ -26,16 +26,10 @@ final class CustomerListVM {
     
     private let saveCustomer: SaveCustomerUseCase
     private let customerListStorage: CustomerListStorageManager
-    private var formVMCache: [UUID: CustomerFormVM] = [:]
-    private let addFormKey = UUID()
     
     func editVM(for customer: CustomerModel) -> CustomerFormVM {
-        if let vm = formVMCache[customer.id] {
-            print("cache HIT for \(customer.id)")
-            return vm
-        }
         print("cache MISS → creating VM for \(customer.id)")
-        let vm = CustomerFormVM(
+        return CustomerFormVM(
             customer: customer,
             mode: .edit,
             saveUseCase: saveCustomer,
@@ -44,14 +38,12 @@ final class CustomerListVM {
                 self?.updateCustomer(from: draft) ?? .failure(.init(errors: [.writeFailed(reason: "Unknown error")]))
             }
         )
-        formVMCache[customer.id] = vm
-        return vm
     }
     
     func addVM() -> CustomerFormVM {
         let newCustomer = CustomerModel()
         print("Creating AddVM for new customer")
-        let vm = CustomerFormVM(
+        return CustomerFormVM(
             customer: newCustomer,
             mode: .add,
             saveUseCase: saveCustomer,
@@ -61,12 +53,9 @@ final class CustomerListVM {
                     return .failure(.init(errors: [.writeFailed(reason: "Unknown error")]))
                 }
                 let result = self.addCustomer(from: draft)
-                self.formVMCache[addFormKey] = nil
                 return result
             }
         )
-        formVMCache[addFormKey] = vm
-        return vm
     }
     
     init(saveCustomer: SaveCustomerUseCase, customerListStorage: CustomerListStorageManager) {
@@ -121,11 +110,19 @@ final class CustomerListVM {
         }
     }
 
-    func removeCustomer(at index: Int){
-        let removed = allCustomers[index]
-        formVMCache[removed.id] = nil
-        allCustomers.remove(at: index)
-        try? customerListStorage.saveCustomers(allCustomers)
+    func removeCustomer(at index: Int) {
+        guard allCustomers.indices.contains(index) else {
+            print("⚠️ Invalid index \(index) for removal")
+            return
+        }
+
+        let removed = allCustomers.remove(at: index)
+        do {
+            try customerListStorage.saveCustomers(allCustomers)
+            print("Removed customer \(removed.id) and saved list")
+        } catch {
+            print("Failed to save customers after removal: \(error)")
+        }
     }
 
     func showAllCustomerQuotes(for customerID: UUID) -> [QuoteModel] {

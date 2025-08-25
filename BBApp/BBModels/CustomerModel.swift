@@ -37,7 +37,8 @@ struct CustomerModel: Identifiable, Hashable, Codable {
     /// Customer phone number
     var phone: String = ""
     
-    /// Optional info on customer pay status
+    // TODO: This paidBill logic will be replaced with the customer payment status enum.
+    // TODO: it will have computed properties that determine the value based on open invoices/closed and quotes open
     var paidBill: Bool? = false
     
     /// Optional full name of customer when first and last exist.
@@ -65,6 +66,16 @@ extension CustomerModel {
         norm(email) == norm(other.email) &&
         norm(phone) == norm(other.phone)
     }
+}
+
+// TODO: This enum will determine the payment status of a customer based on open invoices and quotes tied to the customer.
+enum CustomerPaymentStatus {
+    case noActivity
+    case quoted
+    case unpaid
+    case paid
+    case late
+    case paidLate
 }
 
 extension CustomerModel {
