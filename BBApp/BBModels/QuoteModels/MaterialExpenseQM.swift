@@ -27,7 +27,6 @@ struct MaterialExpenseQM: Identifiable {
     var unitCost: Double
     var unitType: ProductUnitTypes
     var addedAsExpense: Bool = false
-    var expenseStatus: ExpenseStatus = .pending
 }
 
 extension MaterialExpenseQM {
@@ -42,7 +41,6 @@ extension MaterialExpenseQM {
             hoursWorked: nil,
             hourlyRate: nil,
             fixedRate: nil,
-            expenseStatus: .confirmed,
             materialExpense: self
             
         )
@@ -62,7 +60,6 @@ struct MaterialExpensePreview: Identifiable {
     var id = UUID()
     var label: String
     var estimatedCost: Double
-    var expenseStatus: ExpenseStatus = .pending
 }
 
 extension MaterialExpensePreview {
@@ -70,7 +67,6 @@ extension MaterialExpensePreview {
         self.id = expense.id
         self.label = expense.name
         self.estimatedCost = expense.unitCost
-        self.expenseStatus = expense.expenseStatus
     }
 }
 

@@ -29,8 +29,8 @@ struct ExpenseModel: Identifiable {
     var hoursWorked: Double?
     var hourlyRate: Double?
     var fixedRate: Double?
-    var expenseStatus: ExpenseStatus
     var materialExpense: MaterialExpenseQM?
+    var linkedQuoteID: UUID?
     
     /// Computed property for expense total - Calculated from expense type
     ///  - If `.employeeWages`: total = hours x rage + material cost
@@ -94,21 +94,6 @@ enum ExpenseType {
     }
 }
 
-/// Enum for pending and confirmed expenses
-enum ExpenseStatus {
-    case pending
-    case confirmed
-    
-    var name: String {
-        switch self {
-        case .pending:
-            return "Pending"
-        case .confirmed:
-            return "Confirmed"
-        }
-    }
-}
-
 /// Extension for expense sample data
 extension ExpenseModel {
     static let sample = ExpenseModel(
@@ -120,7 +105,6 @@ extension ExpenseModel {
         hoursWorked: nil,
         hourlyRate: nil,
         fixedRate: 100.0,
-        expenseStatus: .confirmed
     )
     
     static let sampleList: [ExpenseModel] = [
@@ -134,7 +118,7 @@ extension ExpenseModel {
             hoursWorked: 10.0,
             hourlyRate: 25.0,
             fixedRate: nil,
-            expenseStatus: .confirmed),
+        ),
         
         ExpenseModel(
             id: UUID(),
@@ -145,7 +129,7 @@ extension ExpenseModel {
             hoursWorked: nil,
             hourlyRate: nil,
             fixedRate: 300,
-            expenseStatus: .confirmed),
+        ),
         
         ExpenseModel(
             id: UUID(),
@@ -156,6 +140,6 @@ extension ExpenseModel {
             hoursWorked: 5.0,
             hourlyRate: 15.0,
             fixedRate: 400,
-            expenseStatus: .confirmed)
+        )
     ]
 }
