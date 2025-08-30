@@ -7,14 +7,13 @@
 
 import Foundation
 
-/// Enum defining different errors for customer model inputs
-enum SaveCustomerError: Error {
+/// Enum offering input for different save errors.
+enum SaveError: Error {
     case writeFailed(reason: String)
     var message: String {
         switch self {
         case .writeFailed(let reason): 
-            return "Failed to save customer: \(reason)"
+            return "Failed to save: \(reason)"
         }
     }
 }
-

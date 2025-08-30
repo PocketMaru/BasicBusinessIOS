@@ -56,18 +56,6 @@ struct CustomerModel: Identifiable, Hashable, Codable {
     var loyaltyDate: Date = Date()
 }
 
-extension CustomerModel {
-    func equalsForEdit(_ other: CustomerModel) -> Bool {
-        func norm(_ s: String) -> String {
-            s.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-        return norm(firstName) == norm(other.firstName) &&
-        norm(lastName) == norm(other.lastName) &&
-        norm(email) == norm(other.email) &&
-        norm(phone) == norm(other.phone)
-    }
-}
-
 // TODO: This enum will determine the payment status of a customer based on open invoices and quotes tied to the customer.
 enum CustomerPaymentStatus {
     case noActivity

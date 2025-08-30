@@ -42,6 +42,12 @@ struct MaterialModel: Identifiable {
     
 }
 
+extension MaterialModel {
+    func toQuoteMaterial(addedAsExpense: Bool = false) -> MaterialExpenseQM {
+        return MaterialExpenseQM(from: self, addedAsExpense: addedAsExpense)
+    }
+}
+
 enum ProductUnitTypes: String, CaseIterable, Identifiable, Codable {
     var id: String { rawValue }
     

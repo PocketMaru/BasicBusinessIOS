@@ -16,20 +16,7 @@ import SwiftUI
 struct BasicBusinessApp: App {
     var body: some Scene {
         WindowGroup {
-            
-            let fileStorage = FileStorageManager()
-            let saveCustomer = SaveCustomer(fileStorage: fileStorage)
-            
-            let listVM = CustomerListVM(
-                saveCustomer: saveCustomer,
-                customerListStorage: fileStorage
-            )
-            
-            MainTabView(
-                customerListVM: listVM,
-                quoteVM: QuoteVM(savedMaterials: MaterialModel.sampleList),
-                materialVM: MaterialVM(materials: MaterialModel.sampleList)
-            )
+            MainTabView()
                 .accentColor(ThemeColors.logoColor)
         }
     }

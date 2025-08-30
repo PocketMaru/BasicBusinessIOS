@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct MainTabView: View {
-    var customerListVM: CustomerListVM
-    var quoteVM: QuoteVM
-    var materialVM: MaterialVM
+    @State private var customerListVM = CustomerListVM()
+    @State private var quoteVM = QuoteVM(savedMaterials: MaterialModel.sampleList)
+    @State private var materialVM = MaterialVM(materials: MaterialModel.sampleList)
     var userVM = UserVM(user: UserModel.sample)
     @State private var activeSheet: ActiveUserSheet?
     @State private var addCustomerVM: CustomerFormVM? = nil
@@ -33,9 +33,6 @@ struct MainTabView: View {
             NavigationStack {
                 CustomerListView(
                     customerListVM: customerListVM,
-                    createAddCustomerVM: {
-                        addCustomerVM = customerListVM.addVM()
-                    },
                     userVM: userVM,
                     activeSheet: $activeSheet
                     
@@ -70,6 +67,13 @@ struct MainTabView: View {
         }
         .tabViewStyle(DefaultTabViewStyle())
         .tint(.primaryAccent)
+        /// Checks for changes to `activeSheet` records the old value and
+        /// the new value, if the value is `.addCustomer` it creates the `addVM`.
+        .onChange(of: activeSheet) { oldValue, newValue in
+            if newValue == .addCustomer {
+                addCustomerVM = customerListVM.addVM()
+            }
+        }
         .sheet(item: $activeSheet) { item in
             switch item {
             case .user:
@@ -81,19 +85,15 @@ struct MainTabView: View {
                     )
                 )
             case .addCustomer:
-                if let vm = addCustomerVM {
-                    AddCustomerView(
-                        customerListVM: customerListVM,
-                        newCustomer: vm,
-                        isPresented: Binding(
-                            get: {activeSheet != nil},
-                            set: {if !$0 {activeSheet = nil}}
-                        ),
-                        activeSheet: $activeSheet
-                    )
-                } else {
-                    EmptyView()
-                }
+                AddCustomerView(
+                    customerListVM: customerListVM,
+                    newCustomer: customerListVM.addVM(),
+                    isPresented: Binding(
+                        get: { activeSheet != nil },
+                        set: { if !$0 { activeSheet = nil } }
+                    ),
+                    activeSheet: $activeSheet
+                )
             }
         }
     }

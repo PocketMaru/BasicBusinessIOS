@@ -22,34 +22,22 @@ final class CustomerFormVM {
     
     private(set) var original: CustomerModel
     
-    var draft: CustomerModel {
-        
-        didSet {
-            if oldValue.equalsForEdit(draft) { return }
-            print("draft changed:", draft.firstName, draft.lastName)
-            validateLiveAndUpdateErrors()}
-    }
+    var draft: CustomerModel
     
-    private(set) var errors: SaveCustomerValidationErrors?
+    var firstNameError: String? = nil
+    var lastNameError:  String? = nil
+    var emailError:     String? = nil
+    var phoneError:     String? = nil
+    var generalError:   String? = nil
     
-    var firstNameError: String? { errors?.firstName}
-    var lastNameError:  String? { errors?.lastName}
-    var emailError:     String? { errors?.email}
-    var phoneError:     String? { errors?.phone}
-    var generalError:   String? { errors?.generalMessage}
-    
-    var isDirty: Bool {
-        !draft.equalsForEdit(original)
-    }
-    
-    private let onSubmit: (CustomerModel) -> Result<Void, SaveCustomerValidationErrors>
+    private let onSubmit: (CustomerModel) -> Void
     
     init(
         customer: CustomerModel,
         mode: CustomerFormMode,
         saveUseCase: SaveCustomerUseCase,
         setStatusMessage: ((String) -> Void)? = nil,
-        onSubmit: @escaping (CustomerModel) -> Result<Void, SaveCustomerValidationErrors>
+        onSubmit: @escaping (CustomerModel) -> Void
     ) {
         self.mode = mode
         self.original = customer
@@ -62,36 +50,27 @@ final class CustomerFormVM {
     
     deinit { print("FormVM DEINIT") }
     
+    func validateFields() -> Bool {
+        firstNameError  = draft.firstName.isEmpty ? "Required" : nil
+        lastNameError   = draft.lastName.isEmpty  ? "Required" : nil
+        emailError      = draft.email.isEmpty     ? "Required" : nil
+        phoneError      = draft.phone.isEmpty     ? "Required" : nil
+        return [firstNameError, lastNameError, emailError, phoneError].allSatisfy { $0 == nil }
+    }
+    
     func cancelEdits() {
         draft = original
-        errors = nil
         setStatusMessage?("Edit Cancelled")
     }
     
     @discardableResult
-    func validateLiveAndUpdateErrors() -> Result<Void, SaveCustomerValidationErrors> {
-        let errs = validateCustomerInput(customer: draft)
-        if errs.isEmpty {
-            errors = nil
-            return .success(())
-        } else {
-            let wrapped = SaveCustomerValidationErrors(errors: errs)
-            errors = wrapped
-            return .failure(wrapped)
-        }
-    }
-    
-    @discardableResult
     func trySubmit() -> Bool {
-        let result = onSubmit(draft)
-        
-        switch result {
-        case .success:
-            original = draft
-            errors = nil
+        let isValid = validateFields()
+        if isValid {
+            onSubmit(draft)
             return true
-        case .failure(let e):
-            self.errors = e
+        } else {
+            setStatusMessage?("Please correct the errors in the form")
             return false
         }
     }

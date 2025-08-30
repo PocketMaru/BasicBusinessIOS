@@ -29,77 +29,63 @@ final class CustomerListVM {
     
     func editVM(for customer: CustomerModel) -> CustomerFormVM {
         print("cache MISS → creating VM for \(customer.id)")
-        return CustomerFormVM(
+        let vm = CustomerFormVM(
             customer: customer,
             mode: .edit,
             saveUseCase: saveCustomer,
             setStatusMessage: { [weak self] msg in self?.statusMessage = msg },
             onSubmit: { [weak self] draft in
-                self?.updateCustomer(from: draft) ?? .failure(.init(errors: [.writeFailed(reason: "Unknown error")]))
+                self?.updateCustomer(from: draft)
             }
         )
+        return vm
     }
     
     func addVM() -> CustomerFormVM {
-        let newCustomer = CustomerModel()
         print("Creating AddVM for new customer")
-        return CustomerFormVM(
-            customer: newCustomer,
+        let vm = CustomerFormVM(
+            customer: CustomerModel(),
             mode: .add,
             saveUseCase: saveCustomer,
             setStatusMessage: { [weak self] msg in self?.statusMessage = msg },
             onSubmit: { [weak self] draft in
-                guard let self else {
-                    return .failure(.init(errors: [.writeFailed(reason: "Unknown error")]))
-                }
-                let result = self.addCustomer(from: draft)
-                return result
+                self?.addCustomer(from: draft)
             }
         )
+        return vm
     }
     
-    init(saveCustomer: SaveCustomerUseCase, customerListStorage: CustomerListStorageManager) {
-        self.saveCustomer = saveCustomer
-        self.customerListStorage = customerListStorage
+    init() {
+        self.customerListStorage = FileStorageManager()
+        self.saveCustomer = SaveCustomer(fileStorage: customerListStorage)
         self.allCustomers = (try? customerListStorage.loadCustomers()) ?? []
     }
     
     @discardableResult
-    func addCustomer(from draft: CustomerModel) -> Result<Void, SaveCustomerValidationErrors>  {
-        let result = saveCustomer.create(from: draft, currentList: allCustomers)
-        
-        switch result {
-        case .success(let updated):
+    func addCustomer(from draft: CustomerModel) -> Bool  {
+        do {
+            let newCustomer = try saveCustomer.create(from: draft, currentList: allCustomers)
+            allCustomers = newCustomer
+            return true
+        } catch {
+            return false
+        }
+    }
+    
+    @discardableResult
+    func updateCustomer(from draft: CustomerModel) -> Bool {
+        guard let _ = allCustomers.firstIndex(where: { $0.id == draft.id}) else {
+            return false
+        }
+        do {
+            let updated = try saveCustomer.update(with: draft, currentList: allCustomers)
             allCustomers = updated
-            return .success(())
-        case .failure(let errors):
-            return .failure(errors)
+            return true
+        } catch {
+            return false
         }
     }
     
-    @discardableResult
-    func submitNewCustomer(from draft: CustomerModel) -> Bool {
-        handleValidationResult(addCustomer(from: draft), successMessage: "Customer added successfully.")
-    }
-    
-    @discardableResult
-    func updateCustomer(from draft: CustomerModel) -> Result<Void, SaveCustomerValidationErrors> {
-        let result = saveCustomer.update(with: draft, currentList: allCustomers)
-        
-        switch result {
-        case .success(let newList):
-            allCustomers = newList
-            return .success(())
-        case .failure(let errors):
-            return .failure(errors)
-        }
-    }
-    
-    @discardableResult
-    func submitCustomerEdits(from draft: CustomerModel) -> Bool {
-        handleValidationResult(updateCustomer(from: draft), successMessage: "Customer updated successfully.")
-    }
-
     func searchCustomer(by name: String) -> [CustomerModel] {
         let query = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
 
@@ -112,7 +98,7 @@ final class CustomerListVM {
 
     func removeCustomer(at index: Int) {
         guard allCustomers.indices.contains(index) else {
-            print("⚠️ Invalid index \(index) for removal")
+            print("Invalid index \(index) for removal")
             return
         }
 
@@ -127,21 +113,5 @@ final class CustomerListVM {
 
     func showAllCustomerQuotes(for customerID: UUID) -> [QuoteModel] {
         allQuotes.filter { $0.customerID == customerID }
-    }
-    
-    func handleValidationResult (
-        _ result: Result<Void, SaveCustomerValidationErrors>,
-        successMessage: String
-    ) -> Bool {
-        
-        switch result {
-        case .success:
-            statusMessage = successMessage
-            return true
-            
-        case .failure:
-            statusMessage = "Please fix the highlighted fields."
-            return false
-        }
     }
 }

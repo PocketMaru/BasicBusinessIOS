@@ -52,24 +52,20 @@ struct AddCustomerView: View {
                         }
                         .padding(5)
                         CustomFormView() {
-                            TextField("Address", text: Binding (
-                                get: {newCustomer.draft.address ?? ""},
-                                set: {newCustomer.draft.address = $0.isEmpty ? nil : $0}))
+                            TextField("Address", text: $newCustomer.draft.address.defaulting(to: ""))
                         }
                         .padding(5)
                         CustomFormView() {
-                            TextField("Zip Code", text: Binding(
-                                get: {newCustomer.draft.zipCode ?? ""},
-                                set: {newCustomer.draft.zipCode = $0.isEmpty ? nil : $0}
-                            ))
+                            TextField("Zip Code", text: $newCustomer.draft.zipCode.defaulting(to: ""))
                         }
                         .padding(5)
-                        // TODO: Add syntax to add customer.
                         SaveButton(name: "Add Customer", tapAction: {
-                            customerListVM.addCustomer(from: newCustomer.draft)
-                            newCustomer.cancelEdits()
-                            isPresented.toggle()
-                            
+                            let success = newCustomer.trySubmit()
+                            attemptedSave = true
+                            if success {
+                                attemptedSave = false
+                                isPresented.toggle()
+                            }
                         })
                     }
                     .hideKeyboardOnTap()

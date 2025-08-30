@@ -21,61 +21,70 @@ struct CustomerDetailView: View {
             ScrollView {
                 VStack(spacing: 10) {
                     if isEditing {
-                        CustomFormView(
-                            shouldValidate: attemptedEdit,
-                            errorMessage: customer.firstNameError,
-                            header: "First name"
-                        ) {
-                            TextField("First name", text: $customer.draft.firstName)
+                        Group {
+                            CustomFormView(
+                                shouldValidate: attemptedEdit,
+                                errorMessage: customer.firstNameError,
+                                header: "First name"
+                            ) {
+                                TextField("First name", text: $customer.draft.firstName)
+                                    .onChange(of: customer.draft.firstName) { _, _ in
+                                            if attemptedEdit {
+                                                _ = customer.validateFields()
+                                            }
+                                        }
+                            }
+                            .padding(.top, 16)
+                            .padding(5)
+                            CustomFormView(
+                                shouldValidate: attemptedEdit,
+                                errorMessage: customer.lastNameError,
+                                header: "Last name"
+                            ) {
+                                TextField("Last name", text: $customer.draft.lastName)
+                                    .onChange(of: customer.draft.lastName) { _, _ in
+                                            if attemptedEdit {
+                                                _ = customer.validateFields()
+                                            }
+                                        }
+                            }
+                            .padding(5)
+                            CustomFormView(
+                                shouldValidate: attemptedEdit,
+                                errorMessage: customer.emailError,
+                                header: "Email"
+                            ) {
+                                TextField("Email", text: $customer.draft.email)
+                                    .keyboardType(.emailAddress)
+                                    .onChange(of: customer.draft.email) { _, _ in
+                                            if attemptedEdit {
+                                                _ = customer.validateFields()
+                                            }
+                                        }
+                            }
+                            .padding(5)
+                            CustomFormView(
+                                shouldValidate: attemptedEdit,
+                                errorMessage: customer.phoneError,
+                                header: "Phone number"
+                            ) {
+                                TextField("Phone", text: $customer.draft.phone)
+                                    .onChange(of: customer.draft.phone) { _, _ in
+                                            if attemptedEdit {
+                                                _ = customer.validateFields()
+                                            }
+                                        }
+                            }
+                            .padding(5)
+                            CustomFormView(header: "Address") {
+                                TextField("Address", text: $customer.draft.address.defaulting(to: ""))
+                            }
+                            .padding(5)
+                            CustomFormView(header: "Zip Code") {
+                                TextField("Zip Code", text: $customer.draft.zipCode.defaulting(to: ""))
+                            }
+                            .padding(5)
                         }
-                        .padding(.top, 16)
-                        .padding(5)
-                        CustomFormView(
-                            shouldValidate: attemptedEdit,
-                            errorMessage: customer.lastNameError,
-                            header: "Last name"
-                        ) {
-                            TextField("Last name", text: $customer.draft.lastName)
-                        }
-                        .padding(5)
-                        CustomFormView(
-                            shouldValidate: attemptedEdit,
-                            errorMessage: customer.emailError,
-                            header: "Email"
-                        ) {
-                            TextField("Email", text: $customer.draft.email)
-                                .keyboardType(.emailAddress)
-                        }
-                        .padding(5)
-                        CustomFormView(
-                            shouldValidate: attemptedEdit,
-                            errorMessage: customer.phoneError,
-                            header: "Phone number"
-                        ) {
-                            TextField("Phone", text: $customer.draft.phone)
-                        }
-                        .padding(5)
-                        CustomFormView(header: "Address") {
-                            TextField("Address", text: Binding (
-                                get: {customer.draft.address ?? ""},
-                                set: {customer.draft.address = $0.isEmpty ? nil : $0}))
-                        }
-                        .padding(5)
-                        CustomFormView(header: "Zip Code") {
-                            TextField("Zip Code", text: Binding(
-                                get: {customer.draft.zipCode ?? ""},
-                                set: {customer.draft.zipCode = $0.isEmpty ? nil : $0}
-                            ))
-                        }
-                        .padding(5)
-                        CustomFormView(header: "Paid Status") {
-                            Toggle("Paid Status", isOn: Binding(
-                                get: {customer.draft.paidBill ?? false},
-                                set: {customer.draft.paidBill = $0}
-                            ))
-                        }
-                        .padding(5)
-                        
                     } else {
                         CustomMultiForm(
                             titleOne: "First name",
@@ -93,7 +102,7 @@ struct CustomerDetailView: View {
                             titleSeven: "Status",
                             valueSeven: customer.original.paidBill ?? false ? "Paid": "Unpaid",
                             titleEight: "Loyalty Date",
-                            valueEight: String("\(customer.original.loyaltyDate)")
+                            valueEight: String("\(customer.original.loyaltyDate.formattedMonthDayYear)")
                         )
                         .padding(.top, 16)
                     }
@@ -115,9 +124,6 @@ struct CustomerDetailView: View {
             editIconTapped: {
                 if isEditing {
                     attemptedEdit = true
-                    if customer.isDirty {
-                        guard customer.errors == nil else { return }
-                    }
                     let success = customer.trySubmit()
                     if success {
                         isEditing = false

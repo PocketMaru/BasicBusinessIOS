@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CustomerListView: View {
     var customerListVM: CustomerListVM
-    var createAddCustomerVM: () -> Void
     @Bindable var userVM: UserVM
     @Binding var activeSheet: ActiveUserSheet?
     var body: some View {
@@ -58,7 +57,6 @@ struct CustomerListView: View {
                         activeSheet = .user
                     }
             }, editIconTapped: {
-                createAddCustomerVM()
                 activeSheet = .addCustomer
             })
         .frame(maxWidth: .infinity, maxHeight: .infinity)

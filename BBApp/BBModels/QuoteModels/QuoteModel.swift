@@ -57,46 +57,30 @@ struct QuoteModel: Identifiable, Quoteable {
     }
     // Pending expenses, these are expenses tied to quotes, this allows the user to see what expenses will be when a job converts to invoice, allowing forecasting of future expenses from jobs.
     var pendingMaterialExpense: [MaterialExpensePreview] = []
-    
-    init(
-        id: UUID = UUID(),
-        customer: CustomerModel,
-        industryType: IndustryType,
-        serviceType: ServiceType,
-        pricingMethod: PricingMethod,
-        quoteDate: Date = Date(),
-        installationDate: Date? = nil,
-        serviceDate: Date? = nil,
-        notes: String? = nil,
-        subscriptionTotal: Double? = nil,
-        materialCost: Double? = nil,
-        laborCost: Double? = nil,
-        additionalFees: Double? = nil,
-        totalCost: Double? = nil,
-        customFields: Data? = nil,
-        materialExpenses: [MaterialExpenseQM]? = nil,
-        pendingExpenses: [MaterialExpensePreview] = []
-    ) {
-        self.id = id
-        self.customer = customer
-        self.industryType = industryType
-        self.serviceType = serviceType
-        self.pricingMethod = pricingMethod
-        self.quoteDate = quoteDate
-        self.installationDate = installationDate
-        self.serviceDate = serviceDate
-        self.notes = notes
-        self.subscriptionTotal = subscriptionTotal
-        self.materialCost = materialCost
-        self.laborCost = laborCost
-        self.additionalFees = additionalFees
-        self.totalCost = totalCost
-        self.customFields = customFields
-        self.materialExpenses = materialExpenses
-        self.pendingMaterialExpense = pendingExpenses
-    }
 }
 
+extension QuoteModel {
+    func toInvoice() -> InvoiceModel {
+        return InvoiceModel(
+            id: UUID(),
+            customer: self.customer,
+            industryType: self.industryType,
+            serviceType: self.serviceType,
+            pricingMethod: self.pricingMethod,
+            invoiceDate: Date(),
+            installationDate: self.installationDate,
+            serviceDate: self.serviceDate,
+            notes: self.notes,
+            subscriptionTotal: self.subscriptionTotal,
+            materialCost: self.materialCost,
+            laborCost: self.laborCost,
+            additionalFees: self.additionalFees,
+            totalCost: self.totalCost,
+            customFields: self.customFields,
+            materialExpenses: self.materialExpenses
+        )
+    }
+}
 enum ServiceType {
     case installation
     case maintenance
