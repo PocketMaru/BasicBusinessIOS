@@ -49,7 +49,7 @@ struct CustomerListView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .ToolBarTitle(
-                title: userVM.user?.businessName ?? "",
+                title: userVM.user.businessName,
                 editIconName: "plus.circle",
                 editButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success,
                 mainIconTapped: {

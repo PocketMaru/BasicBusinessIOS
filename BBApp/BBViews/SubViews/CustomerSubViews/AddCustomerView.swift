@@ -78,6 +78,10 @@ struct AddCustomerView: View {
                 isPresented.toggle()
             })
         }
+        .alert("Failed to save customer", isPresented: $newCustomer.showAlert) {
+            
+        }
+
     }
     
 }

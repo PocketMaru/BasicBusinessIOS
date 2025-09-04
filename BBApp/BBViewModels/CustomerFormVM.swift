@@ -18,7 +18,6 @@ final class CustomerFormVM {
     
     let mode: CustomerFormMode
     private let saveUseCase: SaveCustomerUseCase
-    private let setStatusMessage: ((String) -> Void)?
     
     private(set) var original: CustomerModel
     
@@ -29,21 +28,19 @@ final class CustomerFormVM {
     var emailError:     String? = nil
     var phoneError:     String? = nil
     var generalError:   String? = nil
-    
-    private let onSubmit: (CustomerModel) -> Void
+    var showAlert: Bool = false
+    private let onSubmit: (CustomerModel) throws -> Void
     
     init(
         customer: CustomerModel,
         mode: CustomerFormMode,
         saveUseCase: SaveCustomerUseCase,
-        setStatusMessage: ((String) -> Void)? = nil,
-        onSubmit: @escaping (CustomerModel) -> Void
+        onSubmit: @escaping (CustomerModel) throws -> Void
     ) {
         self.mode = mode
         self.original = customer
         self.draft = customer
         self.saveUseCase = saveUseCase
-        self.setStatusMessage = setStatusMessage
         self.onSubmit = onSubmit
         print("FormVM INIT id=\(customer.id) name=\(customer.firstName) \(customer.lastName)")
     }
@@ -60,17 +57,20 @@ final class CustomerFormVM {
     
     func cancelEdits() {
         draft = original
-        setStatusMessage?("Edit Cancelled")
     }
     
     @discardableResult
     func trySubmit() -> Bool {
         let isValid = validateFields()
         if isValid {
-            onSubmit(draft)
-            return true
+            do {
+                try onSubmit(draft)
+                return true
+            } catch {
+                showAlert = true
+                return false
+            }
         } else {
-            setStatusMessage?("Please correct the errors in the form")
             return false
         }
     }

@@ -9,7 +9,7 @@ import Foundation
 
 @Observable
 final class UserVM {
-    var user: UserModel? = nil
+    var user: UserModel
     
     init(user: UserModel) {
         self.user = user

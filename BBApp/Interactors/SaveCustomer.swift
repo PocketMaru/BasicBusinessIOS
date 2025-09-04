@@ -22,9 +22,7 @@ struct SaveCustomer: SaveCustomerUseCase {
         from newCustomer: CustomerModel,
         currentList: [CustomerModel]
     ) throws -> [CustomerModel] {
-        
         let newList = currentList + [newCustomer]
-        
         try fileStorage.saveCustomers(newList)
         return newList
     }
@@ -33,14 +31,11 @@ struct SaveCustomer: SaveCustomerUseCase {
         with updated: CustomerModel,
         currentList: [CustomerModel]
     ) throws -> [CustomerModel] {
-        
         guard let index = currentList.firstIndex(where: {$0.id == updated.id}) else {
             throw SaveError.writeFailed(reason: "Customer not found")
         }
-        
         var snapshot = currentList
         snapshot[index] = updated
-        
         try fileStorage.saveCustomers(snapshot)
         return snapshot
     }

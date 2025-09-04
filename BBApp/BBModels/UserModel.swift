@@ -30,7 +30,7 @@ struct UserModel: Identifiable {
     var lastName: String
     
     /// User's business name
-    var businessName: String
+    var businessName: String = "Business Name"
     
     /// User's industry type for business
     var industryType: IndustryType
@@ -39,7 +39,7 @@ struct UserModel: Identifiable {
     var profileImageData: Data?
     
     /// Optional full name - Returns first and last if both exist
-    var fullName: String? {
+    var fullName: String {
         "\(firstName) \(lastName)"
     }
     

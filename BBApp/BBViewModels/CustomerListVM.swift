@@ -15,8 +15,6 @@ final class CustomerListVM {
 
     var allQuotes: [QuoteModel] = []
     
-    var statusMessage: String?
-    
     var paidCustomers: [CustomerModel] {
         allCustomers.filter { $0.paidBill == true }
     }
@@ -33,9 +31,8 @@ final class CustomerListVM {
             customer: customer,
             mode: .edit,
             saveUseCase: saveCustomer,
-            setStatusMessage: { [weak self] msg in self?.statusMessage = msg },
             onSubmit: { [weak self] draft in
-                self?.updateCustomer(from: draft)
+               try self?.updateCustomer(from: draft)
             }
         )
         return vm
@@ -47,9 +44,8 @@ final class CustomerListVM {
             customer: CustomerModel(),
             mode: .add,
             saveUseCase: saveCustomer,
-            setStatusMessage: { [weak self] msg in self?.statusMessage = msg },
             onSubmit: { [weak self] draft in
-                self?.addCustomer(from: draft)
+               try self?.addCustomer(from: draft)
             }
         )
         return vm
@@ -58,32 +54,26 @@ final class CustomerListVM {
     init() {
         self.customerListStorage = FileStorageManager()
         self.saveCustomer = SaveCustomer(fileStorage: customerListStorage)
-        self.allCustomers = (try? customerListStorage.loadCustomers()) ?? []
-    }
-    
-    @discardableResult
-    func addCustomer(from draft: CustomerModel) -> Bool  {
+        
         do {
-            let newCustomer = try saveCustomer.create(from: draft, currentList: allCustomers)
-            allCustomers = newCustomer
-            return true
-        } catch {
-            return false
+            self.allCustomers = try customerListStorage.loadCustomers()
+        } catch(let e) {
+            print(e)
+            self.allCustomers = []
         }
     }
     
-    @discardableResult
-    func updateCustomer(from draft: CustomerModel) -> Bool {
+    func addCustomer(from draft: CustomerModel) throws {
+        let newCustomer = try saveCustomer.create(from: draft, currentList: allCustomers)
+        allCustomers = newCustomer
+    }
+    
+    func updateCustomer(from draft: CustomerModel) throws {
         guard let _ = allCustomers.firstIndex(where: { $0.id == draft.id}) else {
-            return false
+            throw SaveError.writeFailed(reason: "Customer not found")
         }
-        do {
-            let updated = try saveCustomer.update(with: draft, currentList: allCustomers)
-            allCustomers = updated
-            return true
-        } catch {
-            return false
-        }
+        let updated = try saveCustomer.update(with: draft, currentList: allCustomers)
+        allCustomers = updated
     }
     
     func searchCustomer(by name: String) -> [CustomerModel] {
@@ -101,7 +91,6 @@ final class CustomerListVM {
             print("Invalid index \(index) for removal")
             return
         }
-
         let removed = allCustomers.remove(at: index)
         do {
             try customerListStorage.saveCustomers(allCustomers)
@@ -110,7 +99,7 @@ final class CustomerListVM {
             print("Failed to save customers after removal: \(error)")
         }
     }
-
+    
     func showAllCustomerQuotes(for customerID: UUID) -> [QuoteModel] {
         allQuotes.filter { $0.customerID == customerID }
     }

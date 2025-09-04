@@ -11,7 +11,7 @@ struct MainTabView: View {
     @State private var customerListVM = CustomerListVM()
     @State private var quoteVM = QuoteVM(savedMaterials: MaterialModel.sampleList)
     @State private var materialVM = MaterialVM(materials: MaterialModel.sampleList)
-    var userVM = UserVM(user: UserModel.sample)
+    @State private var userVM = UserVM(user: UserModel.sample)
     @State private var activeSheet: ActiveUserSheet?
     @State private var addCustomerVM: CustomerFormVM? = nil
     
@@ -29,20 +29,17 @@ struct MainTabView: View {
                 Image(systemName: "chart.bar")
                 Text("Business Stats")
             }
-            
             NavigationStack {
                 CustomerListView(
                     customerListVM: customerListVM,
                     userVM: userVM,
                     activeSheet: $activeSheet
-                    
                 )
             }
             .tabItem {
                 Image(systemName: "person.3")
                 Text("Customers")
             }
-            
             NavigationStack {
                 QuoteView(
                     userVM: userVM,
@@ -53,7 +50,6 @@ struct MainTabView: View {
                 Image(systemName: "book.pages")
                 Text("Quote")
             }
-            
             NavigationStack {
                 ExpenseView(
                     userVM: userVM,

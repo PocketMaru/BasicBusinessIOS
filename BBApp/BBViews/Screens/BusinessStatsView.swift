@@ -205,7 +205,7 @@ struct BusinessStatsView: View {
             .zIndex(1)
         }
         .ToolBarTitle(
-            title: userVM.user?.businessName ?? "",
+            title: userVM.user.businessName,
             mainIconTapped: {
                 activeSheet = .user
             })

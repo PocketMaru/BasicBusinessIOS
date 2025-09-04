@@ -16,48 +16,19 @@ struct UserView: View {
     @State private var selectIndustry: IndustryType = .consulting
     @State private var attemptedEdit: Bool = false
     var body: some View {
-        
-        var isBusinessNameValid: Bool {
-            if let businessName = userVM.user?.businessName {
-                return !businessName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            }
-            return false
-        }
-        
-        var isUserFirstNameValid: Bool {
-            if let userFirstName = userVM.user?.firstName {
-                return !userFirstName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            }
-            return false
-        }
-        
-        var isUserLastNameValid: Bool {
-            if let userLastName = userVM.user?.lastName {
-                return !userLastName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            }
-            return false
-        }
-        
         NavigationStack {
             ScrollView {
                 VStack(spacing: 10) {
                     CustomFormView(
-                        shouldValidate: attemptedEdit && !isBusinessNameValid,
+                        shouldValidate: attemptedEdit,
                         errorMessage: "Business Name is required",
                         header: "Business name"
                     ) {
                         if isEditing {
-                            if let _ = userVM.user {
-                                TextField("Business name", text: Binding(
-                                    get: {userVM.user?.businessName ?? ""},
-                                    set: {userVM.user?.businessName = $0}
-                                ))
-                            }
+                            TextField("Business name", text: $userVM.user.businessName)
                         } else {
-                            if let _ = userVM.user {
-                                Text("\(userVM.user?.businessName ?? "No Business Name")")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
+                            Text("\(userVM.user.businessName)")
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
                     .padding(.top, 16)
@@ -65,34 +36,24 @@ struct UserView: View {
                     
                     if isEditing {
                         CustomFormView(
-                            shouldValidate: attemptedEdit && !isUserFirstNameValid,
+                            shouldValidate: attemptedEdit,
                             errorMessage: "First Name is required",
                             header: "First name"
                         ) {
-                            if let _ = userVM.user {
-                                TextField("First name", text:Binding(
-                                    get: {userVM.user?.firstName ?? ""},
-                                    set: {userVM.user?.firstName = $0}
-                                ))
-                            }
+                            TextField("First name", text:$userVM.user.firstName)
                         }
                         .padding(5)
                         CustomFormView(
-                            shouldValidate: attemptedEdit && !isUserLastNameValid,
+                            shouldValidate: attemptedEdit,
                             errorMessage: "Last Name is required",
                             header: "Last name"
                         ) {
-                            if let _ = userVM.user {
-                                TextField("Last name", text:Binding(
-                                    get: {userVM.user?.lastName ?? ""},
-                                    set: {userVM.user?.lastName = $0}
-                                ))
-                            }
+                            TextField("Last name", text: $userVM.user.lastName)
                         }
                         .padding(5)
                     } else {
                         CustomFormView(header: "Legal Name") {
-                            Text("\(userVM.user?.fullName ?? userVM.user?.firstName ?? "No Name")")
+                            Text("\(userVM.user.fullName)")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding(5)
@@ -134,9 +95,6 @@ struct UserView: View {
                     isPresented.toggle()
                 }, editIconTapped:  {
                     attemptedEdit = true
-                    if !isBusinessNameValid {return}
-                    if !isUserFirstNameValid {return}
-                    if !isUserLastNameValid {return}
                     isEditing.toggle()
                 })
             
