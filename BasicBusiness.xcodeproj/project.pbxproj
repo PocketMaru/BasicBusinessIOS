@@ -465,13 +465,13 @@
 		53E5A9E92DDC60F500B66821 /* QuoteModels */ = {
 			isa = PBXGroup;
 			children = (
+				53B0E3812DFC9A50009C29A9 /* UserVM.swift */,
 				530215972DD86F4E007F9E0B /* QuoteModel.swift */,
 				53D7F2542DDEE17600579741 /* MaterialExpenseQM.swift */,
 				53E5A9EA2DDC61AF00B66821 /* LandscapeQM.swift */,
 				53E5A9EC2DDC61C500B66821 /* PressureWashQM.swift */,
 				53E5A9F02DDC61E600B66821 /* ConsultingQM.swift */,
 				53E5A9EE2DDC61DB00B66821 /* HandymanQM.swift */,
-				53B0E3812DFC9A50009C29A9 /* UserVM.swift */,
 				53D7F24C2DDE66FB00579741 /* HVACQM.swift */,
 				53D7F24E2DDE758200579741 /* ProductSalesQM.swift */,
 			);

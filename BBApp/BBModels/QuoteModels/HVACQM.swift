@@ -23,15 +23,18 @@ struct HVACQM {
     var quoteType: PricingMethod = .fixedRate
     var quoteDate: Date = Date()
     var notes: String?
-    var totalCost: Double? {
+    var totalCost: Double {
         switch quoteType {
         case .fixedRate:
-            return fixedRate
+            guard let fixed = fixedRate else { return 0.0 }
+            return fixed
         case .hourlyRate:
-            guard let hourlyRate = hourlyRate, let hoursWorked = hoursWorked else { return nil }
+            guard let hourlyRate = hourlyRate, let hoursWorked = hoursWorked else { return 0.0 }
             return hourlyRate * hoursWorked
         case .subscription, .squareFootage:
-            return nil
+            return 0.0
+        case .none:
+            return 0.0
         }
     }
     
