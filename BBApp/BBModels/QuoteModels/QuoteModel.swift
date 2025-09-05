@@ -29,7 +29,7 @@ protocol Quoteable {
     var pricingMethod: PricingMethod {get}
     var quoteDate: Date {get}
     var notes: String? {get}
-    var totalCost: Double? {get}
+    var totalCost: Double {get}
 }
 
 struct QuoteModel: Identifiable, Quoteable {
@@ -49,7 +49,7 @@ struct QuoteModel: Identifiable, Quoteable {
     var materialCost: Double?
     var laborCost: Double?
     var additionalFees: Double?
-    var totalCost: Double?
+    var totalCost: Double
     var customFields: Data?
     var materialExpenses: [MaterialExpenseQM]? = nil
     var materialTotalCost: Double? {
@@ -81,13 +81,13 @@ extension QuoteModel {
         )
     }
 }
-enum ServiceType {
+enum ServiceType: Equatable {
     case installation
     case maintenance
     case repair
     case recurring
     case custom(String)
-    
+    case none
     var name: String {
         switch self {
         case .installation:
@@ -100,6 +100,8 @@ enum ServiceType {
             return "Recurring"
         case .custom(let name):
             return name
+        case .none:
+            return "None"
         }
     }
 }
@@ -109,6 +111,7 @@ enum PricingMethod {
     case hourlyRate
     case squareFootage
     case subscription
+    case none
     
     var name: String {
         switch self {
@@ -120,6 +123,8 @@ enum PricingMethod {
             return "Square Footage"
         case .subscription:
             return "Subscription"
+        case .none:
+            return "None"
         }
     }
 }
@@ -130,7 +135,8 @@ extension QuoteModel {
         industryType: .landscaping,
         serviceType: .installation,
         pricingMethod: .fixedRate,
-        notes: "This is a sample quote."
+        notes: "This is a sample quote.",
+        totalCost: 300
     )
     
     static let sampleList: [QuoteModel] = [

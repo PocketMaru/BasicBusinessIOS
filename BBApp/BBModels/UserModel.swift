@@ -53,6 +53,7 @@ enum IndustryType: String, CaseIterable, Identifiable {
     case handyman
     case HVAC
     case productSales
+    case none
     
     /// Raw value as ID for use in Picker or List
     var id: String {self.rawValue}
@@ -72,6 +73,8 @@ enum IndustryType: String, CaseIterable, Identifiable {
             return "HVAC"
         case .productSales:
             return "Product Sales"
+        case .none:
+            return "None"
         }
     }
 }

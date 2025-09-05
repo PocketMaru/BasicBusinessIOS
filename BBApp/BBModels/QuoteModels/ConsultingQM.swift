@@ -22,16 +22,19 @@ struct ConsultingQM: Quoteable {
     var pricingMethod: PricingMethod
     var quoteDate: Date = Date()
     var notes: String?
-    var totalCost: Double? {
+    var totalCost: Double {
         switch pricingMethod {
             case .fixedRate:
-            return fixedRate
+            guard let fixed = fixedRate else {return 0.0}
+            return fixed
         case .hourlyRate:
             guard let hoursWorked = hoursWorked,
-                  let hourlyRate = hourlyRate else {return nil}
+                  let hourlyRate = hourlyRate else {return 0.0}
             return hoursWorked * hourlyRate
         case .squareFootage, .subscription:
-            return nil
+            return 0.0
+        case .none:
+            return 0.0
         }
     }
 }

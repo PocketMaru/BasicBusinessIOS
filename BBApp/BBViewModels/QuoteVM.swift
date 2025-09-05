@@ -11,7 +11,7 @@ import Foundation
 final class QuoteVM {
     var quotes: [QuoteModel] = []
     
-    var draftQuote: QuoteModel?
+    var draftQuote: QuoteModel
     
     var savedMaterials: [MaterialModel]
     
@@ -21,9 +21,10 @@ final class QuoteVM {
     
     var selectedCustomer: CustomerModel? = nil
     
-    init(existingQuotes: [QuoteModel] = [], savedMaterials: [MaterialModel]) {
+    init(existingQuotes: [QuoteModel] = [], savedMaterials: [MaterialModel], draftQuote: QuoteModel) {
         self.quotes = existingQuotes
         self.savedMaterials = savedMaterials
+        self.draftQuote = draftQuote
     }
     
     func startNewQuote(for customer: CustomerModel) {
@@ -32,9 +33,21 @@ final class QuoteVM {
             customer: customer,
             industryType: .landscaping,
             serviceType: .maintenance,
-            pricingMethod: .fixedRate
+            pricingMethod: .fixedRate,
+            totalCost: 0
         )
         quoteMaterials.removeAll()
+    }
+    
+    func quoteIsValid() -> Bool {
+        let hasCustomer = true
+        let hasRequiredFields =
+        draftQuote.industryType != .none &&
+        draftQuote.serviceType != ServiceType.none &&
+        draftQuote.pricingMethod != .none
+        let hasTotal = draftQuote.totalCost > 0
+        return hasCustomer && hasRequiredFields && hasTotal
+                            
     }
     
     func addMaterialToQuote(from savedMaterial: MaterialModel, markAsExpense: Bool = false) {
@@ -44,8 +57,6 @@ final class QuoteVM {
     
     func saveDraftToQuote() {
         guard selectedCustomer != nil else { return }
-        if let quote = draftQuote {
-            quotes.append(quote)
-        }
+        quotes.append(draftQuote)
     }
 }

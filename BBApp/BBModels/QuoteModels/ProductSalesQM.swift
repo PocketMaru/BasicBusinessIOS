@@ -20,12 +20,15 @@ struct ProductSalesQM {
     var quoteType: PricingMethod = .fixedRate
     var quoteDate: Date = Date()
     var notes: String?
-    var totalCost: Double? {
+    var totalCost: Double {
         switch quoteType {
         case .fixedRate:
-            return fixedRate
+            guard let fixed = fixedRate else {return 0.0}
+            return fixed
         case .hourlyRate, .squareFootage, .subscription:
-            return nil
+            return 0.0
+        case .none:
+            return 0.0
         }
     }
 }

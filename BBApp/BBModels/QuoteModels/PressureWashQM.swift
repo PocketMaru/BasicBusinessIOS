@@ -25,18 +25,21 @@ struct PressureWashQM: Quoteable {
     var pricingMethod: PricingMethod
     var quoteDate: Date = Date()
     var notes: String?
-    var totalCost: Double? {
+    var totalCost: Double {
         switch pricingMethod {
         case .fixedRate:
-            return (fixedRate ?? 0)
+            guard let fixed = fixedRate else {return 0.0}
+            return fixed
         case .squareFootage:
             guard let sqrft = squareFootageAmount,
                   let sqrftRate = squareFootRate,
                   let solRate = solutionRate,
-                  let solQty = solutionQuantity else {return nil}
+                  let solQty = solutionQuantity else {return 0.0}
             return  (sqrft * sqrftRate) + (solRate * solQty)
         case .subscription, .hourlyRate:
-            return nil
+            return 0.0
+        case .none:
+            return 0.0
         }
     }
 }

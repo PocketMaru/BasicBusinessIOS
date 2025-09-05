@@ -22,18 +22,22 @@ struct LandscapeQM: Quoteable {
     var pricingMethod: PricingMethod = .fixedRate
     var quoteDate: Date = Date()
     var notes: String?
-    var totalCost: Double? {
+    var totalCost: Double {
         switch pricingMethod {
         case .fixedRate:
-            return fixedRate
+            guard let fixed = fixedRate else {return 0.0}
+            return fixed
         case .squareFootage:
             guard let sqrft = squareFootageAmount,
-                  let rate = squareFootRate else {return nil}
+                  let rate = squareFootRate else {return 0.0}
             return sqrft * rate
         case .subscription:
-            return subscription
+            guard let sub = subscription else {return 0.0}
+            return sub
         case .hourlyRate:
-            return nil
+            return 0.0
+        case .none:
+            return 0.0
         }
     }
 }

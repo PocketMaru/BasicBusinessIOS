@@ -24,20 +24,23 @@ struct HandymanQM: Quoteable {
     var pricingMethod: PricingMethod = .fixedRate
     var quoteDate: Date = Date()
     var notes: String?
-    var totalCost: Double? {
+    var totalCost: Double {
         switch pricingMethod {
         case .fixedRate:
-            return fixedRate
+            guard let fixed = fixedRate else { return 0.0 }
+            return fixed
         case .hourlyRate:
             guard let hourlyRate = hourlyRate,
-                  let hoursWorked = hoursWorked else { return nil }
+                  let hoursWorked = hoursWorked else { return 0.0 }
             return hourlyRate * hoursWorked
         case .squareFootage:
             guard let sqrft = squareFootage,
-                  let sqrftRate = squareFootageRate else { return nil }
+                  let sqrftRate = squareFootageRate else { return 0.0 }
             return (sqrft * sqrftRate)
         case .subscription:
-            return nil
+            return 0.0
+        case .none:
+            return 0.0
         }
     }
 }
