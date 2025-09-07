@@ -21,9 +21,12 @@ final class CustomerListVM {
     var unpaidCustomers: [CustomerModel] {
         allCustomers.filter { $0.paidBill == false }
     }
+    var newCustomerFromQuote: ((CustomerModel) -> Void)? = nil
     
     private let saveCustomer: SaveCustomerUseCase
     private let customerListStorage: CustomerListStorageManager
+    
+    
     
     func editVM(for customer: CustomerModel) -> CustomerFormVM {
         print("cache MISS → creating VM for \(customer.id)")
@@ -47,6 +50,17 @@ final class CustomerListVM {
             onSubmit: { [weak self] draft in
                try self?.addCustomer(from: draft)
             }
+        )
+        return vm
+    }
+    
+    func addVM(onSubmit: @escaping (CustomerModel) throws -> Void) -> CustomerFormVM {
+        print("Creating AddVM for new customer")
+        let vm = CustomerFormVM(
+            customer: CustomerModel(),
+            mode: .add,
+            saveUseCase: saveCustomer,
+            onSubmit: onSubmit
         )
         return vm
     }
@@ -85,7 +99,7 @@ final class CustomerListVM {
             "\($0.firstName) \($0.lastName)".lowercased().contains(query)
         }
     }
-
+    
     func removeCustomer(at index: Int) {
         guard allCustomers.indices.contains(index) else {
             print("Invalid index \(index) for removal")

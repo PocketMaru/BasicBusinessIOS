@@ -22,7 +22,7 @@ final class BusinessStatsVM {
     // Total of all quotes.
     var quotedRevenue: Double {
         guard let quotes = quoteData else {return 0}
-        return quotes.reduce(0) {$0 + ($1.totalCost ?? 0)}
+        return quotes.reduce(0) {$0 + ($1.totalCost)}
     }
     // Total of all invoices.
     var invoicedRevenue: Double {

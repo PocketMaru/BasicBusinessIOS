@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var customerListVM = CustomerListVM()
-    @State private var quoteVM = QuoteVM(savedMaterials: MaterialModel.sampleList)
+    @State private var quoteVM = QuoteVM(savedMaterials: MaterialModel.sampleList, draftQuote: QuoteModel.sample)
     @State private var materialVM = MaterialVM(materials: MaterialModel.sampleList)
     @State private var userVM = UserVM(user: UserModel.sample)
     @State private var activeSheet: ActiveUserSheet?
@@ -43,7 +43,9 @@ struct MainTabView: View {
             NavigationStack {
                 QuoteView(
                     userVM: userVM,
-                    activeSheet: $activeSheet
+                    quoteVM: quoteVM,
+                    customerListVM: customerListVM,
+                    activeSheet: $activeSheet,
                 )
             }
             .tabItem {
@@ -66,8 +68,19 @@ struct MainTabView: View {
         /// Checks for changes to `activeSheet` records the old value and
         /// the new value, if the value is `.addCustomer` it creates the `addVM`.
         .onChange(of: activeSheet) { oldValue, newValue in
-            if newValue == .addCustomer {
+            switch newValue {
+            case .addCustomer:
                 addCustomerVM = customerListVM.addVM()
+                
+            case .addCustomerFromQuote:
+                addCustomerVM = customerListVM.addVM(onSubmit: { customer in
+                    try customerListVM.addCustomer(from: customer)
+                    customerListVM.newCustomerFromQuote?(customer)
+                    customerListVM.newCustomerFromQuote = nil
+                    activeSheet = nil
+                })
+            default:
+                break
             }
         }
         .sheet(item: $activeSheet) { item in
@@ -84,6 +97,22 @@ struct MainTabView: View {
                 AddCustomerView(
                     customerListVM: customerListVM,
                     newCustomer: customerListVM.addVM(),
+                    isPresented: Binding(
+                        get: { activeSheet != nil },
+                        set: { if !$0 { activeSheet = nil } }
+                    ),
+                    activeSheet: $activeSheet
+                )
+            case .addCustomerFromQuote:
+                let vm = customerListVM.addVM(onSubmit: { customer in
+                    try customerListVM.addCustomer(from: customer)
+                    customerListVM.newCustomerFromQuote?(customer)
+                    activeSheet = nil
+                })
+                
+                AddCustomerView(
+                    customerListVM: customerListVM,
+                    newCustomer: vm,
                     isPresented: Binding(
                         get: { activeSheet != nil },
                         set: { if !$0 { activeSheet = nil } }

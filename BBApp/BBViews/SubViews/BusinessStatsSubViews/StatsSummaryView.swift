@@ -127,7 +127,7 @@ struct StatsSummaryView: View {
                                         Divider()
                                         Text(String(quoteItem.quoteDate.formatted(date: .abbreviated, time: .omitted)))
                                         Divider()
-                                        Text(String(quoteItem.totalCost ?? 0))
+                                        Text(String(quoteItem.totalCost))
                                         Spacer()
                                     }
                                 } tapped: {

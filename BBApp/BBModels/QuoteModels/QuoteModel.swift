@@ -30,9 +30,16 @@ protocol Quoteable {
     var quoteDate: Date {get}
     var notes: String? {get}
     var totalCost: Double {get}
+    
+    func toQuoteModel() -> QuoteModel
+}
+// Allows the sharing of optional fields from child quote models
+struct CustomField: Codable, Hashable {
+    let label: String
+    let value: String
 }
 
-struct QuoteModel: Identifiable, Quoteable {
+struct QuoteModel: Identifiable {
     var id: UUID = UUID()
     var customer: CustomerModel
     var customerID: UUID {
@@ -50,7 +57,7 @@ struct QuoteModel: Identifiable, Quoteable {
     var laborCost: Double?
     var additionalFees: Double?
     var totalCost: Double
-    var customFields: Data?
+    var customFields: [CustomField] = []
     var materialExpenses: [MaterialExpenseQM]? = nil
     var materialTotalCost: Double? {
         materialExpenses?.reduce(0) { $0 + $1.unitCost }
@@ -76,7 +83,6 @@ extension QuoteModel {
             laborCost: self.laborCost,
             additionalFees: self.additionalFees,
             totalCost: self.totalCost,
-            customFields: self.customFields,
             materialExpenses: self.materialExpenses
         )
     }

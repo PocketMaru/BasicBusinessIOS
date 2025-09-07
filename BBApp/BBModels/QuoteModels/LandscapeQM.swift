@@ -19,6 +19,7 @@ struct LandscapeQM: Quoteable {
         customer.id
     }
     var industryType: IndustryType = .landscaping
+    var serviceType: ServiceType = .none
     var pricingMethod: PricingMethod = .fixedRate
     var quoteDate: Date = Date()
     var notes: String?
@@ -39,5 +40,12 @@ struct LandscapeQM: Quoteable {
         case .none:
             return 0.0
         }
+    }
+    func toQuoteModel() -> QuoteModel {
+        QuoteModel(id: self.id, customer: self.customer, industryType: self.industryType, serviceType: self.serviceType, pricingMethod: self.pricingMethod, quoteDate: self.quoteDate, notes: self.notes, totalCost: self.totalCost, customFields: [
+            CustomField(label: "Suare Footage Amount", value: "\(self.squareFootageAmount ?? 0.0)"),
+            CustomField(label: "Square Foot Rate", value: "\(self.squareFootRate ?? 0.0)"),
+            ]
+        )
     }
 }

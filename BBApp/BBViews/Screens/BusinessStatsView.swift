@@ -67,7 +67,8 @@ struct BusinessStatsView: View {
     )
     var quoteVM = QuoteVM(
         existingQuotes: QuoteModel.sampleList,
-        savedMaterials: MaterialModel.sampleList
+        savedMaterials: MaterialModel.sampleList,
+        draftQuote: QuoteModel.sample
     )
     var businessStatsVM = BusinessStatsVM(
         quoteData: QuoteModel.sampleList,
