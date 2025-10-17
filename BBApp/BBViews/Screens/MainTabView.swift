@@ -91,7 +91,7 @@ struct MainTabView: View {
                     isPresented: Binding(
                         get: { activeSheet != nil },
                         set: { if !$0 { activeSheet = nil } }
-                    )
+                    ), quoteVM: quoteVM
                 )
             case .addCustomer:
                 AddCustomerView(

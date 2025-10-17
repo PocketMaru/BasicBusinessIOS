@@ -7,40 +7,13 @@
 
 import Foundation
 
-struct HandymanQM: Quoteable {
-    var materialsUsed: [MaterialExpenseQM]? = nil
-    var squareFootage: Double? = 600
-    var squareFootageRate: Double? = 25
-    var hoursWorked: Double? = 10
-    var hourlyRate: Double? = 50
-    var fixedRate: Double? = 100
-    var customer: CustomerModel
-    
-    var id: UUID
-    var customerID: UUID {
-        customer.id
-    }
-    var industryType: IndustryType = .landscaping
-    var pricingMethod: PricingMethod = .fixedRate
-    var quoteDate: Date = Date()
-    var notes: String?
+struct HandymanQM {
+    var pricingMethod: [PricingMethod]
     var totalCost: Double {
-        switch pricingMethod {
-        case .fixedRate:
-            guard let fixed = fixedRate else { return 0.0 }
-            return fixed
-        case .hourlyRate:
-            guard let hourlyRate = hourlyRate,
-                  let hoursWorked = hoursWorked else { return 0.0 }
-            return hourlyRate * hoursWorked
-        case .squareFootage:
-            guard let sqrft = squareFootage,
-                  let sqrftRate = squareFootageRate else { return 0.0 }
-            return (sqrft * sqrftRate)
-        case .subscription:
-            return 0.0
-        case .none:
-            return 0.0
-        }
+        pricingMethod.reduce(0) { $0 + $1.calculateTotal()}
     }
+}
+
+extension HandymanQM {
+    static let empty = HandymanQM(pricingMethod: [.none])
 }

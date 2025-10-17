@@ -31,7 +31,7 @@ struct InvoiceModel: Identifiable {
     var serviceType: ServiceType
     
     /// The structure of the quote (e.g., fixed rate or hourly)
-    var pricingMethod: PricingMethod
+    var pricingMethod: [PricingMethod]
     
     /// The official date the invoice was generated.
     var invoiceDate: Date = Date()
@@ -52,7 +52,7 @@ struct InvoiceModel: Identifiable {
     var materialCost: Double?
     
     /// Total labor charges
-    var laborCost: Double?
+    var laborCost: LaborType?
     
     /// Any extra fees
     var additionalFees: Double?
@@ -76,52 +76,52 @@ struct InvoiceModel: Identifiable {
 
 // Extension for sample data.
 extension InvoiceModel {
-    static let sample = InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping, serviceType: .recurring, pricingMethod: .subscription)
+    static let sample = InvoiceModel(id: UUID(), customer: CustomerModel.sample, industryType: .landscaping(.empty), serviceType: .recurring, pricingMethod: [.subscription(0.0)])
     
     static let sampleList: [InvoiceModel] = [
         .sample,
         InvoiceModel(
             id: UUID(),
             customer: CustomerModel.sample,
-            industryType: .landscaping,
+            industryType: .landscaping(.empty),
             serviceType: .recurring,
-            pricingMethod: .subscription,
+            pricingMethod: [.subscription(0.0)],
             invoiceDate: Date(),
             totalCost: 750.16
         ),
         InvoiceModel(
             id: UUID(),
             customer: CustomerModel.sample,
-            industryType: .landscaping,
+            industryType: .landscaping(.empty),
             serviceType: .recurring,
-            pricingMethod: .subscription,
+            pricingMethod: [.subscription(0.0)],
             invoiceDate: Date(),
             totalCost: 3500.97
         ),
         InvoiceModel(
             id: UUID(),
             customer: CustomerModel.sample,
-            industryType: .landscaping,
+            industryType: .landscaping(.empty),
             serviceType: .recurring,
-            pricingMethod: .subscription,
+            pricingMethod: [.subscription(0.0)],
             invoiceDate: Date(),
             totalCost: 1500.14
         ),
         InvoiceModel(
             id: UUID(),
             customer: CustomerModel.sample,
-            industryType: .landscaping,
+            industryType: .landscaping(.empty),
             serviceType: .recurring,
-            pricingMethod: .subscription,
+            pricingMethod: [.subscription(0.0)],
             invoiceDate: Date(),
             totalCost: 1200.50
         ),
         InvoiceModel(
             id: UUID(),
             customer: CustomerModel.sample,
-            industryType: .landscaping,
+            industryType: .landscaping(.empty),
             serviceType: .recurring,
-            pricingMethod: .subscription,
+            pricingMethod: [.subscription(0.0)],
             invoiceDate: Date(),
             totalCost: 5500.65
         ),

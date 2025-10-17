@@ -92,11 +92,13 @@ final class CustomerListVM {
     
     func searchCustomer(by name: String) -> [CustomerModel] {
         let query = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-
+        print("Query is \(query) | Total Customers is \(allCustomers.count)")
+        guard !query.isEmpty else {
+            return allCustomers
+        }
         return allCustomers.filter {
-            $0.firstName.lowercased().contains(query) ||
-            $0.lastName.lowercased().contains(query) ||
-            "\($0.firstName) \($0.lastName)".lowercased().contains(query)
+            let fullName = "\($0.firstName) \($0.lastName)".lowercased()
+            return fullName.contains(query)
         }
     }
     

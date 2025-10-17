@@ -11,9 +11,9 @@ struct UserView: View {
     @Bindable var userVM: UserVM
     
     @Binding var isPresented: Bool
-    
+    @Bindable var quoteVM: QuoteVM
     @State private var isEditing = false
-    @State private var selectIndustry: IndustryType = .consulting
+    @State private var selectIndustry: IndustryChoice = IndustryChoice.all.first!
     @State private var attemptedEdit: Bool = false
     var body: some View {
         NavigationStack {
@@ -65,9 +65,14 @@ struct UserView: View {
                             fixedHeight: false
                         ) {
                             Picker("Industry", selection: $selectIndustry) {
-                                ForEach(IndustryType.allCases) { type in
-                                    Text(type.displayName).tag(type)
+                                ForEach(IndustryChoice.all) { choice in
+                                    Text(choice.displayName).tag(choice)
                                 }
+                            }
+                            .onChange(of: selectIndustry) { newValue, _ in
+                                quoteVM.draftQuote.industryType = newValue.type
+                                quoteVM.loadIndustryFields(for: newValue.type)
+                                
                             }
                             .pickerStyle(.wheel)
                             .frame(maxHeight: 150)

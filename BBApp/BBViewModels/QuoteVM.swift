@@ -21,32 +21,49 @@ final class QuoteVM {
     
     var selectedCustomer: CustomerModel? = nil
     
+    var pricingMethods: [IdentifiedPricingMethod] = []
+    
     init(existingQuotes: [QuoteModel] = [], savedMaterials: [MaterialModel], draftQuote: QuoteModel) {
         self.quotes = existingQuotes
         self.savedMaterials = savedMaterials
         self.draftQuote = draftQuote
     }
     
-    func startNewQuote(for customer: CustomerModel) {
-        self.selectedCustomer = customer
-        self.draftQuote = QuoteModel(
-            customer: customer,
-            industryType: .landscaping,
-            serviceType: .maintenance,
-            pricingMethod: .fixedRate,
-            totalCost: 0
-        )
+    func loadIndustryFields(for industry: IndustryType) {
+        switch industry {
+            case .landscaping:
+                pricingMethods = [.init(.squareFootage(amount: 0, rate: 0))]
+            case .consulting:
+                pricingMethods = [.init(.fixedRate(0))]
+            case .productSales:
+                pricingMethods = [.init(.fixedRate(0))]
+            case .pressureWashing:
+                pricingMethods = [.init(.liquidSolution(amount: 0, rate: 0))]
+            case .handyman:
+                pricingMethods = [.init(.fixedRate(0))]
+            case .HVAC:
+                pricingMethods = [.init(.fixedRate(0))]
+            case .none:
+                pricingMethods = [.init(.fixedRate(0))]
+        }
+    }
+    
+    func startNewQuote(for customer: CustomerModel, industry: IndustryType) -> QuoteModel {
         quoteMaterials.removeAll()
+        loadIndustryFields(for: industry)
+        let newQuote = QuoteModel(
+            customer: customer,
+            industryType: industry,
+            serviceType: .maintenance,
+            pricingMethods: pricingMethods.map { $0.pricingMethod}
+        )
+        return newQuote
     }
     
     func quoteIsValid() -> Bool {
         let hasCustomer = true
-        let hasRequiredFields =
-        draftQuote.industryType != .none &&
-        draftQuote.serviceType != ServiceType.none &&
-        draftQuote.pricingMethod != .none
         let hasTotal = draftQuote.totalCost > 0
-        return hasCustomer && hasRequiredFields && hasTotal
+        return hasCustomer && hasTotal
                             
     }
     

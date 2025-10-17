@@ -42,49 +42,43 @@ struct UserModel: Identifiable {
     var fullName: String {
         "\(firstName) \(lastName)"
     }
-    
-    
 }
-/// Defines supported industry types for the user's business
-enum IndustryType: String, CaseIterable, Identifiable {
-    case landscaping
-    case pressureWashing
-    case consulting
-    case handyman
-    case HVAC
-    case productSales
-    case none
+//MARK: Struct for easy picker implementation 
+struct IndustryChoice: Identifiable, Hashable {
+    let id: String
+    let displayName: String
+    let type: IndustryType
     
-    /// Raw value as ID for use in Picker or List
-    var id: String {self.rawValue}
+    static let all: [IndustryChoice] = [
+        IndustryChoice(id: "landscaping", displayName: "Landscaping", type: .landscaping(.empty)),
+        IndustryChoice(id: "pressureWashing", displayName: "Pressure Washing", type: .pressureWashing(.empty)),
+        IndustryChoice(id: "consulting", displayName: "Consulting", type: .consulting(.empty)),
+        IndustryChoice(id: "handyman", displayName: "Handyman", type: .handyman(.empty)),
+        IndustryChoice(id: "HVAC", displayName: "HVAC", type: .HVAC(.empty)),
+        IndustryChoice(id: "productSales", displayName: "Product Sales", type: .productSales(.empty)),
+        IndustryChoice(id: "none", displayName: "None", type: .none)
+    ]
     
-    /// User-friendly string for each industry type
-    var displayName: String {
-        switch self {
-        case .landscaping:
-            return "Landscaping"
-        case .pressureWashing:
-            return "Pressure Washing"
-        case .consulting:
-            return "Consulting"
-        case .handyman:
-            return "Handyman"
-        case .HVAC:
-            return "HVAC"
-        case .productSales:
-            return "Product Sales"
-        case .none:
-            return "None"
-        }
+    static func == (lhs: IndustryChoice, rhs: IndustryChoice) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
-
+extension IndustryType {
+    var isNone: Bool {
+        if case .none = self { return true }
+        return false
+    }
+}
 extension UserModel {
     static let sample = UserModel(
         firstName: "Joshua",
         lastName: "Hauer",
         businessName: "Basic Business",
-        industryType: .consulting,
+        industryType: .landscaping(.empty),
         profileImageData: nil
     )
 }
