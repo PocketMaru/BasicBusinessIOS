@@ -11,7 +11,7 @@ import Foundation
 final class QuoteVM {
     var quotes: [QuoteModel] = []
     
-    var draftQuote: QuoteModel
+    var draftQuote: QuoteModel 
     
     var savedMaterials: [MaterialModel]
     
@@ -20,8 +20,6 @@ final class QuoteVM {
     var customerSelection: [CustomerModel] = []
     
     var selectedCustomer: CustomerModel? = nil
-    
-    var pricingMethods: [IdentifiedPricingMethod] = []
     
     init(existingQuotes: [QuoteModel] = [], savedMaterials: [MaterialModel], draftQuote: QuoteModel) {
         self.quotes = existingQuotes
@@ -32,19 +30,19 @@ final class QuoteVM {
     func loadIndustryFields(for industry: IndustryType) {
         switch industry {
             case .landscaping:
-                pricingMethods = [.init(.squareFootage(amount: 0, rate: 0))]
+            draftQuote.pricingMethods = [.squareFootage(amount: 0, rate: 0)]
             case .consulting:
-                pricingMethods = [.init(.fixedRate(0))]
+            draftQuote.pricingMethods = [.fixedRate(0)]
             case .productSales:
-                pricingMethods = [.init(.fixedRate(0))]
+            draftQuote.pricingMethods = [.fixedRate(0)]
             case .pressureWashing:
-                pricingMethods = [.init(.liquidSolution(amount: 0, rate: 0))]
+            draftQuote.pricingMethods = [.liquidSolution(amount: 0, rate: 0)]
             case .handyman:
-                pricingMethods = [.init(.fixedRate(0))]
+            draftQuote.pricingMethods = [.fixedRate(0)]
             case .HVAC:
-                pricingMethods = [.init(.fixedRate(0))]
+            draftQuote.pricingMethods = [.fixedRate(0)]
             case .none:
-                pricingMethods = [.init(.fixedRate(0))]
+            draftQuote.pricingMethods = [.fixedRate(0)]
         }
     }
     
@@ -55,7 +53,7 @@ final class QuoteVM {
             customer: customer,
             industryType: industry,
             serviceType: .maintenance,
-            pricingMethods: pricingMethods.map { $0.pricingMethod}
+            pricingMethods: draftQuote.pricingMethods
         )
         return newQuote
     }

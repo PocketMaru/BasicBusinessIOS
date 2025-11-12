@@ -84,7 +84,6 @@ struct QuoteView: View {
                                 }
                             }
                             // MARK: Cases representing industry specific fields.
-                            
                                 Group{
                                     switch userVM.user.industryType {
                                     case .landscaping:
@@ -103,9 +102,11 @@ struct QuoteView: View {
                                         EmptyView()
                                     }
                                 }
-                            
                             CustomFormView(header: "Total") {
-                                Text("\(quoteVM.draftQuote.totalCost)")
+                                Text(quoteVM.draftQuote.totalCost, format: .currency(code: "USD"))
+                            }
+                            .onChange(of: quoteVM.draftQuote.totalCost) { newValue, _ in
+                                print("Total changed", newValue)
                             }
                         }
                     }

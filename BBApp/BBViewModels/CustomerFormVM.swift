@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CustomerFormMode {
+enum FormMode {
     case add
     case edit
 }
@@ -16,7 +16,7 @@ enum CustomerFormMode {
 @Observable
 final class CustomerFormVM {
     
-    let mode: CustomerFormMode
+    let mode: FormMode
     private let saveUseCase: SaveCustomerUseCase
     
     private(set) var original: CustomerModel
@@ -33,7 +33,7 @@ final class CustomerFormVM {
     
     init(
         customer: CustomerModel,
-        mode: CustomerFormMode,
+        mode: FormMode,
         saveUseCase: SaveCustomerUseCase,
         onSubmit: @escaping (CustomerModel) throws -> Void
     ) {
@@ -42,10 +42,7 @@ final class CustomerFormVM {
         self.draft = customer
         self.saveUseCase = saveUseCase
         self.onSubmit = onSubmit
-        print("FormVM INIT id=\(customer.id) name=\(customer.firstName) \(customer.lastName)")
     }
-    
-    deinit { print("FormVM DEINIT") }
     
     func validateFields() -> Bool {
         firstNameError  = draft.firstName.isEmpty ? "Required" : nil

@@ -32,7 +32,7 @@ struct CustomField: Codable, Hashable {
 // TODO: Add CustomField to protocol with label and value for independent fields you can add,
 // TODO: make it an array and iterate through it in the view to display more custom fields
 /// This will allow consistent conversion from a quote to invoice, and back. 
-struct QuoteModel: Identifiable {
+struct QuoteModel: Identifiable, Codable, Equatable, Hashable {
     var id: UUID = UUID()
     var customer: CustomerModel
     var customerID: UUID {
@@ -89,7 +89,7 @@ extension QuoteModel {
     }
 }
 
-enum IndustryType: Identifiable {
+enum IndustryType: Identifiable, Codable, Equatable, Hashable {
     /// Associated values for industry specific calculation
     case landscaping(LandscapeQM)
     case pressureWashing(PressureWashQM)
@@ -138,7 +138,7 @@ enum IndustryType: Identifiable {
     }
 }
 
-enum ServiceType: Equatable {
+enum ServiceType: Equatable, Codable, Hashable {
     case installation
     case maintenance
     case repair
@@ -174,7 +174,7 @@ extension IdentifiedPricingMethod {
 }
 
 // MARK: Universal calculations
-enum PricingMethod {
+enum PricingMethod: Hashable, Codable {
     case fixedRate(Double)
     case squareFootage(amount: Double, rate: Double)
     case liquidSolution(amount: Double, rate: Double)
@@ -197,7 +197,7 @@ enum PricingMethod {
     }
 }
 
-enum LaborType {
+enum LaborType: Codable, Equatable, Hashable {
     case hourly(rate: Double, hours: Double)
     case flatRate(Double)
     case none

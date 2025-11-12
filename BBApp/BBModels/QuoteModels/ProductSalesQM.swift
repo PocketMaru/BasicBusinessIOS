@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductSalesQM {
+struct ProductSalesQM: Codable, Equatable, Hashable {
     var item: String?
     var quantity: Int?
     var pricingMethod: [PricingMethod]

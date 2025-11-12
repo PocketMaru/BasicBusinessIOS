@@ -9,34 +9,42 @@ import SwiftUI
 
 struct PricingMethodView: View {
     @Binding var method: PricingMethod
-
+    @State private var amountText: Double = 0
+    @State private var rateText: Double = 0
+    @FocusState private var isFocused: Bool
     var body: some View {
         switch method {
         case .squareFootage(let amount, let rate):
             VStack(alignment: .leading) {
                 CustomFormView(header: "Square Footage") {
-                    TextField("Square Footage",
-                              value: Binding(
-                                get: { amount },
-                                set: { newAmount in
-                                    method = .squareFootage(amount: newAmount, rate: rate)
-                                }
-                              ),
-                              format: .number
-                    )
-                    .keyboardType(.decimalPad)
+                    VStack(spacing: 8) {
+                        TextField("Square Footage",
+                                  value: $amountText,
+                                  format: .number)
+                        .focused($isFocused)
+                        .hideKeyboardOnTap()
+                        .keyboardType(.decimalPad)
+                        
+                        TextField("Price per Sq Ft",
+                                  value: $rateText,
+                                  format: .currency(code: "USD"))
+                        .focused($isFocused)
+                        .hideKeyboardOnTap()
+                        .keyboardType(.decimalPad)
+                    }
+                    
                 }
-                CustomFormView(header: "Price Per Square Foot") {
-                    TextField("Price per Sq Ft",
-                              value: Binding(
-                                get: { rate },
-                                set: { newRate in
-                                    method = .squareFootage(amount: amount, rate: newRate)
-                                }
-                              ),
-                              format: .currency(code: "USD")
-                    )
-                    .keyboardType(.decimalPad)
+            }
+            .onAppear {
+                // initialize once so you don't type into a zeroed field
+                amountText = amount
+                rateText = rate
+            }
+            .onChange(of: isFocused) { isFocused, _ in
+                if !isFocused {
+                    let amount = amountText
+                    let rate = rateText
+                    commitSqrftChanges(amount: amount, rate: rate)
                 }
             }
         case .fixedRate(let value):
@@ -95,5 +103,8 @@ struct PricingMethodView: View {
         case .none:
             EmptyView()
         }
+    }
+    private func commitSqrftChanges(amount: Double, rate: Double) {
+        method = .squareFootage(amount: amount, rate: rate)
     }
 }

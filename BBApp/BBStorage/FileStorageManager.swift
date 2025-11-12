@@ -17,7 +17,7 @@ struct FileStorageManager {
     }
 }
 
-extension FileStorageManager: CustomerListStorageManager {
+extension FileStorageManager: CustomerListStorageManager, QuoteListStorageManeger {
     func saveCustomers(_ customers: [CustomerModel]) throws {
         let data = try JSONEncoder().encode(customers)
         try data.write(to: FileStorageManager.fileURL(for: "customers.json"), options: [.atomic, .completeFileProtection])
@@ -26,6 +26,17 @@ extension FileStorageManager: CustomerListStorageManager {
     func loadCustomers() throws -> [CustomerModel] {
         let data = try Data(contentsOf: FileStorageManager.fileURL(for: "customers.json"))
         return try JSONDecoder().decode([CustomerModel].self, from: data)
+    }
+    
+    func saveQuotes(_ quotes: [QuoteModel]) throws {
+        let data = try JSONEncoder().encode(quotes)
+        try data.write(to: FileStorageManager.fileURL(for: "quotes.json"), options: [.atomic, .completeFileProtection])
+    }
+    
+    func loadQuotes() throws -> [QuoteModel] {
+        let data = try Data(contentsOf:
+            FileStorageManager.fileURL(for: "quotes.json"))
+        return try JSONDecoder().decode([QuoteModel].self, from: data)
     }
 }
 

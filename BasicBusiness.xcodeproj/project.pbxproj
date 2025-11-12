@@ -78,6 +78,9 @@
 		53EE9BAF2E160BF1008F3041 /* CustomButtonBG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EE9BAE2E160BF1008F3041 /* CustomButtonBG.swift */; };
 		53EE9BB12E161A9C008F3041 /* StatButtonBG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EE9BB02E161A9C008F3041 /* StatButtonBG.swift */; };
 		53FA99222DE8CCC700EBA5C8 /* ProductSalesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FA99212DE8CCC700EBA5C8 /* ProductSalesVM.swift */; };
+		53FD59422EA41402005C1A9F /* QuoteFormVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FD59412EA41402005C1A9F /* QuoteFormVM.swift */; };
+		53FD59462EA4184E005C1A9F /* SaveQuote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FD59452EA4184E005C1A9F /* SaveQuote.swift */; };
+		53FD59482EA4C875005C1A9F /* QuoteListStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FD59472EA4C869005C1A9F /* QuoteListStorageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,6 +175,9 @@
 		53EE9BAE2E160BF1008F3041 /* CustomButtonBG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonBG.swift; sourceTree = "<group>"; };
 		53EE9BB02E161A9C008F3041 /* StatButtonBG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatButtonBG.swift; sourceTree = "<group>"; };
 		53FA99212DE8CCC700EBA5C8 /* ProductSalesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSalesVM.swift; sourceTree = "<group>"; };
+		53FD59412EA41402005C1A9F /* QuoteFormVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteFormVM.swift; sourceTree = "<group>"; };
+		53FD59452EA4184E005C1A9F /* SaveQuote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveQuote.swift; sourceTree = "<group>"; };
+		53FD59472EA4C869005C1A9F /* QuoteListStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteListStorageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,14 +208,15 @@
 		530215852DD78AB8007F9E0B /* BBViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				53B0E37B2DFA615A009C29A9 /* CustomerFormVM.swift */,
 				530215862DD78B60007F9E0B /* CustomerListVM.swift */,
+				53B0E37B2DFA615A009C29A9 /* CustomerFormVM.swift */,
+				532F96982DD9098A000EEAFF /* QuoteVM.swift */,
+				53FD59412EA41402005C1A9F /* QuoteFormVM.swift */,
 				530215912DD7AF83007F9E0B /* ExpenseVM.swift */,
 				53FA99212DE8CCC700EBA5C8 /* ProductSalesVM.swift */,
 				53D7F2502DDEB66D00579741 /* MaterialVM.swift */,
 				53318F992DFA082C0046B0F0 /* InvoiceVM.swift */,
 				5302158A2DD78BC6007F9E0B /* BusinessStatsVM .swift */,
-				532F96982DD9098A000EEAFF /* QuoteVM.swift */,
 			);
 			path = BBViewModels;
 			sourceTree = "<group>";
@@ -218,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				53B448F52E41C43D008BFA86 /* SaveCustomer.swift */,
+				53FD59452EA4184E005C1A9F /* SaveQuote.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -441,6 +449,7 @@
 			isa = PBXGroup;
 			children = (
 				532EB8632E41FC5E008FE712 /* FileStorageManager.swift */,
+				53FD59472EA4C869005C1A9F /* QuoteListStorageManager.swift */,
 				538A03CC2E1122200001FACC /* CustomerListStorageManaging.swift */,
 			);
 			path = BBStorage;
@@ -635,6 +644,7 @@
 				53BAE4222DF35A9B00862427 /* ExpenseRow.swift in Sources */,
 				53BAE3F22DF353C400862427 /* ExpenseView.swift in Sources */,
 				530215872DD78B60007F9E0B /* CustomerListVM.swift in Sources */,
+				53FD59462EA4184E005C1A9F /* SaveQuote.swift in Sources */,
 				53BAE3FF2DF3554000862427 /* QuoteView.swift in Sources */,
 				53BAE4162DF358DE00862427 /* MaterialListView.swift in Sources */,
 				53D7F24D2DDE66FB00579741 /* HVACQM.swift in Sources */,
@@ -656,6 +666,7 @@
 				538A03C62E0F04960001FACC /* LandscapeSectionView.swift in Sources */,
 				538A03C82E0F04C40001FACC /* PressureWashSectionView.swift in Sources */,
 				530215922DD7AF83007F9E0B /* ExpenseVM.swift in Sources */,
+				53FD59422EA41402005C1A9F /* QuoteFormVM.swift in Sources */,
 				53EE9BB12E161A9C008F3041 /* StatButtonBG.swift in Sources */,
 				532EB8642E41FC5E008FE712 /* FileStorageManager.swift in Sources */,
 				53BAE4082DF3582500862427 /* CustomerDetailView.swift in Sources */,
@@ -669,6 +680,7 @@
 				530215902DD7AEBB007F9E0B /* ExpenseModel.swift in Sources */,
 				538A03CF2E1196B20001FACC /* AddCustomerView.swift in Sources */,
 				53BAE3EE2DF353A300862427 /* BusinessStatsView.swift in Sources */,
+				53FD59482EA4C875005C1A9F /* QuoteListStorageManager.swift in Sources */,
 				53B0E38A2DFDE47E009C29A9 /* CustomFormView.swift in Sources */,
 				53D1A2962DCE658800E7A675 /* CustomSectionView.swift in Sources */,
 				53D1A2892DCABB7E00E7A675 /* CustomerModel.swift in Sources */,

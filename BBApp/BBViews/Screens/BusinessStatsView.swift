@@ -60,7 +60,7 @@ struct BusinessStatsView: View {
     
     var invoiceVM = InvoiceVM(
         invoice: InvoiceModel.sampleList,
-        customer: CustomerModel.sampleList
+        customer: customerListVM
     )
     var expenseVM = ExpenseVM(
         expenses: ExpenseModel.sampleList

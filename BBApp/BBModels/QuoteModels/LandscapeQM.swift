@@ -9,7 +9,7 @@ import Foundation
 // These represent each industries specific fields
 // Gives us the ability to calculate additions and add them
 // to total cost or provide additional information. 
-struct LandscapeQM {
+struct LandscapeQM: Codable, Equatable, Hashable {
     var pricingMethod: [PricingMethod]
     var totalCost: Double {
         pricingMethod.reduce(0) { $0 + $1.calculateTotal()}

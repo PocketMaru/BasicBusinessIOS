@@ -20,7 +20,7 @@ import Foundation
 /// Adds an initializer to `MaterialExpenseQM` that creates a new instance from an existing `MaterialModel`.
 /// Includes the `addedAsExpense` parameter to specify whether the material should be logged as an expense.
 
-struct MaterialExpenseQM: Identifiable {
+struct MaterialExpenseQM: Identifiable, Codable, Equatable, Hashable {
     var id: UUID
     var name: String
     var description: String?
@@ -56,7 +56,7 @@ extension MaterialExpenseQM {
     }
 }
 
-struct MaterialExpensePreview: Identifiable {
+struct MaterialExpensePreview: Identifiable, Codable, Equatable, Hashable {
     var id = UUID()
     var label: String
     var estimatedCost: Double

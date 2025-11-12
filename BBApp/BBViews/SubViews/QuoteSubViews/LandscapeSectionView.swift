@@ -12,8 +12,8 @@ struct LandscapeSectionView: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            ForEach($quoteVM.pricingMethods) { $item in
-                PricingMethodView(method: $item.pricingMethod)
+            ForEach($quoteVM.draftQuote.pricingMethods, id: \.self) { $method in
+                PricingMethodView(method: $method)
             }
         }
     }

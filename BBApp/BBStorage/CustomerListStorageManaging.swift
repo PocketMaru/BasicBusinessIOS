@@ -6,9 +6,6 @@
 //
 
 import Foundation
-
-
-
 protocol CustomerListStorageManager {
     func saveCustomers(_ customers: [CustomerModel]) throws
     func loadCustomers() throws -> [CustomerModel]
