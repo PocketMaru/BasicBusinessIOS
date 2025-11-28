@@ -1,10 +1,3 @@
-//
-//  LawnProTests.swift
-//  LawnProTests
-//
-//  Created by Joshua Hauer on 5/4/25.
-//
-
 import Testing
 @testable import BasicBusiness
 
