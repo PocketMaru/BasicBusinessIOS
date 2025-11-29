@@ -33,7 +33,7 @@ final class SaveInvoice: SaveInvoiceUseCase {
         if currentList.contains(where: { $0.id == draft.id }) {
             throw SaveError.writeFailed(reason: "Duplicate Invoice ID")
         }
-        var updatedList = currentList + [draft]
+        let updatedList = currentList + [draft]
         try fileStorage.save(updatedList, as: fileName)
         return updatedList
     }

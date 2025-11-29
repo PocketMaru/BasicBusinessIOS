@@ -41,27 +41,28 @@ final class InvoiceFormVM {
     func loadIndustryFields(for industry: IndustryType) {
         switch industry {
         case .landscaping:
-            draft.pricingMethods = [.squareFootage(amount: 0, rate: 0)]
+            draft.pricingMethods = [PricingMethod(type: .squareFootage, amount: 0, rate: 0)]
             
         case .consulting, .productSales, .handyman, .HVAC, .none:
-            draft.pricingMethods = [.fixedRate(0)]
+            draft.pricingMethods = [PricingMethod(type: .fixedRate, amount: 0)]
             
         case .pressureWashing:
-            draft.pricingMethods = [.liquidSolution(amount: 0, rate: 0)]
+            draft.pricingMethods = [PricingMethod(type: .liquidSolution, amount: 0, rate: 0)]
         }
     }
     
-    func addIndustryField(_ type: PricingMethod ) {
+    func addIndustryField(_ type: PricingMethodType ) {
         switch type {
         case .fixedRate:
-            draft.pricingMethods.append(.fixedRate(0))
+            draft.pricingMethods.append(PricingMethod(type: .fixedRate, amount: 0))
         case .squareFootage:
-            draft.pricingMethods.append(.squareFootage(amount: 0, rate: 0))
+            draft.pricingMethods.append(PricingMethod(type: .squareFootage, amount: 0, rate: 0))
         case .liquidSolution:
-            draft.pricingMethods.append(.liquidSolution(amount: 0, rate: 0))
+            draft.pricingMethods.append(PricingMethod(type: .liquidSolution, amount: 0, rate: 0))
         case .subscription:
-            draft.pricingMethods.append(.subscription(0))
+            draft.pricingMethods.append(PricingMethod(type: .subscription , amount: 0))
         case .none:
+            return
         }
     }
     

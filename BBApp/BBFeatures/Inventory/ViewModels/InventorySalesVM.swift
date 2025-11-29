@@ -1,15 +1,9 @@
-//
-//  ProductSalesVM.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 5/29/25.
-//
-
 import Foundation
+
 @Observable
-final class InventoryItemVM {
-    var inventory: [InventoryItemModel] = []
-    init(inventory: [InventoryItemModel]) {
+final class InventorySalesVM {
+    var inventory: [InventoryModel] = []
+    init(inventory: [InventoryModel]) {
         self.inventory = inventory
     }
     // Function converting the stored product to a base unit.
@@ -37,7 +31,7 @@ final class InventoryItemVM {
         }
     }
     // Function adding products to inventory
-    func addProduct(_ product: InventoryItemModel) {
+    func addProduct(_ product: InventoryModel) {
         inventory.append(product)
     }
     // Function to remove the quantity selected by the user.
@@ -72,7 +66,7 @@ final class InventoryItemVM {
         inventory[index].productQuantity = max(0, inventory[index].productQuantity + amount)
     }
     
-    func displayQuantity(for product: InventoryItemModel, as unit: ProductUnitTypes) -> String {
+    func displayQuantity(for product: InventoryModel, as unit: ProductUnitTypes) -> String {
         let converted = convertFromBaseUnit(quantity: product.productQuantity, unit: unit)
         return String(format: "%.2f %@", converted, unit.displayName)
     }

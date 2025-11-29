@@ -1,10 +1,3 @@
-//
-//  ProductSales.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 5/21/25.
-//
-
 import Foundation
 
 struct ProductSalesQM: Codable, Equatable, Hashable {
@@ -17,5 +10,5 @@ struct ProductSalesQM: Codable, Equatable, Hashable {
 }
 
 extension ProductSalesQM {
-    static let empty = ProductSalesQM(pricingMethod: [.none])
+    static let empty = ProductSalesQM(pricingMethod: [])
 }

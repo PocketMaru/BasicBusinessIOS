@@ -1,10 +1,3 @@
-//
-//  LPToolBarTitle.swift
-//  LawnPro
-//
-//  Created by Joshua Hauer on 5/9/25.
-//
-
 import SwiftUI
 // My version of liquid glass for titles, light and dark mode variants.
 extension View {

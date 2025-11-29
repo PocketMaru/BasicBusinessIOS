@@ -1,10 +1,3 @@
-//
-//  DismissKeyboard.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 7/2/25.
-//
-
 import SwiftUI
 
 extension View {

@@ -1,10 +1,3 @@
-//
-//  CustomerDetailVM.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 6/11/25.
-//
-
 import Foundation
 
 enum FormMode {

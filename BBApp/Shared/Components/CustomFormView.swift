@@ -1,10 +1,3 @@
-//
-//  CustomFormView.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 6/14/25.
-//
-
 import SwiftUI
 
 struct CustomFormView<Content: View>: View {

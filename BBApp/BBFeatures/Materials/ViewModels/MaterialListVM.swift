@@ -3,7 +3,7 @@ import Foundation
 @MainActor
 @Observable
 final class MaterialListVM {
-    private(set) var materialList: [MaterialModel] = []
+    private(set) var allMaterials: [MaterialModel] = []
     
     init() {
 
@@ -23,11 +23,11 @@ final class MaterialListVM {
             unitCost: unitCost,
             unitType: unitType
         )
-        materialList.append(newMaterial)
+        allMaterials.append(newMaterial)
     }
     // Removal of materials stored
     func removeMaterial(at index: Int) {
-        guard index >= 0 && index < materialList.count else { return }
-        materialList.remove(at: index)
+        guard index >= 0 && index < allMaterials.count else { return }
+        allMaterials.remove(at: index)
     }
 }

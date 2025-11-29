@@ -1,11 +1,10 @@
+import Foundation
 import Observation
 
 @MainActor
 @Observable
 final class CustomerListVM {
     var allCustomers: [CustomerModel] = []
-
-    var allQuotes: [QuoteModel] = []
     
     var paidCustomers: [CustomerModel] {
         allCustomers.filter { $0.paidBill == true }
@@ -28,6 +27,10 @@ final class CustomerListVM {
             print(e)
             self.allCustomers = []
         }
+    }
+    
+    func getCustomer(for id: UUID) -> CustomerModel? {
+        allCustomers.first { $0.id == id }
     }
     
     func addVM() -> CustomerFormVM {

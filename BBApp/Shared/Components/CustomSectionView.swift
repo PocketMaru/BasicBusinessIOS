@@ -1,10 +1,3 @@
-//
-//  CustomSectionView.swift
-//  LawnPro
-//
-//  Created by Joshua Hauer on 5/9/25.
-//
-
 import SwiftUI
 
 struct CustomSectionView<Content: View>: View {

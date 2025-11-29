@@ -1,10 +1,3 @@
-//
-//  FileStorageManager.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 8/5/25.
-//
-
 import Foundation
 
 final class FileStorageManager {

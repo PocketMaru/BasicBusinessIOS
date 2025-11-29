@@ -1,10 +1,3 @@
-//
-//  StatsSummaryView.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 6/6/25.
-//
-
 import SwiftUI
 
 enum StatDetailSheetItem: Identifiable {
@@ -37,13 +30,13 @@ enum StatDetailSheetItem: Identifiable {
         }
     }
 }
-
+@MainActor
 struct StatsSummaryView: View {
     @Binding var selectedStat: StatsSummaryViewType
-    var invoiceVM: InvoiceVM
-    var expenseVM: ExpenseVM
-    var quoteVM: QuoteListVM
-    var materialVM: MaterialListVM
+    var invoiceListVM: InvoiceListVM
+    var expenseListVM: ExpenseListVM
+    var quoteListVM: QuoteListVM
+    var materialListVM: MaterialListVM
     var businessStatsVM: BusinessStatsVM
     var customerListVM: CustomerListVM
     @State private var statDetailSheetItem: StatDetailSheetItem?
@@ -58,18 +51,18 @@ struct StatsSummaryView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         if selectedStat == .invoices {
-                                ForEach(invoiceVM.invoice.indices, id: \.self) { index in
-                                    let invoice = invoiceVM.invoice[index]
+                            ForEach(invoiceListVM.allInvoices) { invoice in
+                                if let customer = customerListVM.getCustomer(for: invoice.customerID) {
                                     CustomSectionView(
-                                        headerTitle: invoice.customer.fullName ?? invoice.customer.firstName
+                                        headerTitle: customer.fullName ?? customer.firstName
                                     ) {
                                         VStack {
-                                            Text(invoice.customer.phone)
+                                            Text(customer.phone)
                                             Divider()
                                             Text(String(invoice.invoiceDate.formatted(date: .abbreviated, time: .omitted)))
                                             
                                             Divider()
-                                            Text(String(invoice.totalCost ?? 0))
+                                            Text(String(invoice.totalCost))
                                             
                                             Spacer()
                                         }
@@ -79,9 +72,9 @@ struct StatsSummaryView: View {
                                     .statBubbleStyle()
                                     .statButtonBG()
                                 }
+                            }
                         } else if selectedStat == .expenses {
-                            ForEach(expenseVM.expenses.indices, id: \.self) { index in
-                                let expense = expenseVM.expenses[index]
+                            ForEach(expenseListVM.allExpenses) { expense in
                                 CustomSectionView(
                                     headerTitle: expense.name
                                 ) {
@@ -90,7 +83,7 @@ struct StatsSummaryView: View {
                                         Divider()
                                         Text(expense.type.name)
                                         Divider()
-                                        Text(String(expense.total))
+                                        Text(String(expense.calcTotal))
                                     }
                                 } tapped: {
                                     statDetailSheetItem = .expense(expense)
@@ -117,41 +110,41 @@ struct StatsSummaryView: View {
                             )
                             .statButtonBG()
                         } else if selectedStat == .quotes {
-                            ForEach(quoteVM.quotes.indices, id: \.self) { index in
-                                let quoteItem = quoteVM.quotes[index]
-                                CustomSectionView(
-                                    headerTitle: quoteItem.customer.fullName ?? quoteItem.customer.firstName
-                                ) {
-                                    VStack {
-                                        Text(quoteItem.customer.phone)
-                                        Divider()
-                                        Text(String(quoteItem.quoteDate.formatted(date: .abbreviated, time: .omitted)))
-                                        Divider()
-                                        Text(String(quoteItem.totalCost))
-                                        Spacer()
+                            ForEach(quoteListVM.allQuotes) { quote in
+                                if let customer = customerListVM.getCustomer(for: quote.customerID) {
+                                    CustomSectionView(
+                                        headerTitle: customer.fullName ?? customer.firstName
+                                    ) {
+                                        VStack {
+                                            Text(customer.phone)
+                                            Divider()
+                                            Text(String(quote.quoteDate.formatted(date: .abbreviated, time: .omitted)))
+                                            Divider()
+                                            Text(String(quote.totalCost))
+                                            Spacer()
+                                        }
+                                    } tapped: {
+                                        statDetailSheetItem = .quote(quote)
                                     }
-                                } tapped: {
-                                    statDetailSheetItem = .quote(quoteItem)
+                                    .statBubbleStyle()
+                                    .statButtonBG()
                                 }
-                                .statBubbleStyle()
-                                .statButtonBG()
                             }
                         } else if selectedStat == .materials {
-                            ForEach(materialVM.materials.indices, id: \.self) { index in
-                                let materialItem = materialVM.materials[index]
+                            ForEach(materialListVM.allMaterials) { material in
                                 CustomSectionView(
-                                    headerTitle: materialItem.name
+                                    headerTitle: material.name
                                 ) {
                                     VStack {
-                                        Text("\(materialItem.unitCost)")
+                                        Text("\(material.unitCost)")
                                         Divider()
-                                        Text(materialItem.unitType.displayName)
+                                        Text(material.unitType.displayName)
                                         Divider()
-                                        Text(materialItem.description ?? "")
+                                        Text(material.description ?? "")
                                         Spacer()
                                     }
                                 } tapped: {
-                                    statDetailSheetItem = .material(materialItem)
+                                    statDetailSheetItem = .material(material)
                                 }
                                 .statBubbleStyle()
                                 .statButtonBG()

@@ -1,10 +1,3 @@
-//
-//  PressureWashQM.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 5/20/25.
-//
-
 import Foundation
 
 struct PressureWashQM: Codable, Equatable, Hashable {
@@ -15,5 +8,5 @@ struct PressureWashQM: Codable, Equatable, Hashable {
 }
 
 extension PressureWashQM {
-    static let empty = PressureWashQM(pricingMethod: [.none])
+    static let empty = PressureWashQM(pricingMethod: [])
 }

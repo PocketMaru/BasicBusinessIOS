@@ -1,10 +1,3 @@
-//
-//  ConsultingQM.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 5/20/25.
-//
-
 import Foundation
 
 struct ConsultingQM: Codable, Equatable, Hashable{
@@ -15,5 +8,5 @@ struct ConsultingQM: Codable, Equatable, Hashable{
 }
 
 extension ConsultingQM {
-    static let empty = ConsultingQM(pricingMethod: [.none])
+    static let empty = ConsultingQM(pricingMethod: [])
 }

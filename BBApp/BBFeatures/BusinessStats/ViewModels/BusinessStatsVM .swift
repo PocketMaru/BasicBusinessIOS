@@ -1,10 +1,3 @@
-//
-//  BusinessStatsVM.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 5/16/25.
-//
-
 import Foundation
 
 // Business statistics View Model outlining the data that exists within the business.

@@ -1,10 +1,3 @@
-//
-//  BusinessStatsView.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 6/6/25.
-//
-
 import SwiftUI
 
 enum StatsSummaryViewType {
@@ -41,12 +34,19 @@ enum StatsSummaryViewType {
 
 struct BusinessStatsView: View {
     var userVM: UserVM
+    var customerListVM: CustomerListVM
+    var materialListVM: MaterialListVM
+    var quoteListVM: QuoteListVM
+    var invoiceListVM: InvoiceListVM
+    var expenseListVM: ExpenseListVM
+    var businessStatsVM: BusinessStatsVM
+    
     @Binding var activeSheet: ActiveUserSheet?
     @State private var showStatsSummary = true
     @State var selectedSummaryViewType: StatsSummaryViewType = .income
-    var customerListVM: CustomerListVM
     @State private var showStatsDetailDestination = false
     @State private var hasAppeared: Bool = false
+    
     private func handleStatTap(_ type: StatsSummaryViewType ) {
         selectedSummaryViewType = type
         if type == .invoices || type == .quotes || type == .income {
@@ -57,27 +57,6 @@ struct BusinessStatsView: View {
             showStatsDetailDestination = true
         }
     }
-    
-    var invoiceVM = InvoiceVM(
-        invoice: InvoiceModel.sampleList,
-        customer: customerListVM
-    )
-    var expenseVM = ExpenseVM(
-        expenses: ExpenseModel.sampleList
-    )
-    var quoteVM = QuoteListVM(
-        existingQuotes: QuoteModel.sampleList,
-        savedMaterials: MaterialModel.sampleList,
-        draftQuote: QuoteModel.sample
-    )
-    var businessStatsVM = BusinessStatsVM(
-        quoteData: QuoteModel.sampleList,
-        expenseData: ExpenseModel.sampleList,
-        invoiceData: InvoiceModel.sampleList
-    )
-    var materialVM = MaterialListVM(
-        materials: MaterialModel.sampleList
-    )
     
     var body: some View {
         ZStack(alignment: .top){
@@ -95,9 +74,10 @@ struct BusinessStatsView: View {
                                 if selectedSummaryViewType == .invoices {
                                     StatsSummaryView(
                                         selectedStat: $selectedSummaryViewType,
-                                        invoiceVM: invoiceVM,
-                                        expenseVM: expenseVM,
-                                        quoteVM: quoteVM, materialVM: materialVM,
+                                        invoiceListVM: invoiceListVM,
+                                        expenseListVM: expenseListVM,
+                                        quoteListVM: quoteListVM,
+                                        materialListVM: materialListVM,
                                         businessStatsVM: businessStatsVM,
                                         customerListVM: customerListVM,
                                         activeSheet: $activeSheet
@@ -105,9 +85,10 @@ struct BusinessStatsView: View {
                                 } else if selectedSummaryViewType == .quotes {
                                     StatsSummaryView(
                                         selectedStat: $selectedSummaryViewType,
-                                        invoiceVM: invoiceVM,
-                                        expenseVM: expenseVM,
-                                        quoteVM: quoteVM, materialVM: materialVM,
+                                        invoiceListVM: invoiceListVM,
+                                        expenseListVM: expenseListVM,
+                                        quoteListVM: quoteListVM,
+                                        materialListVM: materialListVM,
                                         businessStatsVM: businessStatsVM,
                                         customerListVM: customerListVM,
                                         activeSheet: $activeSheet
@@ -115,9 +96,10 @@ struct BusinessStatsView: View {
                                 } else if selectedSummaryViewType == .income {
                                     StatsSummaryView(
                                         selectedStat: $selectedSummaryViewType,
-                                        invoiceVM: invoiceVM,
-                                        expenseVM: expenseVM,
-                                        quoteVM: quoteVM, materialVM: materialVM,
+                                        invoiceListVM: invoiceListVM,
+                                        expenseListVM: expenseListVM,
+                                        quoteListVM: quoteListVM,
+                                        materialListVM: materialListVM,
                                         businessStatsVM: businessStatsVM,
                                         customerListVM: customerListVM,
                                         activeSheet: $activeSheet
@@ -155,11 +137,11 @@ struct BusinessStatsView: View {
                 Spacer().frame(height: 5)
                 LargeStatButtonView(
                     titleOne: "Invoices",
-                    valueOne: Double(invoiceVM.invoice.count),
+                    valueOne: Double(invoiceListVM.allInvoices.count),
                     titleTwo: "Income",
                     valueTwo: businessStatsVM.totalProfit,
                     titleThree: "Quotes",
-                    valueThree: Double(quoteVM.quotes.count),
+                    valueThree: Double(quoteListVM.allQuotes.count),
                     tapActionOne: {
                         handleStatTap(.invoices)
                     }, tapActionTwo: {
@@ -176,7 +158,7 @@ struct BusinessStatsView: View {
                     })
 
                     StatButtonView(label: "Materials",
-                                   value: Double(materialVM.materials.count),
+                                   value: Double(materialListVM.allMaterials.count),
                                    tapAction: {
                         handleStatTap(.materials)
                     })
@@ -213,10 +195,10 @@ struct BusinessStatsView: View {
         .navigationDestination(isPresented: $showStatsDetailDestination) {
             StatsSummaryView(
                 selectedStat: $selectedSummaryViewType,
-                invoiceVM: invoiceVM,
-                expenseVM: expenseVM,
-                quoteVM: quoteVM,
-                materialVM: materialVM,
+                invoiceListVM: invoiceListVM,
+                expenseListVM: expenseListVM,
+                quoteListVM: quoteListVM,
+                materialListVM: materialListVM,
                 businessStatsVM: businessStatsVM,
                 customerListVM: customerListVM,
                 activeSheet: $activeSheet

@@ -1,10 +1,3 @@
-//
-//  CustomButtonBG.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 7/2/25.
-//
-
 import SwiftUI
 
 struct CustomButtonBG: ViewModifier {

@@ -35,7 +35,7 @@ final class QuoteListVM {
             quote: QuoteModel(),
             mode: .add,
             availableCustomers: customerListVM.allCustomers,
-            savedMaterials: materialCatalogVM.materialList,
+            savedMaterials: materialCatalogVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.addQuote(from: draft)
             }
@@ -49,7 +49,7 @@ final class QuoteListVM {
             quote: newQuote,
             mode: .edit,
             availableCustomers: customerListVM.allCustomers,
-            savedMaterials: materialCatalogVM.materialList,
+            savedMaterials: materialCatalogVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.updateQuote(from: draft)
             }

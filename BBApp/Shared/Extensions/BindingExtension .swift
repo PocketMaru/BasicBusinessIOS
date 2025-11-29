@@ -1,11 +1,3 @@
-//
-//  BindingExtension .swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 8/23/25.
-//
-
-import Foundation
 import SwiftUI
 
 extension Binding where Value == String? {

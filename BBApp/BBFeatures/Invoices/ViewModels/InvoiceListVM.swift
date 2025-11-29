@@ -35,7 +35,7 @@ final class InvoiceListVM {
             invoice: InvoiceModel(),
             mode: .add,
             availableCustomers: customerListVM.allCustomers,
-            savedMaterials: materialCatalogVM.materialList,
+            savedMaterials: materialCatalogVM.allMaterials,
             onSubmit: {[weak self] draft in
                 try self?.addInvoice(from: draft)
             }
@@ -49,7 +49,7 @@ final class InvoiceListVM {
             invoice: newInvoice,
             mode: .edit,
             availableCustomers: customerListVM.allCustomers,
-            savedMaterials: materialCatalogVM.materialList,
+            savedMaterials: materialCatalogVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.updateInvoice(from: draft)
             }

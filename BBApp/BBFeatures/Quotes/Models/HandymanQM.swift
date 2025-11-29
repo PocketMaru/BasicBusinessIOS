@@ -1,10 +1,3 @@
-//
-//  HandymanQM.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 5/20/25.
-//
-
 import Foundation
 
 struct HandymanQM: Codable, Equatable, Hashable {
@@ -15,5 +8,5 @@ struct HandymanQM: Codable, Equatable, Hashable {
 }
 
 extension HandymanQM {
-    static let empty = HandymanQM(pricingMethod: [.none])
+    static let empty = HandymanQM(pricingMethod: [])
 }

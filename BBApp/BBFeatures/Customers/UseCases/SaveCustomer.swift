@@ -59,7 +59,7 @@ struct SaveCustomer: SaveCustomerUseCase {
         guard let index = updatedList.firstIndex(where: { $0.id == customer.id }) else {
             throw SaveError.writeFailed(reason: "Customer not found")
         }
-        let removed = updatedList.remove(at: index)
+        updatedList.remove(at: index)
         try fileStorage.save(updatedList, as: filename)
         return updatedList
     }

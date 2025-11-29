@@ -1,24 +1,4 @@
-//
-//  QuoteMaterialModel.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 5/22/25.
-//
-
 import Foundation
-
-// MARK: — MaterialExpenseQM
-/// Struct `MaterialExpenseQM` defines expenses related to materials that are created when building quotes
-
-// MARK: — MaterialExpensePreview
-/// Struct `MaterialExpensePreview` represents added materials as expenses prior to finalization through invoicing.
-
-// MARK: — MaterialExpenseQM + toExpense
-/// Adds the conversion of materials added to a quote to expenses.
-
-// MARK: — MaterialExpenseQM + addedAsExpense
-/// Adds an initializer to `MaterialExpenseQM` that creates a new instance from an existing `MaterialModel`.
-/// Includes the `addedAsExpense` parameter to specify whether the material should be logged as an expense.
 
 struct MaterialExpenseModel: Identifiable, Codable, Equatable, Hashable {
     var id: UUID

@@ -1,10 +1,3 @@
-//
-//  ActiveUserSheet.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 6/13/25.
-//
-
 import Foundation
 
 enum ActiveUserSheet: Identifiable, Equatable {

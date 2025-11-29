@@ -1,10 +1,3 @@
-//
-//  CustomMultiForm.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 7/4/25.
-//
-
 import SwiftUI
 
 struct CustomMultiForm: View {

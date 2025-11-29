@@ -8,12 +8,43 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State private var customerListVM = CustomerListVM()
-    @State private var quoteVM = QuoteListVM(customerListVM: customerListVM, materialCatalogVM: materialVM)
-    @State private var materialVM = MaterialListVM()
-    @State private var userVM = UserVM(user: UserModel.sample)
+    @State private var userVM: UserVM
+    @State private var customerListVM: CustomerListVM
+    @State private var materialListVM: MaterialListVM
+    @State private var quoteListVM: QuoteListVM
+    @State private var invoiceListVM: InvoiceListVM
+    @State private var expenseListVM: ExpenseListVM
+    @State private var businessStatsVM: BusinessStatsVM
+    
     @State private var activeSheet: ActiveUserSheet?
     @State private var addCustomerVM: CustomerFormVM? = nil
+    
+    init() {
+        let userVM = UserVM(user: UserModel.sample)
+        let customerListVM = CustomerListVM()
+        let materialListVM = MaterialListVM()
+        let quoteListVM = QuoteListVM(
+            customerListVM: customerListVM,
+            materialCatalogVM: materialListVM
+        )
+        let invoiceListVM = InvoiceListVM(
+            customerListVM: customerListVM,
+            materialCatalogVM: materialListVM
+        )
+        let expenseListVM = ExpenseListVM()
+        let businessStatsVM = BusinessStatsVM(
+            quoteData: quoteListVM,
+            expenseData: expenseListVM,
+            invoiceData: invoiceListVM
+        )
+        _userVM = State(initialValue: userVM)
+        _customerListVM = State(initialValue: customerListVM)
+        _materialListVM = State(initialValue: materialListVM)
+        _quoteListVM = State(initialValue: quoteListVM)
+        _invoiceListVM = State(initialValue: invoiceListVM)
+        _expenseListVM = State(initialValue: expenseListVM)
+        _businessStatsVM = State(initialValue: businessStatsVM)
+    }
     
     var body: some View {
         
@@ -21,8 +52,13 @@ struct MainTabView: View {
             NavigationStack {
                 BusinessStatsView(
                     userVM: userVM,
-                    activeSheet: $activeSheet,
-                    customerListVM: customerListVM
+                    customerListVM: customerListVM,
+                    materialListVM: materialListVM,
+                    quoteListVM: quoteListVM,
+                    invoiceListVM: invoiceListVM,
+                    expenseListVM: expenseListVM,
+                    businessStatsVM: businessStatsVM,
+                    activeSheet: $activeSheet
                 )
             }
             .tabItem {
@@ -43,8 +79,8 @@ struct MainTabView: View {
             NavigationStack {
                 QuoteView(
                     userVM: userVM,
-                    quoteVM: quoteVM,
                     customerListVM: customerListVM,
+                    quoteListVM: quoteListVM,
                     activeSheet: $activeSheet,
                 )
             }
@@ -91,7 +127,8 @@ struct MainTabView: View {
                     isPresented: Binding(
                         get: { activeSheet != nil },
                         set: { if !$0 { activeSheet = nil } }
-                    ), quoteVM: quoteVM
+                    ),
+                    quoteListVM: quoteListVM
                 )
             case .addCustomer:
                 AddCustomerView(

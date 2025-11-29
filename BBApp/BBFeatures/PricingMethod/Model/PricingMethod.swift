@@ -27,3 +27,20 @@ struct PricingMethod: Identifiable, Codable, Hashable {
         self.rate = rate
     }
 }
+
+extension PricingMethod {
+    func calculateTotal() -> Double {
+        switch type {
+        case .fixedRate:
+            return amount ?? 0
+        case .squareFootage:
+            return (amount ?? 0) * (rate ?? 0)
+        case .liquidSolution:
+            return (amount ?? 0) * (rate ?? 0)
+        case .subscription:
+            return amount ?? 0
+        case .none:
+            return 0
+        }
+    }
+}

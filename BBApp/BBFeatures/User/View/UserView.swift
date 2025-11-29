@@ -1,17 +1,10 @@
-//
-//  UserView.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 6/13/25.
-//
-
 import SwiftUI
 
 struct UserView: View {
     @Bindable var userVM: UserVM
     
     @Binding var isPresented: Bool
-    @Bindable var quoteVM: QuoteListVM
+    @Bindable var quoteListVM: QuoteListVM
     @State private var isEditing = false
     @State private var selectIndustry: IndustryChoice = IndustryChoice.all.first!
     @State private var attemptedEdit: Bool = false
@@ -70,9 +63,7 @@ struct UserView: View {
                                 }
                             }
                             .onChange(of: selectIndustry) { newValue, _ in
-                                quoteVM.draftQuote.industryType = newValue.type
-                                quoteVM.loadIndustryFields(for: newValue.type)
-                                
+                                userVM.user.industryType = newValue.type
                             }
                             .pickerStyle(.wheel)
                             .frame(maxHeight: 150)

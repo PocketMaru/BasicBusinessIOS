@@ -33,7 +33,7 @@ final class SaveQuote: SaveQuoteUseCase {
         if currentList.contains(where: { $0.id == draft.id }) {
             throw SaveError.writeFailed(reason: "Duplicate Quote ID")
         }
-        var updatedList = currentList + [draft]
+        let updatedList = currentList + [draft]
         try fileStorage.save(updatedList, as: filename)
         return updatedList
     }

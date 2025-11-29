@@ -11,7 +11,7 @@ struct BasicBusinessApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
-                .accentColor(ThemeColors.logoColor)
+                .accentColor(AppTheme.logoColor)
         }
     }
 }

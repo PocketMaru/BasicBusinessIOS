@@ -1,10 +1,3 @@
-//
-//  HVACQM.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 5/21/25.
-//
-
 import Foundation
 
 struct HVACQM: Codable, Equatable, Hashable {
@@ -15,5 +8,5 @@ struct HVACQM: Codable, Equatable, Hashable {
 }
 
 extension HVACQM {
-    static let empty = HVACQM(pricingMethod: [.none])
+    static let empty = HVACQM(pricingMethod: [])
 }

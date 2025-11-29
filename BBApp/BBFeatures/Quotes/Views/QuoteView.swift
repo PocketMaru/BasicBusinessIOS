@@ -1,133 +1,37 @@
-//
-//  QuoteView.swift
-//  BasicBusiness
-//
-//  Created by Joshua Hauer on 6/6/25.
-//
-
 import SwiftUI
 
 struct QuoteView: View {
-    @Bindable var userVM: UserVM
-    @Bindable var quoteVM: QuoteListVM
-    @Bindable var customerListVM: CustomerListVM
-    @Binding var activeSheet: ActiveUserSheet?
+    var userVM: UserVM
+    var customerListVM: CustomerListVM
+    var quoteListVM: QuoteListVM
+    
+    @State private var quoteFormVM: QuoteFormVM? = nil
     @State private var searchCustomer: String = ""
-    @State private var selectedCustomer: CustomerModel = .sample
+    @State private var selectedCustomer: CustomerModel? = nil
+    
+    @Binding var activeSheet: ActiveUserSheet?
 
     var body: some View {
         ZStack {
             AppColors.bg.ignoresSafeArea()
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    if selectedCustomer.id == CustomerModel.sample.id {
-                        CustomFormView(header: "Select Customer") {
-                            HStack {
-                                TextField ("Search Customer", text: $searchCustomer)
-                                if !searchCustomer.isEmpty || selectedCustomer.id != CustomerModel.sample.id {
-                                    Button {
-                                        searchCustomer = ""
-                                        selectedCustomer = .sample
-                                    } label: {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .foregroundColor(.secondary)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    let results = customerListVM.searchCustomer(by: searchCustomer)
-                    if !searchCustomer.isEmpty {
-                        if results.isEmpty {
-                            HStack(alignment: .center) {
-                                Spacer()
-                                Text("No Customer Found")
-                                    .bubbleStyle()
-                                    .statButtonBG()
-                                Spacer()
-                            }
-                        } else {
-                            VStack(alignment: .leading, spacing: 0) {
-                                ForEach(results, id: \.id) { customer in
-                                    Button {
-                                        selectedCustomer = customer
-                                        searchCustomer = ""
-                                    } label: {
-                                        HStack(spacing: 8) {
-                                            Spacer()
-                                            Text("\(customer.firstName) \(customer.lastName)")
-                                                .bubbleStyle()
-                                                .statButtonBG()
-                                            Spacer()
-                                            if selectedCustomer.id == customer.id {
-                                                Image(systemName: "checkmark")
-                                                    .foregroundColor(AppColors.accent)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else if selectedCustomer.id != CustomerModel.sample.id {
-                        VStack(alignment: .leading, spacing: 16) {
-                            CustomFormView(header: "Customer") {
-                                HStack {
-                                    Text("\(selectedCustomer.firstName) \(selectedCustomer.lastName)")
-                                        .font(.subheadline)
-                                        .foregroundColor(.primary)
-                                    Button {
-                                        selectedCustomer = .sample
-                                    } label: {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .foregroundColor(.secondary)
-                                    }
-                                }
-                            }
-                            // MARK: Cases representing industry specific fields.
-                                Group{
-                                    switch userVM.user.industryType {
-                                    case .landscaping:
-                                        LandscapeSectionView(quoteVM: quoteVM)
-                                    case .pressureWashing:
-                                        PressureWashSectionView(quoteVM: quoteVM)
-                                    case .consulting:
-                                        ConsultingSectionView(quoteVM: quoteVM)
-                                    case .handyman:
-                                        HandymanSectionView(quoteVM: quoteVM)
-                                    case .HVAC:
-                                        HVACSectionView(quoteVM: quoteVM)
-                                    case .productSales:
-                                        ProductSalesSectionView(quoteVM: quoteVM)
-                                    case .none:
-                                        EmptyView()
-                                    }
-                                }
-                            CustomFormView(header: "Total") {
-                                Text(quoteVM.draftQuote.totalCost, format: .currency(code: "USD"))
-                            }
-                            .onChange(of: quoteVM.draftQuote.totalCost) { newValue, _ in
-                                print("Total changed", newValue)
-                            }
-                        }
-                    }
+                    customerSelectionSection
+                    searchResultsSection
+                    customerSelectedSection
+                    industrySelectedSection
+                    totalSection
                 }
                 .padding(.horizontal, 10)
             }
         }
-        
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            // MARK: Check to avoid resetting of the draft quote on view re-render
-            // MARK: On selection of a different customer, quote data is reset
-            quoteVM.loadIndustryFields(for: userVM.user.industryType)
-            quoteVM.draftQuote = quoteVM.startNewQuote(for: selectedCustomer, industry: userVM.user.industryType)
-        }
         .onChange(of: selectedCustomer) { newCustomer, _ in
-            quoteVM.loadIndustryFields(for: userVM.user.industryType)
-                quoteVM.draftQuote = quoteVM.startNewQuote(
-                    for: newCustomer,
-                    industry: userVM.user.industryType
-                )
+            if let customer = newCustomer {
+                quoteFormVM = quoteListVM.addVM()
+                quoteFormVM?.selectCustomer(customer)
+                quoteFormVM?.loadIndustryFields(for: userVM.user.industryType)
+            }
         }
         .ToolBarTitle(
             title: userVM.user.businessName,
@@ -140,5 +44,112 @@ struct QuoteView: View {
         }, editIconTapped: {
             
         })
+    }
+    private var customerSelectionSection: some View {
+        CustomFormView(header: "Select Customer") {
+            HStack {
+                TextField ("Search Customer", text: $searchCustomer)
+                if selectedCustomer != nil || !searchCustomer.isEmpty {
+                    Button {
+                        searchCustomer = ""
+                        selectedCustomer = nil
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+        }
+    }
+    
+    private var searchResultsSection: some View {
+        Group {
+            if !searchCustomer.isEmpty {
+                let results = customerListVM.searchCustomer(by: searchCustomer)
+                if results.isEmpty {
+                    HStack(alignment: .center) {
+                        Spacer()
+                        Text("No Customer Found")
+                            .bubbleStyle()
+                            .statButtonBG()
+                        Spacer()
+                    }
+                } else {
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(results, id: \.id) { customer in
+                            Button {
+                                selectedCustomer = customer
+                                searchCustomer = ""
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Spacer()
+                                    Text("\(customer.firstName) \(customer.lastName)")
+                                        .bubbleStyle()
+                                        .statButtonBG()
+                                    Spacer()
+                                    if selectedCustomer?.id == customer.id {
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(AppColors.accent)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private var customerSelectedSection: some View {
+        Group {
+            if let customer = selectedCustomer {
+                VStack(alignment: .leading, spacing: 16) {
+                    CustomFormView(header: "Customer") {
+                        HStack {
+                            Text("\(customer.firstName) \(customer.lastName)")
+                                .font(.subheadline)
+                                .foregroundColor(.primary)
+                            Button {
+                                selectedCustomer = nil
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private var industrySelectedSection: some View {
+        Group{
+            if let quoteFormVM = quoteFormVM {
+                switch userVM.user.industryType {
+                case .landscaping:
+                    LandscapeSectionView(quoteFormVM: quoteFormVM)
+                case .pressureWashing:
+                    PressureWashSectionView(quoteFormVM: quoteFormVM)
+                case .consulting:
+                    ConsultingSectionView(quoteFormVM: quoteFormVM)
+                case .handyman:
+                    HandymanSectionView(quoteFormVM: quoteFormVM)
+                case .HVAC:
+                    HVACSectionView(quoteFormVM: quoteFormVM)
+                case .productSales:
+                    ProductSalesSectionView(quoteFormVM: quoteFormVM)
+                case .none:
+                    EmptyView()
+                }
+            }
+        }
+    }
+    
+    private var totalSection: some View {
+        CustomFormView(header: "Total") {
+            if let totalCost = quoteFormVM?.draft.totalCost {
+                Text(totalCost, format: .currency(code: "USD"))
+            }
+        }
     }
 }
