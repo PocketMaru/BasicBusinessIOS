@@ -10,7 +10,6 @@ struct PricingMethodView: View {
     }
     
     var body: some View {
-        
         switch method.type {
         case .squareFootage:
             squareFootageFields
@@ -28,27 +27,25 @@ struct PricingMethodView: View {
     private var squareFootageFields: some View {
         VStack(alignment: .leading) {
             CustomFormView(header: "Square Footage") {
-                VStack(spacing: 8) {
-                    TextField("Square Footage",
-                              value: Binding(
-                                get: {method.amount ?? 0 },
-                                set: {method.amount = $0}
-                              ),
-                              format: .number)
-                    .focused($focusedField)
-                    .hideKeyboardOnTap()
-                    .keyboardType(.decimalPad)
-                    
-                    TextField("Price per Sq Ft",
-                              value: Binding(
-                                get: { method.rate ?? 0 },
-                                set: { method.rate = $0 }
-                              ),
-                              format: .currency(code: "USD"))
-                    .focused($focusedField)
-                    .hideKeyboardOnTap()
-                    .keyboardType(.decimalPad)
-                }
+                TextField("Square Footage",
+                          value: Binding(
+                            get: {method.amount ?? 0 },
+                            set: {method.amount = $0}
+                          ),
+                          format: .number)
+                .focused($focusedField)
+                .keyboardType(.decimalPad)
+            }
+            
+            CustomFormView(header:"Price Per Sq Ft") {
+                TextField("Price per Sq Ft",
+                          value: Binding(
+                            get: { method.rate ?? 0 },
+                            set: { method.rate = $0 }
+                          ),
+                          format: .currency(code: "USD"))
+                .focused($focusedField)
+                .keyboardType(.decimalPad)
             }
         }
     }
@@ -78,6 +75,7 @@ struct PricingMethodView: View {
                 )
                 .keyboardType(.decimalPad)
             }
+            
             CustomFormView(header: "Pricer Per Liter") {
                 TextField("Price per Liter",
                           value: Binding(

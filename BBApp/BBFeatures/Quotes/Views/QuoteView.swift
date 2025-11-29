@@ -26,13 +26,6 @@ struct QuoteView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: selectedCustomer) { newCustomer, _ in
-            if let customer = newCustomer {
-                quoteFormVM = quoteListVM.addVM()
-                quoteFormVM?.selectCustomer(customer)
-                quoteFormVM?.loadIndustryFields(for: userVM.user.industryType)
-            }
-        }
         .ToolBarTitle(
             title: userVM.user.businessName,
             editIconName: "plusminus.circle",
@@ -46,16 +39,19 @@ struct QuoteView: View {
         })
     }
     private var customerSelectionSection: some View {
-        CustomFormView(header: "Select Customer") {
-            HStack {
-                TextField ("Search Customer", text: $searchCustomer)
-                if selectedCustomer != nil || !searchCustomer.isEmpty {
-                    Button {
-                        searchCustomer = ""
-                        selectedCustomer = nil
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.secondary)
+        Group{
+            if selectedCustomer == nil {
+                CustomFormView(header: "Select Customer") {
+                    HStack{
+                        TextField ("Search Customer", text: $searchCustomer)
+                        if !searchCustomer.isEmpty {
+                            Button {
+                                searchCustomer = ""
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.secondary)
+                            }
+                        }
                     }
                 }
             }
@@ -68,25 +64,25 @@ struct QuoteView: View {
                 let results = customerListVM.searchCustomer(by: searchCustomer)
                 if results.isEmpty {
                     HStack(alignment: .center) {
-                        Spacer()
                         Text("No Customer Found")
                             .bubbleStyle()
                             .statButtonBG()
-                        Spacer()
                     }
                 } else {
-                    VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 16) {
                         ForEach(results, id: \.id) { customer in
                             Button {
                                 selectedCustomer = customer
                                 searchCustomer = ""
+                                
+                                quoteFormVM = quoteListVM.addVM()
+                                quoteFormVM?.selectCustomer(customer)
+                                quoteFormVM?.loadIndustryFields(for: userVM.user.industryType)
                             } label: {
                                 HStack(spacing: 8) {
-                                    Spacer()
                                     Text("\(customer.firstName) \(customer.lastName)")
                                         .bubbleStyle()
                                         .statButtonBG()
-                                    Spacer()
                                     if selectedCustomer?.id == customer.id {
                                         Image(systemName: "checkmark")
                                             .foregroundColor(AppColors.accent)
@@ -123,7 +119,7 @@ struct QuoteView: View {
     }
     
     private var industrySelectedSection: some View {
-        Group{
+        Group {
             if let quoteFormVM = quoteFormVM {
                 switch userVM.user.industryType {
                 case .landscaping:
@@ -146,9 +142,11 @@ struct QuoteView: View {
     }
     
     private var totalSection: some View {
-        CustomFormView(header: "Total") {
+        Group{
             if let totalCost = quoteFormVM?.draft.totalCost {
+            CustomFormView(header: "Total") {
                 Text(totalCost, format: .currency(code: "USD"))
+                }
             }
         }
     }
