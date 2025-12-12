@@ -1,0 +1,5 @@
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--maxwidth 80
+--indent 4
