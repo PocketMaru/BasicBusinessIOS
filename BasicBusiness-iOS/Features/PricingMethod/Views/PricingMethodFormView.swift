@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PricingMethodView: View {
+struct PricingMethodFormView: View {
     @Binding var method: PricingMethodModel
     @FocusState private var focusedField: Bool
     
