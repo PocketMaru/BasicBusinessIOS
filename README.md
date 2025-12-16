@@ -28,8 +28,6 @@ This README documents the app’s design, what is implemented today, and what is
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [Planned work / Roadmap](#planned-work--roadmap)
-- [Troubleshooting & Notes](#troubleshooting--notes)
-- [License](#license)
 - [Contact](#contact)
 
 ## About
@@ -279,16 +277,6 @@ Medium term
 Long term
 - Integrations (payments, accounting exports) as optional adapters.
 - Team/role support and server-backed sync as a clearly separated opt‑in feature.
-
-## Troubleshooting & Notes
-
-- Build issues: check your Xcode version and Swift toolchain. Clean build folder (Shift+Cmd+K) if necessary.
-- Persistence debugging: JSON files live in the app sandbox — you can inspect them via the simulator’s file system or the device backup.
-- If you change domain schemas, add a migration path and tests to ensure old JSON files can be loaded safely.
-
-## License
-
-Choose and add an explicit license file (e.g., MIT, Apache‑2.0). I can add a LICENSE file for you if you tell me which license to use.
 
 ## Contact
 
