@@ -1,97 +1,120 @@
 import SwiftUI
 
-enum DocumentTapped {
-    case quote([QuoteModel])
-    case invoice([InvoiceModel])
-    case none
-}
-
-extension DocumentTapped {
-    var allQuotes: [QuoteModel] {
-        switch self {
-        case .quote(let quotes): return quotes
-        case .invoice: return []
-        case .none: return []
-        }
-    }
-    
-    var allInvoices: [InvoiceModel] {
-        switch self {
-        case .quote: return []
-        case .invoice(let invoices): return invoices
-        case .none: return []
-        }
-    }
-}
-
 struct JobDocumentListView: View {
     var userVM: UserVM
-    var jobDocRouter: JobDocumentRouterVM
-    @State private var documentType: DocumentTapped = .none
-    
-    var displayQuotes: [QuoteModel] {
-        if case .quote(let quotes) = documentType {
-            return quotes
-        }
-        return []
-    }
-    
-    var displayInvoices: [InvoiceModel] {
-        if case .invoice(let invoices) = documentType {
-            return invoices
-        }
-        return []
-    }
-
+    @Bindable var jobDocRouter: JobDocumentRouterVM
+    @Binding var activeSheet: ActiveUserSheet?
+    @State private var documentType: JobDocumentType = .quote
+    @State private var showCalendarMenu = false
     var body: some View {
         
         ZStack {
             AppColors.bg.ignoresSafeArea()
-            ZStack {
-                HStack {
-                    StatButtonView(label: "Quotes",
-                                   tapAction: {
-                        documentType = .quote(jobDocRouter.quoteListVM.allQuotes)
-                    })
-                    
-                    StatButtonView(label: "Invoices",
-                                   tapAction: {
-                        documentType = .invoice(jobDocRouter.invoiceListVM.allInvoices)
-                    })
-                }
-                List {
-                    switch documentType {
-                    case .quote(let quotes):
-                        ForEach(quotes) { quote in
-                            // Navigation link to detail
-                            // QuoteRowView
+            VStack(spacing: 0) {
+                documentTypeHeader
+                ScrollView {
+                    VStack {
+                        VStack(alignment: .center ,spacing: 16) {
+                            switch documentType {
+                            case .quote:
+                                ForEach(jobDocRouter.quoteRows) { row in
+                                    NavigationLink(
+                                        value: JobDocumentRouterVM.JobDocumentRoute.quoteDetail(id: row.id)) {
+                                            JobDocumentItemView(document: row)
+                                        }
+                                }
+                            case .invoice:
+                                ForEach(jobDocRouter.invoiceRows) { row in
+                                    NavigationLink(value:JobDocumentRouterVM.JobDocumentRoute.invoiceDetail(id: row.id)) {
+                                        JobDocumentItemView(document: row)
+                                    }
+                                }
+                            }
                         }
-                        
-                    case .invoice(let invoices):
-                        ForEach(invoices) { invoice in
-                            // Navigation link to detail
-                            // InvoiceRowView
+                    }
+                    .padding(.top, 25)
+                    .scrollContentBackground(.hidden)
+                    .navigationDestination(for: JobDocumentRouterVM.JobDocumentRoute.self ) {
+                        route in
+                        switch route {
+                        case .quoteDetail(let id):
+                            if let quote = jobDocRouter
+                                .quote(withID: id),
+                                let customer = jobDocRouter
+                                .customer(for: quote.customerID) {
+                                JobDocumentDetailView(
+                                    detail: .quote(quote),
+                                    customer: customer
+                                )
+                            }
+                        case .invoiceDetail(let id):
+    //                        if let invoice = jobDocRouter
+    //                            .invoice(withID: id),
+    //                            let customer = jobDocRouter
+    //                            .customer(for: invoice.customerID) {
+    //                            JobDocumentDetailView(
+    //                                detail: .invoice(invoice),
+    //                                customer: customer
+    //                            )
+    //                        }
+                            
+                            if let invoice = jobDocRouter.invoice(withID: id) {
+                                JobDocumentDetailView(
+                                    detail: .invoice(invoice),
+                                    customer: CustomerModel.mock()
+                                )
+                            }
                         }
-                        
-                    case .none:
-                        Text("Select Document Type")
                     }
                 }
-                // navigation destination
-                // Example
-                
-//                .navigationDestination(for: JobDocument.self) {                                                doc in
-//                    switch doc {
-//                    case .quote(let q):
-//                        QuoteDetailView(...)
-//                    case .invoice(let i):
-//                        InvoiceDetailView(...)
-//                    }
-//                }
+                .mask(
+                    LinearGradient(
+                        gradient: Gradient(stops: [
+                            .init(color: .clear, location: 0.0),
+                            .init(color: .black, location: 0.04),
+                            .init(color: .black, location: 1.0)
+                        ]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
             }
         }
-        // navigation title inline
-        // toolbar
-        // frame maxW maxH .infinit .infinit
+        .ToolBarTitle(
+            businessName: userVM.user.businessName,
+            primaryIconTapped: {
+                if activeSheet == nil {
+                    activeSheet = .user
+                }
+            }, secondIconName: "calendar",
+            toggleSecondIconState: $showCalendarMenu, secondButtonColor: AppColors.accent,
+            secondIconTapped: {
+                // Calendar Logic
+        },
+            thirdIconName: "person.crop.circle.badge.plus",
+            thirdButtonColor: AppColors.accent,
+            thirdIconTapped: {
+                // quote invoice forms
+            }
+        )
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    private var documentTypeHeader: some View {
+        HStack(spacing: 25) {
+            StatButtonView(
+                label: "Quotes",
+                tapAction: { documentType = .quote },
+                isSelected: documentType == .quote
+            )
+
+            StatButtonView(
+                label: "Invoices",
+                tapAction: { documentType = .invoice },
+                isSelected: documentType == .invoice
+            )
+        }
+        .padding(.top, 12)
+        .padding(.vertical, 15)
     }
 }

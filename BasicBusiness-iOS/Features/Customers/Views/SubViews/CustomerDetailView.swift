@@ -95,7 +95,14 @@ struct CustomerDetailView: View {
                             titleSeven: "Status",
                             valueSeven: customer.original.paidBill ?? false ? "Paid": "Unpaid",
                             titleEight: "Loyalty Date",
-                            valueEight: String("\(customer.original.loyaltyDate.formattedMonthDayYear)")
+                            valueEight: String("\(customer.original.loyaltyDate.formattedMonthDayYear)"),
+                            titleNine: nil,
+                            valueNine: nil,
+                            titleTen: nil,
+                            valueTen: nil,
+                            titleEleven: nil,
+                            valueEleven: nil
+                            
                         )
                         .padding(.top, 16)
                     }
@@ -110,11 +117,11 @@ struct CustomerDetailView: View {
         .scrollContentBackground(.hidden)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ToolBarTitle(
-            title: customer.draft.firstName + " " + customer.draft.lastName,
-            iconName: nil,
-            editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
-            editButtonColor: isEditing ? AppColors.success : AppColors.accent,
-            editIconTapped: {
+            businessName: customer.draft.firstName + " " + customer.draft.lastName,
+            primaryIconName: nil,
+            secondIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
+            secondButtonColor: isEditing ? AppColors.success : AppColors.accent,
+            secondIconTapped: {
                 if isEditing {
                     attemptedEdit = true
                     let success = customer.trySubmit()

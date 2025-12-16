@@ -4,29 +4,22 @@ import Observation
 @MainActor
 @Observable
 final class QuoteListVM {
-    var allQuotes: [QuoteModel] = []
+    var allQuotes: [QuoteModel]
     var customerListVM: CustomerListVM
     var materialCatalogVM: MaterialListVM
     
     private let saveQuote: SaveQuoteUseCase
-    private let quoteListStorage: FileStorageManager
     
     init(
+        initialQuotes: [QuoteModel],
         customerListVM: CustomerListVM,
-        materialCatalogVM: MaterialListVM
+        materialCatalogVM: MaterialListVM,
+        saveQuoteUseCase: SaveQuoteUseCase
     ) {
+        self.allQuotes = initialQuotes
         self.customerListVM = customerListVM
         self.materialCatalogVM = materialCatalogVM
-        
-        self.quoteListStorage = FileStorageManager()
-        self.saveQuote = SaveQuote(fileStorage: quoteListStorage)
-        
-        do {
-            self.allQuotes = try quoteListStorage.load(from: "quotes.json")
-        } catch(let e) {
-            print(e)
-            self.allQuotes = []
-        }
+        self.saveQuote = saveQuoteUseCase
     }
     
     func addVM() -> QuoteFormVM {

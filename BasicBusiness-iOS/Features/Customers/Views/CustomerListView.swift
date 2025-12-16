@@ -42,13 +42,13 @@ struct CustomerListView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .ToolBarTitle(
-                title: userVM.user.businessName,
-                mainIconTapped: {
+                businessName: userVM.user.businessName,
+                primaryIconTapped: {
                     if activeSheet == nil {
                         activeSheet = .user
                     }
-                }, editIconName: "person.crop.circle.badge.plus",
-                editButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success, editIconTapped: {
+                }, secondIconName: "person.crop.circle.badge.plus",
+                secondButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success, secondIconTapped: {
                 activeSheet = .addCustomer
             })
         .frame(maxWidth: .infinity, maxHeight: .infinity)

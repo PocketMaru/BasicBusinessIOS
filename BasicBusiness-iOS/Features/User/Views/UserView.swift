@@ -82,13 +82,14 @@ struct UserView: View {
             .scrollContentBackground(.hidden)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ToolBarTitle(
-                title:"User Profile",
-                iconName: "arrowshape.backward.circle.fill",
-                mainIconTapped: {
+                businessName:"User Profile",
+                primaryIconName: "arrowshape.backward.circle.fill",
+                primaryIconTapped: {
                     isPresented.toggle()
-                }, editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
-                editMode: $isEditing,
-                editButtonColor: isEditing ? AppColors.success : AppColors.accent, editIconTapped:  {
+                }, secondIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
+                toggleSecondIconState: $isEditing,
+                secondButtonColor: isEditing ? AppColors.success : AppColors.accent,
+                secondIconTapped:  {
                     attemptedEdit = true
                     isEditing.toggle()
                 })

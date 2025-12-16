@@ -23,7 +23,7 @@ struct QuoteModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hashab
     var customFields: [CustomField] = []
     var materialExpenses: [MaterialExpenseModel] = []
 
-    var jobType: JobType = .quote
+    var jobDocumentType: JobDocumentType = .quote
     
     var quoteDate: Date = Date()
     var installationDate: Date?
@@ -45,7 +45,7 @@ struct QuoteModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hashab
         self.additionalFees = nil
         self.customFields = []
         self.materialExpenses = []
-        self.jobType = .quote
+        self.jobDocumentType = .quote
         self.pendingMaterialExpense = []
         self.quoteDate = Date()
         self.installationDate = nil
@@ -67,7 +67,7 @@ extension QuoteModel {
         invoice.additionalFees = self.additionalFees
         invoice.customFields = self.customFields
         invoice.materialExpenses = self.materialExpenses
-        invoice.jobType = .invoice
+        invoice.jobDocumentType = .invoice
         invoice.invoiceDate = self.quoteDate
         invoice.installationDate = self.installationDate
         invoice.serviceDate = self.serviceDate
@@ -88,7 +88,7 @@ extension QuoteModel {
         additionalFees: Double = 0.0,
         customFields: [CustomField] = [],
         materialExpenses: [MaterialExpenseModel] = [],
-        jobType: JobType = .quote,
+        jobType: JobDocumentType = .quote,
         quoteDate: Date = Date(),
         installationDate: Date? = nil,
         serviceDate: Date? = nil,
@@ -108,7 +108,7 @@ extension QuoteModel {
         mockModel.additionalFees = additionalFees
         mockModel.customFields = customFields
         mockModel.materialExpenses = materialExpenses
-        mockModel.jobType = jobType
+        mockModel.jobDocumentType = jobType
         mockModel.quoteDate = quoteDate
         mockModel.installationDate = installationDate
         mockModel.serviceDate = serviceDate

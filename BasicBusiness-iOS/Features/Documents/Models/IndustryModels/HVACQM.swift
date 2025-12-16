@@ -1,12 +1,14 @@
 import Foundation
 
 struct HVACQM: Codable, Equatable, Hashable {
-    var pricingMethod: [PricingMethodModel]
+    var pricingMethods: [PricingMethodModel]
     var totalCost: Double {
-        pricingMethod.reduce(0) { $0 + $1.calculateTotal()}
+        pricingMethods.reduce(0) { $0 + $1.calculateTotal()}
     }
 }
 
 extension HVACQM {
-    static let empty = HVACQM(pricingMethod: [])
+    static let empty = HVACQM(pricingMethods: [])
 }
+
+extension HVACQM: InIndustryDetailRenderable {}

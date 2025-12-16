@@ -1,11 +1,13 @@
 import Foundation
 
 struct LandscapeQM: Codable, Equatable, Hashable {
-    var pricingMethod: [PricingMethodModel]
+    var pricingMethods: [PricingMethodModel]
     var totalCost: Double {
-        pricingMethod.reduce(0) { $0 + $1.calculateTotal()}
+        pricingMethods.reduce(0) { $0 + $1.calculateTotal()}
     }
 }
 extension LandscapeQM {
-    static let empty = LandscapeQM(pricingMethod: [])
+    static let empty = LandscapeQM(pricingMethods: [])
 }
+
+extension LandscapeQM: InIndustryDetailRenderable {}

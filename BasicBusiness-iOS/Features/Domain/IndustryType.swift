@@ -53,3 +53,17 @@ extension IndustryType {
         return false
     }
 }
+
+extension IndustryType {
+    var pricingMethods: [PricingMethodModel] {
+        switch self {
+        case .landscaping(let qm): return qm.pricingMethods
+        case .pressureWashing(let qm): return qm.pricingMethods
+        case .consulting(let qm): return qm.pricingMethods
+        case .handyman(let qm): return qm.pricingMethods
+        case .HVAC(let qm): return qm.pricingMethods
+        case .productSales(let qm): return qm.pricingMethods
+        case .none: return []
+        }
+    }
+}

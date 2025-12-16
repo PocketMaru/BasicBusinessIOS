@@ -4,29 +4,22 @@ import Observation
 @MainActor
 @Observable
 final class InvoiceListVM {
-    var allInvoices: [InvoiceModel] = []
+    var allInvoices: [InvoiceModel]
     var customerListVM: CustomerListVM
     var materialCatalogVM: MaterialListVM
     
     private let saveInvoice: SaveInvoiceUseCase
-    private let invoiceListStorage: FileStorageManager
     
     init(
+        initialInvoices: [InvoiceModel],
         customerListVM: CustomerListVM,
-        materialCatalogVM: MaterialListVM
+        materialCatalogVM: MaterialListVM,
+        saveInvoice: SaveInvoiceUseCase
     ) {
+        self.allInvoices = initialInvoices
         self.customerListVM = customerListVM
         self.materialCatalogVM = materialCatalogVM
-        
-        self.invoiceListStorage = FileStorageManager()
-        self.saveInvoice = SaveInvoice(fileStorage: invoiceListStorage)
-        
-        do {
-            self.allInvoices = try invoiceListStorage.load(from: "invoices.json")
-        } catch(let e) {
-            print(e)
-            self.allInvoices = []
-        }
+        self.saveInvoice = saveInvoice
     }
     
     func addVM() -> InvoiceFormVM {

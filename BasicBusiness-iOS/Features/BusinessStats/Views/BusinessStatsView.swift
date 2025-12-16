@@ -187,8 +187,8 @@ struct BusinessStatsView: View {
             .zIndex(1)
         }
         .ToolBarTitle(
-            title: userVM.user.businessName,
-            mainIconTapped: {
+            businessName: userVM.user.businessName,
+            primaryIconTapped: {
                 activeSheet = .user
             })
         .navigationDestination(isPresented: $showStatsDetailDestination) {

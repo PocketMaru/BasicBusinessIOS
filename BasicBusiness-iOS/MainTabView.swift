@@ -8,27 +8,68 @@ struct MainTabView: View {
     @State private var invoiceListVM: InvoiceListVM
     @State private var expenseListVM: ExpenseListVM
     @State private var businessStatsVM: BusinessStatsVM
+    @State private var jobDocRouterVM: JobDocumentRouterVM
     
     @State private var activeSheet: ActiveUserSheet?
     @State private var addCustomerVM: CustomerFormVM? = nil
     
+    
     init() {
+
+        let fileStorageManager = FileStorageManager()
+        let loader = AppLoader(storage: fileStorageManager)
+        // app loader calls
+        let customers: [CustomerModel]
+        let quotes: [QuoteModel]
+        let invoices: [InvoiceModel]
+        
+        #if DEBUG
+        customers = CustomerModel.mockList
+        quotes = customers.compactMap { customer in
+            QuoteModel.mock(customerID: customer.id)
+        }
+        
+        invoices = customers.map {
+            InvoiceModel.mock(customerID: $0.id)
+        }
+        #else
+        customers = loader.load(for: .customers) ?? []
+        quotes = loader.load(for: .quotes) ?? []
+        invoices = loader.load(for: .invoices) ?? []
+        #endif
+        
+        let saveCustomerUseCase = SaveCustomer(fileStorage: fileStorageManager)
+        let saveQuoteUseCase = SaveQuote(fileStorage: fileStorageManager)
+        let saveInvoiceUseCase = SaveInvoice(fileStorage: fileStorageManager)
+        
         let userVM = UserVM(user: UserModel.sample)
-        let customerListVM = CustomerListVM()
+        let customerListVM = CustomerListVM(initialCustomers: customers, saveCustomer: saveCustomerUseCase )
         let materialListVM = MaterialListVM()
         let quoteListVM = QuoteListVM(
+            initialQuotes: quotes,
             customerListVM: customerListVM,
-            materialCatalogVM: materialListVM
+            materialCatalogVM: materialListVM,
+            saveQuoteUseCase: saveQuoteUseCase
         )
         let invoiceListVM = InvoiceListVM(
+            initialInvoices: invoices,
             customerListVM: customerListVM,
-            materialCatalogVM: materialListVM
+            materialCatalogVM: materialListVM,
+            saveInvoice: saveInvoiceUseCase
         )
         let expenseListVM = ExpenseListVM()
         let businessStatsVM = BusinessStatsVM(
             quoteData: quoteListVM,
             expenseData: expenseListVM,
             invoiceData: invoiceListVM
+        )
+        let jobDocRouterVM = JobDocumentRouterVM(
+            customerListVM: customerListVM,
+            quoteListVM: quoteListVM,
+            invoiceListVM: invoiceListVM,
+            savedMaterials: materialListVM.allMaterials,
+            saveQuoteUseCase: saveQuoteUseCase,
+            saveInvoiceUseCase: saveInvoiceUseCase
         )
         _userVM = State(initialValue: userVM)
         _customerListVM = State(initialValue: customerListVM)
@@ -37,10 +78,10 @@ struct MainTabView: View {
         _invoiceListVM = State(initialValue: invoiceListVM)
         _expenseListVM = State(initialValue: expenseListVM)
         _businessStatsVM = State(initialValue: businessStatsVM)
+        _jobDocRouterVM = State(initialValue: jobDocRouterVM)
     }
     
     var body: some View {
-        
         TabView {
             NavigationStack {
                 BusinessStatsView(
@@ -70,16 +111,11 @@ struct MainTabView: View {
                 Text("Customers")
             }
             NavigationStack {
-                JobDocumentFormView(
-                    userVM: userVM,
-                    customerListVM: customerListVM,
-                    quoteListVM: quoteListVM,
-                    activeSheet: $activeSheet,
-                )
+                JobDocumentListView(userVM: userVM, jobDocRouter: jobDocRouterVM, activeSheet: $activeSheet)
             }
             .tabItem {
                 Image(systemName: "book.pages")
-                Text("Quote")
+                Text("Documents")
             }
             NavigationStack {
                 ExpenseView(

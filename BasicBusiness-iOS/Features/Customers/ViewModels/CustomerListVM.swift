@@ -4,7 +4,7 @@ import Observation
 @MainActor
 @Observable
 final class CustomerListVM {
-    var allCustomers: [CustomerModel] = []
+    var allCustomers: [CustomerModel]
     
     var paidCustomers: [CustomerModel] {
         allCustomers.filter { $0.paidBill == true }
@@ -15,18 +15,13 @@ final class CustomerListVM {
     var newCustomerFromQuote: ((CustomerModel) -> Void)? = nil
     
     private let saveCustomer: SaveCustomerUseCase
-    private let customerListStorage: FileStorageManager
     
-    init() {
-        self.customerListStorage = FileStorageManager()
-        self.saveCustomer = SaveCustomer(fileStorage: customerListStorage)
-        
-        do {
-            self.allCustomers = try customerListStorage.load(from: "customers.json")
-        } catch(let e) {
-            print(e)
-            self.allCustomers = []
-        }
+    init(
+        initialCustomers: [CustomerModel],
+        saveCustomer: SaveCustomerUseCase
+    ) {
+        self.allCustomers = initialCustomers
+        self.saveCustomer = saveCustomer
     }
     
     func getCustomer(for id: UUID) -> CustomerModel? {

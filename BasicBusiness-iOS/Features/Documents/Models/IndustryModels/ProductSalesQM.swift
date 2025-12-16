@@ -3,12 +3,14 @@ import Foundation
 struct ProductSalesQM: Codable, Equatable, Hashable {
     var item: String?
     var quantity: Int?
-    var pricingMethod: [PricingMethodModel]
+    var pricingMethods: [PricingMethodModel]
     var totalCost: Double {
-        pricingMethod.reduce(0) { $0 + $1.calculateTotal()}
+        pricingMethods.reduce(0) { $0 + $1.calculateTotal()}
     }
 }
 
 extension ProductSalesQM {
-    static let empty = ProductSalesQM(pricingMethod: [])
+    static let empty = ProductSalesQM(pricingMethods: [])
 }
+
+extension ProductSalesQM: InIndustryDetailRenderable {}

@@ -1,12 +1,14 @@
 import Foundation
 
 struct PressureWashQM: Codable, Equatable, Hashable {
-    var pricingMethod: [PricingMethodModel]
+    var pricingMethods: [PricingMethodModel]
     var totalCost: Double {
-        pricingMethod.reduce(0) { $0 + $1.calculateTotal()}
+        pricingMethods.reduce(0) { $0 + $1.calculateTotal()}
     }
 }
 
 extension PressureWashQM {
-    static let empty = PressureWashQM(pricingMethod: [])
+    static let empty = PressureWashQM(pricingMethods: [])
 }
+
+extension PressureWashQM: InIndustryDetailRenderable {}

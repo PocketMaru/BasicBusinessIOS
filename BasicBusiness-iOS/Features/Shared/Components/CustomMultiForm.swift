@@ -17,6 +17,12 @@ struct CustomMultiForm: View {
     let valueSeven: String?
     let titleEight: String?
     let valueEight: String?
+    let titleNine: String?
+    let valueNine: String?
+    let titleTen: String?
+    let valueTen: String?
+    let titleEleven: String?
+    let valueEleven: String?
     
     init(
         titleOne: String,
@@ -34,7 +40,13 @@ struct CustomMultiForm: View {
         titleSeven: String?,
         valueSeven: String?,
         titleEight: String?,
-        valueEight: String?
+        valueEight: String?,
+        titleNine: String?,
+        valueNine: String?,
+        titleTen: String?,
+        valueTen: String?,
+        titleEleven: String?,
+        valueEleven: String?,
     ) {
         self.titleOne = titleOne
         self.valueOne = valueOne
@@ -52,6 +64,12 @@ struct CustomMultiForm: View {
         self.valueSeven = valueSeven
         self.titleEight = titleEight
         self.valueEight = valueEight
+        self.titleNine = titleEight
+        self.valueNine = valueEight
+        self.titleTen = titleEight
+        self.valueTen = valueEight
+        self.titleEleven = titleEight
+        self.valueEleven = valueEight
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -161,40 +179,44 @@ struct CustomMultiForm: View {
 
 // MARK: - Future detail form view refactor
 
-//struct DetailField: Identifiable {
-//    let id = UUID()
-//    let title: String
-//    let value: String
-//}
-//
-//struct CustomMultiForm: View {
-//    let fields: [DetailField]
-//
-//    var body: some View {
-//        VStack(alignment: .leading, spacing: 10) {
-//            ForEach(fields) { field in
-//                Text(field.title)
-//                    .font(.system(size: 15, weight: .medium))
-//                    .foregroundStyle(AppColors.accent)
-//
-//                Text(field.value)
-//                    .font(.system(size: 17, weight: .semibold))
-//                    .foregroundStyle(AppColors.secondaryText)
-//
-//                if field.id != fields.last?.id {
-//                    Divider()
-//                }
-//            }
-//        }
-//        .padding(.horizontal, 28)
-//        .padding(.vertical, 16)
-//        .statBubbleStyle()
-//    }
-//}
+struct DetailField: Identifiable {
+    let id = UUID()
+    let title: String
+    let value: String?
+    let extraView: (() -> AnyView)?
+}
+
+struct MultiForm: View {
+    let fields: [DetailField]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            ForEach(fields) { field in
+                Text(field.title)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(AppColors.accent)
+                if let fieldValue = field.value {
+                    Text(fieldValue)
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(AppColors.secondaryText)
+                }
+                if let extraView = field.extraView {
+                    extraView()
+                }
+                if field.id != fields.last?.id {
+                    Divider()
+                }
+            }
+        }
+        .padding(.horizontal, 28)
+        .padding(.vertical, 16)
+        .statBubbleStyle()
+    }
+}
 
 //  Future implementation of the custom form view
-
-//CustomMultiForm(fields: [
+//
+//     MultiForm(fields: [
 //    .init(title: "Name", value: customer.fullName),
 //    .init(title: "Email", value: customer.email ?? "None"),
 //    .init(title: "Phone", value: customer.phone),

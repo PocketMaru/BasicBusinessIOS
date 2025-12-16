@@ -2,32 +2,34 @@ import SwiftUI
 // My version of liquid glass for titles, light and dark mode variants.
 extension View {
     func ToolBarTitle(
-        title: String = "Basic Business",
-        iconName: String? = "chart.bar",
-        mainIconTapped: (() -> Void)? = nil,
+        businessName: String = "Basic Business",
         
-        editIconName: String? = "person.circle.fill",
-        editMode: Binding<Bool>? = nil,
-        editButtonColor: Color? = nil,
-        editIconTapped: (() -> Void)? = nil,
+        primaryIconName: String? = "chart.bar",
+        primaryIconTapped: (() -> Void)? = nil,
+        primaryIconColor: Color? = nil,
         
-        secondaryIconName: String? = "book.fill",
-        secondaryMode: Binding<Bool>? = nil,
-        secondaryColor: Color? = nil,
-        secondaryIconTapped: (() -> Void)? = nil,
+        secondIconName: String? = "person.circle.fill",
+        toggleSecondIconState: Binding<Bool>? = nil,
+        secondButtonColor: Color? = nil,
+        secondIconTapped: (() -> Void)? = nil,
+        
+        thirdIconName: String? = "book.fill",
+        toggleThirdIconState: Binding<Bool>? = nil,
+        thirdButtonColor: Color? = nil,
+        thirdIconTapped: (() -> Void)? = nil,
         
     ) -> some View {
         self
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(title)
+                    Text(businessName)
                         .bubbleStyle(textColor: AppColors.accent)
                         .shadow(color: Color.black.opacity(0.08), radius: 2, x: 0, y: 1)
                 }
-                if let icon = iconName, !icon.isEmpty {
+                if let icon = primaryIconName, !icon.isEmpty {
                     ToolbarItem(placement: .topBarLeading) {
-                        if let action = mainIconTapped {
+                        if let action = primaryIconTapped {
                             Button(action: action) {
                                 Image(systemName: icon)
                                     .font(.title3.bold())
@@ -41,21 +43,40 @@ extension View {
                         }
                     }
                 }
-                if let action = secondaryIconTapped, let secondaryIconName, let secondaryColor {
+                if let action = secondIconTapped, let secondIconName, let secondButtonColor, let toggleSecondIconState {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: action) {
-                            Image(systemName: secondaryIconName)
+                        Button {
+                            toggleSecondIconState.wrappedValue.toggle()
+                            action()
+                        } label: {
+                            Image(systemName: secondIconName)
                                 .font(.title3.bold())
-                                .foregroundStyle(secondaryColor)
+                                .foregroundStyle(secondButtonColor)
                         }
+                        .buttonStyle(.plain)
+                        .popover(
+                                    isPresented: toggleSecondIconState,
+                                    attachmentAnchor: .rect(.bounds),
+                                    arrowEdge: .top,
+                                ) {
+                                    CalendarQuickActions(
+                                        dismiss: {
+                                                    toggleSecondIconState.wrappedValue = false
+                                                }
+                                    )
+                                    
+                                        .presentationCompactAdaptation(.popover)
+                                        .presentationBackground(AppColors.bg)
+                                        .presentationCornerRadius(22)
+                                }
                     }
                 }
-                if let action = editIconTapped, let editIconName = editIconName, let editButtonColor {
+                if let action = thirdIconTapped, let thirdIconName = thirdIconName, let thirdButtonColor {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: action) {
-                            Image(systemName: editIconName)
+                            Image(systemName: thirdIconName)
                                 .font(.title3.bold())
-                                .foregroundStyle(editButtonColor)
+                                .foregroundStyle(thirdButtonColor)
                         }
                     }
                 }

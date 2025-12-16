@@ -67,7 +67,10 @@ struct AddCustomerView: View {
             .background(AppColors.bg)
             .scrollContentBackground(.hidden)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .ToolBarTitle(title: "Add Customer", iconName: "arrowshape.backward.circle.fill", mainIconTapped: {
+            .ToolBarTitle(
+                businessName: "Add Customer",
+                primaryIconName: "arrowshape.backward.circle.fill",
+                primaryIconTapped: {
                 isPresented.toggle()
             })
         }

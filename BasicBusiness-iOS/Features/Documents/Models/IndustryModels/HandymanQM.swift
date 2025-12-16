@@ -1,12 +1,14 @@
 import Foundation
 
 struct HandymanQM: Codable, Equatable, Hashable {
-    var pricingMethod: [PricingMethodModel]
+    var pricingMethods: [PricingMethodModel]
     var totalCost: Double {
-        pricingMethod.reduce(0) { $0 + $1.calculateTotal()}
+        pricingMethods.reduce(0) { $0 + $1.calculateTotal()}
     }
 }
 
 extension HandymanQM {
-    static let empty = HandymanQM(pricingMethod: [])
+    static let empty = HandymanQM(pricingMethods: [])
 }
+
+extension HandymanQM: InIndustryDetailRenderable {}

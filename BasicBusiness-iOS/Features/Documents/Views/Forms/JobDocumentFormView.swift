@@ -27,13 +27,14 @@ struct JobDocumentFormView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .ToolBarTitle(
-            title: userVM.user.businessName,
-            mainIconTapped: {
+            businessName: userVM.user.businessName,
+            primaryIconTapped: {
                 if activeSheet == nil {
                     activeSheet = .user
                 }
-            }, editIconName: "plusminus.circle",
-            editButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success, editIconTapped: {
+            }, secondIconName: "plusminus.circle",
+            secondButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success,
+            secondIconTapped: {
             
         })
     }

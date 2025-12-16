@@ -16,7 +16,9 @@ struct ExpenseView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarTitleDisplayMode(.inline)
-        .ToolBarTitle(title: userVM.user.businessName, mainIconTapped: {
+        .ToolBarTitle(
+            businessName: userVM.user.businessName,
+            primaryIconTapped: {
             activeSheet = .user
         })
     }

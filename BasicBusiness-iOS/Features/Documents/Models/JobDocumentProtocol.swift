@@ -1,6 +1,6 @@
 import Foundation
 
-enum JobType: String, Codable, CaseIterable {
+enum JobDocumentType: String, Codable, CaseIterable {
     case quote
     case invoice
 }
@@ -22,7 +22,7 @@ protocol JobDocumentProtocol: Codable {
     
     var customFields: [CustomField] { get set }
 
-    var jobType: JobType { get set }
+    var jobDocumentType: JobDocumentType { get set }
 }
 
 extension JobDocumentProtocol {

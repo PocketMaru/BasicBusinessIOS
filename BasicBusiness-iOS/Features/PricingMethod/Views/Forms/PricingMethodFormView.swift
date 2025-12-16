@@ -24,6 +24,8 @@ struct PricingMethodFormView: View {
         }
     }
     
+    // MARK: - Computed view properties
+    
     private var squareFootageFields: some View {
         VStack(alignment: .leading) {
             CustomFormView(header: "Square Footage") {

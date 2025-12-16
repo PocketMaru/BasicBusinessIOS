@@ -18,7 +18,7 @@ struct InvoiceModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hash
     var customFields: [CustomField] = []
     var materialExpenses: [MaterialExpenseModel] = []
     
-    var jobType: JobType = .invoice
+    var jobDocumentType: JobDocumentType = .invoice
     
     var invoiceDate: Date = Date()
     var installationDate: Date?
@@ -36,7 +36,7 @@ struct InvoiceModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hash
         self.additionalFees = nil
         self.customFields = []
         self.materialExpenses = []
-        self.jobType = .invoice
+        self.jobDocumentType = .invoice
         self.invoiceDate = Date()
         self.installationDate = nil
         self.serviceDate = nil
@@ -57,7 +57,7 @@ extension InvoiceModel {
         quote.additionalFees = self.additionalFees
         quote.customFields = self.customFields
         quote.materialExpenses = self.materialExpenses
-        quote.jobType = .quote
+        quote.jobDocumentType = .quote
         quote.quoteDate = self.invoiceDate
         quote.installationDate = self.installationDate
         quote.serviceDate = self.serviceDate
@@ -78,7 +78,7 @@ extension InvoiceModel {
         additionalFees: Double = 0.0,
         customFields: [CustomField] = [],
         materialExpenses: [MaterialExpenseModel] = [],
-        jobType: JobType = .invoice,
+        jobType: JobDocumentType = .invoice,
         invoiceDate: Date = Date(),
         installationDate: Date? = nil,
         serviceDate: Date? = nil,
@@ -96,11 +96,67 @@ extension InvoiceModel {
         mockModel.additionalFees = additionalFees
         mockModel.customFields = customFields
         mockModel.materialExpenses = materialExpenses
-        mockModel.jobType = jobType
+        mockModel.jobDocumentType = jobType
         mockModel.invoiceDate = invoiceDate
         mockModel.installationDate = installationDate
         mockModel.serviceDate = serviceDate
         
         return mockModel
+    }
+    
+    static var mockList: [InvoiceModel] {
+        [
+            .mock(
+                id: UUID(),
+                customerID: UUID(),
+                industryType: .none,
+                serviceType: .custom("New Fence"),
+                pricingMethods: [.init(type: .fixedRate)],
+                notes: "This is a quote for a fence.",
+                subscriptionTotal: 0.0,
+                laborCost: .flatRate(1000.0),
+                additionalFees: 300.0,
+                customFields: [.init(label: "Added Expense", value: 100.0)],
+                materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
+                jobType: .quote,
+                invoiceDate: .now,
+                installationDate: .now,
+                serviceDate: .now,
+            ),
+            .mock(
+                id: UUID(),
+                customerID: UUID(),
+                industryType: .none,
+                serviceType: .none,
+                pricingMethods: [.init(type: .fixedRate)],
+                notes: "This is a quote note.",
+                subscriptionTotal: 100.0,
+                laborCost: .flatRate(100.0),
+                additionalFees: 100.0,
+                customFields: [.init(label: "Added Expense", value: 100.0)],
+                materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
+                jobType: .quote,
+                invoiceDate: .now,
+                installationDate: .now,
+                serviceDate: .now,
+            ),
+            .mock(
+                id: UUID(),
+                customerID: UUID(),
+                industryType: .none,
+                serviceType: .none,
+                pricingMethods: [.init(type: .fixedRate)],
+                notes: "This is a quote note.",
+                subscriptionTotal: 100.0,
+                laborCost: .flatRate(100.0),
+                additionalFees: 100.0,
+                customFields: [.init(label: "Added Expense", value: 100.0)],
+                materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
+                jobType: .quote,
+                invoiceDate: .now,
+                installationDate: .now,
+                serviceDate: .now,
+            )
+        ]
     }
 }

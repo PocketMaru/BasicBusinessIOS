@@ -7,6 +7,7 @@ struct StatButtonView: View {
     let value: Double?
     let valueTwo: Double?
     let tapAction: () -> Void
+    let isSelected: Bool
     
     init(
         label: String,
@@ -14,7 +15,8 @@ struct StatButtonView: View {
         labelThree:String? = nil,
         value: Double? = nil,
         valueTwo: Double? = nil,
-        tapAction: @escaping () -> Void
+        tapAction: @escaping () -> Void,
+        isSelected: Bool = false
     ) {
         self.label = label
         self.labelTwo = labelTwo
@@ -22,6 +24,7 @@ struct StatButtonView: View {
         self.value = value
         self.valueTwo = valueTwo
         self.tapAction = tapAction
+        self.isSelected = isSelected
     }
     var body: some View {
         Button(action: tapAction) {
@@ -74,6 +77,9 @@ struct StatButtonView: View {
             }
             .frame(width: 180, height: 120)
             .statBubbleStyle()
+            .statButtonBG(isVisible: isSelected)
+            .frame(width: 180, height: 120)
+            .animation(.easeInOut(duration: 0.2), value: isSelected)
         }
     }
 }

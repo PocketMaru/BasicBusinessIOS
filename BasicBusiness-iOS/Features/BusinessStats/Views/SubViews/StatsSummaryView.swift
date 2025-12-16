@@ -50,30 +50,31 @@ struct StatsSummaryView: View {
                 AppColors.bg.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing: 16) {
-                        if selectedStat == .invoices {
-                            ForEach(invoiceListVM.allInvoices) { invoice in
-                                if let customer = customerListVM.getCustomer(for: invoice.customerID) {
-                                    CustomSectionView(
-                                        headerTitle: customer.fullName ?? customer.firstName
-                                    ) {
-                                        VStack {
-                                            Text(customer.phone)
-                                            Divider()
-                                            Text(String(invoice.invoiceDate.formatted(date: .abbreviated, time: .omitted)))
-                                            
-                                            Divider()
-                                            Text(String(invoice.totalCost))
-                                            
-                                            Spacer()
-                                        }
-                                    } tapped: {
-                                        statDetailSheetItem = .invoice(invoice)
-                                    }
-                                    .statBubbleStyle()
-                                    .statButtonBG()
-                                }
-                            }
-                        } else if selectedStat == .expenses {
+//                        if selectedStat == .invoices {
+//                            ForEach(invoiceListVM.allInvoices) { invoice in
+//                                if let customer = customerListVM.getCustomer(for: invoice.customerID) {
+//                                    CustomSectionView(
+//                                        headerTitle: customer.fullName ?? customer.firstName
+//                                    ) {
+//                                        VStack {
+//                                            Text(customer.phone)
+//                                            Divider()
+//                                            Text(String(invoice.invoiceDate.formatted(date: .abbreviated, time: .omitted)))
+//                                            
+//                                            Divider()
+//                                            Text(String(invoice.totalCost))
+//                                            
+//                                            Spacer()
+//                                        }
+//                                    } tapped: {
+//                                        statDetailSheetItem = .invoice(invoice)
+//                                    }
+//                                    .statBubbleStyle()
+//                                    .statButtonBG()
+//                                }
+//                            }
+                        // } else if
+                        if selectedStat == .expenses {
                             ForEach(expenseListVM.allExpenses) { expense in
                                 CustomSectionView(
                                     headerTitle: expense.name
@@ -106,31 +107,38 @@ struct StatsSummaryView: View {
                                 titleSeven: nil,
                                 valueSeven: nil,
                                 titleEight: nil,
-                                valueEight: nil
+                                valueEight: nil,
+                                titleNine: nil,
+                                valueNine: nil,
+                                titleTen: nil,
+                                valueTen: nil,
+                                titleEleven: nil,
+                                valueEleven: nil
+                                
                             )
                             .statButtonBG()
-                        } else if selectedStat == .quotes {
-                            ForEach(quoteListVM.allQuotes) { quote in
-                                if let customer = customerListVM.getCustomer(for: quote.customerID) {
-                                    CustomSectionView(
-                                        headerTitle: customer.fullName ?? customer.firstName
-                                    ) {
-                                        VStack {
-                                            Text(customer.phone)
-                                            Divider()
-                                            Text(String(quote.quoteDate.formatted(date: .abbreviated, time: .omitted)))
-                                            Divider()
-                                            Text(String(quote.totalCost))
-                                            Spacer()
-                                        }
-                                    } tapped: {
-                                        statDetailSheetItem = .quote(quote)
-                                    }
-                                    .statBubbleStyle()
-                                    .statButtonBG()
-                                }
-                            }
-                        } else if selectedStat == .materials {
+//                        } else if selectedStat == .quotes {
+//                            ForEach(quoteListVM.allQuotes) { quote in
+//                                if let customer = customerListVM.getCustomer(for: quote.customerID) {
+//                                    CustomSectionView(
+//                                        headerTitle: customer.fullName ?? customer.firstName
+//                                    ) {
+//                                        VStack {
+//                                            Text(customer.phone)
+//                                            Divider()
+//                                            Text(String(quote.quoteDate.formatted(date: .abbreviated, time: .omitted)))
+//                                            Divider()
+//                                            Text(String(quote.totalCost))
+//                                            Spacer()
+//                                        }
+//                                    } tapped: {
+//                                        statDetailSheetItem = .quote(quote)
+//                                    }
+//                                    .statBubbleStyle()
+//                                    .statButtonBG()
+//                                }
+//                            }
+//                        } else if selectedStat == .materials {
                             ForEach(materialListVM.allMaterials) { material in
                                 CustomSectionView(
                                     headerTitle: material.name
@@ -160,7 +168,7 @@ struct StatsSummaryView: View {
                                         )
                                         ) {
                                             CustomSectionView(
-                                                headerTitle: customer.fullName ?? customer.firstName
+                                                headerTitle: customer.displayName
                                             ) {
                                                 VStack {
                                                     Text(customer.phone)
@@ -183,7 +191,7 @@ struct StatsSummaryView: View {
                                             activeSheet: $activeSheet
                                         )) {
                                             CustomSectionView(
-                                                headerTitle: customer.fullName ?? customer.firstName
+                                                headerTitle: customer.displayName
                                             ) {
                                                 VStack {
                                                     Text(customer.phone)
@@ -207,9 +215,9 @@ struct StatsSummaryView: View {
                 .background(AppColors.bg)
             }
             .ToolBarTitle(
-                title: selectedStat.title,
-                iconName: nil,
-                mainIconTapped: nil
+                businessName: selectedStat.title,
+                primaryIconName: nil,
+                primaryIconTapped: nil
             )
             .safeAreaInset(edge: .top) {
                 if selectedStat == .customers {
