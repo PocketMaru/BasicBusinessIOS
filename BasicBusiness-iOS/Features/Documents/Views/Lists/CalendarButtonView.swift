@@ -1,22 +1,23 @@
 import SwiftUI
 
+
 struct CalendarQuickActions: View {
+    var select: (DocumentDateFilter) -> Void
+    
     let dismiss: () -> Void
 
     var body: some View {
         VStack(alignment: .leading ,spacing: 12) {
             calendarButton(icon: "calendar.circle.fill", label: "Today") {
-                // apply filter
+                select(.today)
                 dismiss()
             }
-
             calendarButton(icon: "calendar.badge.clock", label: "This Week") {
-                // apply filter
+                select(.thisWeek)
                 dismiss()
             }
-
             calendarButton(icon: "calendar", label: "This Month") {
-                // apply filter
+                select(.thisMonth)
                 dismiss()
             }
         }

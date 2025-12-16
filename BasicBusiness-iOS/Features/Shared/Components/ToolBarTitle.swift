@@ -10,6 +10,7 @@ extension View {
         
         secondIconName: String? = "person.circle.fill",
         toggleSecondIconState: Binding<Bool>? = nil,
+        calendarAction: ((DocumentDateFilter) -> Void)? = nil,
         secondButtonColor: Color? = nil,
         secondIconTapped: (() -> Void)? = nil,
         
@@ -43,7 +44,7 @@ extension View {
                         }
                     }
                 }
-                if let action = secondIconTapped, let secondIconName, let secondButtonColor, let toggleSecondIconState {
+                if let action = secondIconTapped, let secondIconName, let secondButtonColor, let toggleSecondIconState, let calendarAction {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             toggleSecondIconState.wrappedValue.toggle()
@@ -60,11 +61,14 @@ extension View {
                                     arrowEdge: .top,
                                 ) {
                                     CalendarQuickActions(
+                                        select: { filter in
+                                            calendarAction(filter)
+                                        },
                                         dismiss: {
                                                     toggleSecondIconState.wrappedValue = false
                                                 }
                                     )
-                                    
+                                        .padding(.top, 8)
                                         .presentationCompactAdaptation(.popover)
                                         .presentationBackground(AppColors.bg)
                                         .presentationCornerRadius(22)

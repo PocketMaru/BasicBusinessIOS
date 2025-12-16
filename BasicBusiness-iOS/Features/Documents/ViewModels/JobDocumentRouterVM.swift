@@ -4,9 +4,11 @@ import Foundation
 @MainActor
 @Observable
 final class JobDocumentRouterVM {
+    
     let customerListVM: CustomerListVM
     let quoteListVM: QuoteListVM
     let invoiceListVM: InvoiceListVM
+    var documentDateFilter: DocumentDateFilter = .today
     private let savedMaterials: [MaterialModel]
     private let saveQuoteUseCase: SaveQuoteUseCase
     private let saveInvoiceUseCase: SaveInvoiceUseCase
@@ -21,22 +23,18 @@ final class JobDocumentRouterVM {
         )}
     }
     
-    init(
-        customerListVM: CustomerListVM,
-        quoteListVM: QuoteListVM,
-        invoiceListVM: InvoiceListVM,
-        savedMaterials: [MaterialModel],
-        saveQuoteUseCase: SaveQuoteUseCase,
-        saveInvoiceUseCase: SaveInvoiceUseCase
-    ) {
-        self.customerListVM = customerListVM
-        self.quoteListVM = quoteListVM
-        self.invoiceListVM = invoiceListVM
-        self.savedMaterials = savedMaterials
-        self.saveQuoteUseCase = saveQuoteUseCase
-        self.saveInvoiceUseCase = saveInvoiceUseCase
+    var quoteRowsFilteredByDate: [JobDocumentRowData] {
+        quoteRows.filter { row in
+            documentDateFilter.matches(row.date)
+        }
     }
     
+    var invoiceRowsFilteredByDate: [JobDocumentRowData] {
+        invoiceRows.filter { row in
+            documentDateFilter.matches(row.date)
+        }
+    }
+
     enum DocumentForm {
         case quote(QuoteFormVM)
         case invoice(InvoiceFormVM)
@@ -50,6 +48,22 @@ final class JobDocumentRouterVM {
     enum JobDocumentDetail {
         case quote(QuoteModel)
         case invoice(InvoiceModel)
+    }
+    
+    init(
+        customerListVM: CustomerListVM,
+        quoteListVM: QuoteListVM,
+        invoiceListVM: InvoiceListVM,
+        savedMaterials: [MaterialModel],
+        saveQuoteUseCase: SaveQuoteUseCase,
+        saveInvoiceUseCase: SaveInvoiceUseCase,
+    ) {
+        self.customerListVM = customerListVM
+        self.quoteListVM = quoteListVM
+        self.invoiceListVM = invoiceListVM
+        self.savedMaterials = savedMaterials
+        self.saveQuoteUseCase = saveQuoteUseCase
+        self.saveInvoiceUseCase = saveInvoiceUseCase
     }
     
     func quote(withID id: UUID) -> QuoteModel? {

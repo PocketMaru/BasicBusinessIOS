@@ -25,13 +25,8 @@ struct MainTabView: View {
         
         #if DEBUG
         customers = CustomerModel.mockList
-        quotes = customers.compactMap { customer in
-            QuoteModel.mock(customerID: customer.id)
-        }
-        
-        invoices = customers.map {
-            InvoiceModel.mock(customerID: $0.id)
-        }
+        quotes = QuoteModel.mockList
+        invoices = InvoiceModel.mockList
         #else
         customers = loader.load(for: .customers) ?? []
         quotes = loader.load(for: .quotes) ?? []

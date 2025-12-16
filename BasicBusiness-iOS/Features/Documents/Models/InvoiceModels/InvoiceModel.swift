@@ -108,7 +108,7 @@ extension InvoiceModel {
         [
             .mock(
                 id: UUID(),
-                customerID: UUID(),
+                customerID: CustomerModel.mockList[1].id,
                 industryType: .none,
                 serviceType: .custom("New Fence"),
                 pricingMethods: [.init(type: .fixedRate)],
@@ -119,13 +119,13 @@ extension InvoiceModel {
                 customFields: [.init(label: "Added Expense", value: 100.0)],
                 materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
-                invoiceDate: .now,
-                installationDate: .now,
-                serviceDate: .now,
+                invoiceDate: .today,
+                installationDate: .today,
+                serviceDate: .today,
             ),
             .mock(
                 id: UUID(),
-                customerID: UUID(),
+                customerID: CustomerModel.mockList[2].id,
                 industryType: .none,
                 serviceType: .none,
                 pricingMethods: [.init(type: .fixedRate)],
@@ -136,13 +136,13 @@ extension InvoiceModel {
                 customFields: [.init(label: "Added Expense", value: 100.0)],
                 materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
-                invoiceDate: .now,
-                installationDate: .now,
-                serviceDate: .now,
+                invoiceDate: .daysAgo(10),
+                installationDate: .daysAgo(10),
+                serviceDate: .daysAgo(10),
             ),
             .mock(
                 id: UUID(),
-                customerID: UUID(),
+                customerID: CustomerModel.mockList[1].id,
                 industryType: .none,
                 serviceType: .none,
                 pricingMethods: [.init(type: .fixedRate)],
@@ -153,9 +153,9 @@ extension InvoiceModel {
                 customFields: [.init(label: "Added Expense", value: 100.0)],
                 materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
-                invoiceDate: .now,
-                installationDate: .now,
-                serviceDate: .now,
+                invoiceDate: .daysAgo(3),
+                installationDate: .daysAgo(3),
+                serviceDate: .daysAgo(3),
             )
         ]
     }

@@ -7,7 +7,6 @@ struct JobDocumentListView: View {
     @State private var documentType: JobDocumentType = .quote
     @State private var showCalendarMenu = false
     var body: some View {
-        
         ZStack {
             AppColors.bg.ignoresSafeArea()
             VStack(spacing: 0) {
@@ -17,14 +16,14 @@ struct JobDocumentListView: View {
                         VStack(alignment: .center ,spacing: 16) {
                             switch documentType {
                             case .quote:
-                                ForEach(jobDocRouter.quoteRows) { row in
+                                ForEach(jobDocRouter.quoteRowsFilteredByDate) { row in
                                     NavigationLink(
                                         value: JobDocumentRouterVM.JobDocumentRoute.quoteDetail(id: row.id)) {
                                             JobDocumentItemView(document: row)
                                         }
                                 }
                             case .invoice:
-                                ForEach(jobDocRouter.invoiceRows) { row in
+                                ForEach(jobDocRouter.invoiceRowsFilteredByDate) { row in
                                     NavigationLink(value:JobDocumentRouterVM.JobDocumentRoute.invoiceDetail(id: row.id)) {
                                         JobDocumentItemView(document: row)
                                     }
@@ -38,13 +37,20 @@ struct JobDocumentListView: View {
                         route in
                         switch route {
                         case .quoteDetail(let id):
-                            if let quote = jobDocRouter
-                                .quote(withID: id),
-                                let customer = jobDocRouter
-                                .customer(for: quote.customerID) {
+//                            if let quote = jobDocRouter
+//                                .quote(withID: id),
+//                                let customer = jobDocRouter
+//                                .customer(for: quote.customerID) {
+//                                JobDocumentDetailView(
+//                                    detail: .quote(quote),
+//                                    customer: customer
+//                                )
+//                            }
+                            
+                            if let quote = jobDocRouter.quote(withID: id) {
                                 JobDocumentDetailView(
                                     detail: .quote(quote),
-                                    customer: customer
+                                    customer: CustomerModel.mockList[2]
                                 )
                             }
                         case .invoiceDetail(let id):
@@ -61,7 +67,7 @@ struct JobDocumentListView: View {
                             if let invoice = jobDocRouter.invoice(withID: id) {
                                 JobDocumentDetailView(
                                     detail: .invoice(invoice),
-                                    customer: CustomerModel.mock()
+                                    customer: CustomerModel.mockList[2]
                                 )
                             }
                         }
@@ -87,8 +93,13 @@ struct JobDocumentListView: View {
                     activeSheet = .user
                 }
             }, secondIconName: "calendar",
-            toggleSecondIconState: $showCalendarMenu, secondButtonColor: AppColors.accent,
+            toggleSecondIconState: $showCalendarMenu,
+            calendarAction: { filter in
+                jobDocRouter.documentDateFilter = filter
+            },
+            secondButtonColor: AppColors.accent,
             secondIconTapped: {
+                
                 // Calendar Logic
         },
             thirdIconName: "person.crop.circle.badge.plus",

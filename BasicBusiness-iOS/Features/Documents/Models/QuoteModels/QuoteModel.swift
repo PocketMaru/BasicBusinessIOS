@@ -121,7 +121,7 @@ extension QuoteModel {
         [
             .mock(
                 id: UUID(),
-                customerID: UUID(),
+                customerID: CustomerModel.mockList[1].id,
                 industryType: .none,
                 serviceType: .none,
                 pricingMethods: [.init(type: .fixedRate)],
@@ -132,9 +132,9 @@ extension QuoteModel {
                 customFields: [.init(label: "Added Expense", value: 100.0)],
                 materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
-                quoteDate: .now,
-                installationDate: .now,
-                serviceDate: .now,
+                quoteDate: .today,
+                installationDate: .today,
+                serviceDate: .today,
                 pendingMaterialExpense: [
                     MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material1", unitCost: 100.0, unitType: .unit)),
                     MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material2", unitCost: 100.0, unitType: .unit)),
@@ -143,7 +143,7 @@ extension QuoteModel {
             ),
             .mock(
                 id: UUID(),
-                customerID: UUID(),
+                customerID: CustomerModel.mockList[2].id,
                 industryType: .none,
                 serviceType: .none,
                 pricingMethods: [.init(type: .fixedRate)],
@@ -154,9 +154,9 @@ extension QuoteModel {
                 customFields: [.init(label: "Added Expense", value: 100.0)],
                 materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
-                quoteDate: .now,
-                installationDate: .now,
-                serviceDate: .now,
+                quoteDate: .daysAgo(10),
+                installationDate: .daysAgo(10),
+                serviceDate: .daysAgo(10),
                 pendingMaterialExpense: [
                     MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material4", unitCost: 100.0, unitType: .unit)),
                     MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material5", unitCost: 100.0, unitType: .unit)),
@@ -165,7 +165,7 @@ extension QuoteModel {
             ),
             .mock(
                 id: UUID(),
-                customerID: UUID(),
+                customerID: CustomerModel.mockList[3].id,
                 industryType: .none,
                 serviceType: .none,
                 pricingMethods: [.init(type: .fixedRate)],
@@ -176,9 +176,9 @@ extension QuoteModel {
                 customFields: [.init(label: "Added Expense", value: 100.0)],
                 materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
-                quoteDate: .now,
-                installationDate: .now,
-                serviceDate: .now,
+                quoteDate: .daysAgo(3),
+                installationDate: .daysAgo(3),
+                serviceDate: .daysAgo(3),
                 pendingMaterialExpense: [
                     MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material7", unitCost: 100.0, unitType: .unit)),
                     MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material8", unitCost: 100.0, unitType: .unit)),
