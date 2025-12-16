@@ -1,21 +1,23 @@
 # BasicBusiness
 
-A modular iOS app for small business management, written in Swift using SwiftUI. This README expands on the project’s features and app elements and gives a feature-by-feature view of what each module offers and what is currently in development.
+BasicBusiness is a modular, SwiftUI iOS application built from real small‑business workflows. It is not a SaaS product or a generic “business app” template — it’s an opinionated, local‑first toolkit focused on maintainable code, clear source‑of‑truth architecture, and feature‑based modularity.
+
+This README documents the app’s design, what is implemented today, and what is planned. Sections marked "Planned / In Development" call out features or work that are intentionally deferred or in progress.
 
 <!-- TOC -->
 - [About](#about)
 - [Features](#features)
   - [BusinessStats](#businessstats)
   - [Customers](#customers)
-  - [Documents](#documents)
-  - [Domain](#domain)
-  - [Expenses](#expenses)
-  - [Inventory](#inventory)
+  - [Documents (Quotes & Invoices)](#documents-quotes--invoices)
   - [Materials](#materials)
+  - [Inventory](#inventory)
   - [PricingMethod](#pricingmethod)
   - [Shared](#shared)
   - [User](#user)
 - [App elements (key files)](#app-elements-key-files)
+- [Architecture & Philosophy](#architecture--philosophy)
+- [Data & Persistence](#data--persistence)
 - [Tech & Requirements](#tech--requirements)
 - [Getting started](#getting-started)
   - [Clone](#clone)
@@ -25,145 +27,163 @@ A modular iOS app for small business management, written in Swift using SwiftUI.
 - [Code style & formatting](#code-style--formatting)
 - [Testing](#testing)
 - [Contributing](#contributing)
-- [Troubleshooting](#troubleshooting)
+- [Planned work / Roadmap](#planned-work--roadmap)
+- [Troubleshooting & Notes](#troubleshooting--notes)
 - [License](#license)
 - [Contact](#contact)
 
 ## About
 
-BasicBusiness is an iOS-first business management app broken into feature modules. The app aims to provide essential small-business functionality — customer records, inventory/materials management, expense tracking, document generation (invoices/quotes), pricing methods, and basic business analytics — in a lightweight, modular SwiftUI codebase.
+BasicBusiness is a local‑first iOS app built with SwiftUI and MVVM patterns. Its primary goals are:
 
-This README documents each feature with current capabilities and items that are actively being developed or planned. Please review and update any status lines to reflect the true implementation details if they differ.
+- Support real‑world business workflows (invoicing, quoting, expense logging, customer history).
+- Maintain a single, explicit source of truth for domain data.
+- Keep Views dumb and place logic in ViewModels and container functions.
+- Provide clean, testable, and modular Swift code that can be extended over time.
+
+This project is intended as a long‑term open‑source / portfolio project — practical, honest, and focused on correctness rather than marketing.
 
 ## Features
 
-Each feature below has a short summary of what it offers and what is being worked on.
+Each feature below shows "Implemented" (what you can expect today) and "Planned / In Development" where relevant.
 
 ### BusinessStats
-What it offers
-- Dashboards and KPIs for common small-business metrics (revenue, profit, top customers, best-selling items, cashflow overview).
-- Time-range filters (daily/weekly/monthly/quarterly).
-- Simple visualizations (charts and summary cards).
+Implemented
+- Navigation and insight hub for the app — not a standalone analytics engine.
+- “Stat bubbles” (summary metrics) that are tappable and link directly into underlying entities (customers, invoices, expenses).
+- Journal view that organizes recent activity by month (paid invoices, unpaid rollovers, quotes, expenses). The Journal is designed to be navigable to the corresponding document or customer.
 
-Currently developing / planned
-- Exportable reports (PDF/CSV).
-- More granular filter and drilldown (per-customer, per-item).
-- Scheduled report generation (background processing).
+Planned / In Development
+- Exportable monthly reports (PDF/CSV).
+- Additional drill‑down filters and scheduled report generation.
 
 ### Customers
-What it offers
-- Create, view, edit, and search customer records.
-- Store contact details, notes, and simple transaction history.
-- Basic list and detail views with sorting and filtering.
+Implemented
+- Customers are the core entity. Documents (quotes & invoices) belong to customers.
+- Create, edit, and search customer records.
+- Basic activity view that surfaces related documents and journal entries.
 
-Currently developing / planned
-- Import/export customers (CSV).
-- Syncing support (iCloud or optional backend).
-- Communication shortcuts (email/call) and improved customer activity timeline.
+Planned / In Development
+- CSV import/export for customer lists.
+- iCloud/remote sync option (designed as optional).
 
-### Documents
-What it offers
-- Create and preview invoices and quotes inside the app.
-- Basic document templates with company and customer details.
-- Export and share documents as PDF.
+### Documents (Quotes & Invoices)
+Implemented
+- Documents are strongly tied to Customers.
+- Supports Quotes and Invoices.
+- Quotes can be converted into Invoices.
+- Conversion flow can optionally log used Materials as Expenses.
 
-Currently developing / planned
-- Template customization and saved templates.
-- Automated invoice numbering and statuses (draft, sent, paid).
-- Integration with payments or export to popular accounting tools.
-
-### Domain
-What it offers
-- Core domain models and business logic shared by features (e.g., Business, Product, Transaction, Document models).
-- Validation and central domain types used across modules.
-
-Currently developing / planned
-- Versioned migrations for domain model changes.
-- More comprehensive domain-level tests and sample data fixtures.
-
-### Expenses
-What it offers
-- Track and categorize business expenses.
-- Attach photos/receipts (device camera or gallery).
-- Basic expense reporting and totals by category.
-
-Currently developing / planned
-- Bill payment tracking and recurring expense support.
-- OCR for receipt parsing.
-- Export expenses for accounting.
-
-### Inventory
-What it offers
-- Track stock levels for products or SKUs.
-- View item details, current quantity, and low-stock indicators.
-- Basic adjustments and manual stock operations.
-
-Currently developing / planned
-- Reorder thresholds and low-stock alerts.
-- Batch operations (bulk edits, imports).
-- Integrations for barcode scanning and supplier purchase orders.
+Planned / In Development
+- Template customization, numbering, and document status lifecycle (draft, sent, paid).
+- Payment integrations (future-facing, optional).
 
 ### Materials
-What it offers
-- Track raw materials or components used to build items (BOM-style).
-- Link materials to inventory items and track material usage.
+Implemented
+- Reusable catalog of materials/components intended to simplify pricing and costing.
+- Materials provide cost and unit information to support pricing calculations and quotes.
 
-Currently developing / planned
-- Build/consume workflows (consume materials when creating product shipments).
-- Material-level costing and waste/loss reporting.
+Important clarification
+- Materials do NOT track inventory quantity. They are a pricing/catalog convenience, not a stock ledger.
+
+Planned / In Development
+- Better linking between Materials and Document line items (bulk actions, presets).
+
+### Inventory
+Implemented
+- Inventory quantity tracking is intentionally optional and currently deferred.
+- The app exposes structures and domain models to support inventory later, but product quantity decrementing is not a required part of the core local workflows today.
+
+Planned / In Development
+- Optional inventory quantity tracking as a separate feature.
+- A dedicated rental inventory system (planned separately to preserve a clean domain model).
 
 ### PricingMethod
-What it offers
-- Define how product prices are calculated (fixed price, markup, margin, cost-plus).
-- View price breakdowns and suggested retail price calculations.
+Implemented
+- Real‑world pricing logic is supported: fixed prices, markup, margin, cost‑plus styles, and explicit cost fields.
+- PricingMethod is designed to be applied per product or per document line item and to produce reproducible price breakdowns.
 
-Currently developing / planned
-- Multiple pricing rules per product (volume discounts, customer-specific pricing).
-- Scripting or formula editor for advanced pricing strategies.
+Planned / In Development
+- Multiple pricing rules, customer‑specific pricing, and advanced formula composition.
 
 ### Shared
-What it offers
-- Reusable UI components, utilities, and global services used across features (formatters, buttons, colors, networking helpers).
-- Theme and design primitives used by the app (see AppTheme.swift).
+Implemented
+- Shared UI components, formatters, and utilities live in a Shared module (colors, typography, buttons, networking helpers).
+- The app theme and style primitives are centralized in `AppTheme.swift`.
 
-Currently developing / planned
-- Expand shared components library and documentation.
-- Accessibility and localization improvements to shared components.
+Planned / In Development
+- Expanded component documentation and accessibility checks.
 
 ### User
-What it offers
-- Basic user account model, preferences, and app settings.
-- Local authentication support (device passcode/biometrics).
+Implemented
+- Local‑first user/settings model: preferences, app settings, and local authentication (passcode/biometrics) are supported.
+- No remote user authentication is required for the core app experience.
 
-Currently developing / planned
-- Account sync across devices (iCloud or remote auth).
-- Role/permission model for multi-user or team scenarios.
+Planned / In Development
+- Optional account sync for multi‑device setups (iCloud or optional backend).
 
-(If any of the feature descriptions above are inaccurate or you want different wording, tell me which feature to update and provide the details you'd like included.)
+---
+
+If a feature description above appears incorrect, please point me to the source file or describe the desired change and I will update the README.
 
 ## App elements (key files)
 
-- BasicBusinessApp.swift — App entry point (SwiftUI App).
-- MainTabView.swift — Main tab-based navigation and the entry UI for core features.
-- AppTheme.swift — Theming primitives: colors, fonts and global style helpers.
-- Features/… — Modules for each feature area (see Features section).
+- BasicBusinessApp.swift — SwiftUI App entry point and bootstrap orchestration.
+- MainTabView.swift — primary tab navigation for core features.
+- AppTheme.swift — app colors, fonts, and UI primitives.
+- Features/* — each feature is implemented as a feature folder (BusinessStats, Customers, Documents, Domain, Expenses, Inventory, Materials, PricingMethod, Shared, User).
+- BasicBusiness-iOS/Testing — test helpers and test targets.
 
-These files form the core app lifecycle, primary navigation, and shared design system.
+These files define lifecycle, navigation, theming, and per‑feature composition.
+
+## Architecture & Philosophy
+
+- SwiftUI + MVVM-style structure. Views are intentionally simple; business logic lives in ViewModels and domain services.
+- Domain models are central and reused across features. Models are explicit: they own their own persistence responsibilities and validation.
+- The app avoids SwiftData by design. Persistence is implemented with Codable models and file‑based JSON.
+- Persistence and load flows use async/await. The app includes a bootstrap phase which restores domain models from disk before normal app usage.
+- Source‑of‑truth consistency is prioritized over convenience abstractions; explicit save/load flows and versioning are preferred to hidden side effects.
+
+Design goals
+- Predictable, testable data flows.
+- Minimal implicit global state.
+- Explicit ownership: each major model manages its save/load lifecycle.
+
+## Data & Persistence
+
+How data is stored
+- Local, file‑based JSON persisted to the app sandbox (Documents/Application Support).
+- Models conform to Codable and expose async save/load APIs; each major model is responsible for its own file(s).
+
+App bootstrap
+- On launch the app runs a central bootstrap/loader which sequentially restores models from disk using async/await.
+- The bootstrap phase reconstructs the app’s source of truth before Views begin normal interactions.
+
+Backups & export
+- Manual backup/export is exposed in app settings (planned and partially implemented). The model files can be exported as JSON for manual backups.
+- Cloud sync is optional and future‑facing — the current design keeps data local by default. Any cloud sync will be an opt‑in extension.
+
+Migrations
+- The project favors explicit model versioning and migration code. Migration helpers are planned to evolve JSON formats safely.
+
+Important notes
+- Avoid assuming server or automatic sync. The app is designed to be fully usable offline.
+- Because each model takes responsibility for persistence, testing save/load logic is straightforward and isolated.
 
 ## Tech & Requirements
 
 - Language: Swift (SwiftUI)
-- Primary platform: iOS (use the deployment target set in the Xcode project)
-- Xcode: Open the project with a compatible Xcode version
-- Formatter: SwiftFormat (configured via `.swiftformat`)
-
-If the project uses Swift Package Manager, CocoaPods, or other dependencies, open the Xcode project to resolve packages automatically or check for a `Podfile`/`Package.swift`.
+- Patterns: MVVM-style ViewModels with domain services
+- Persistence: Codable + file‑based JSON (no SwiftData)
+- Async: async/await used for IO and background tasks
+- Formatter: SwiftFormat (`.swiftformat` present)
+- Recommended: a recent Xcode stable release compatible with the Swift toolchain used in the project
 
 ## Getting started
 
 Prerequisites
-- Xcode (recommended recent stable release)
-- macOS capable of running Xcode and iOS simulators
+- Xcode installed (compatible with the project’s Swift toolchain).
+- A Mac that supports Xcode and iOS simulators.
 
 Clone
 ```bash
@@ -178,67 +198,97 @@ open BasicBusiness.xcodeproj
 ```
 
 Build & Run
-1. Select a scheme (app target) and device/simulator.
+1. Choose a scheme and simulator/device.
 2. Build (Cmd+B) and Run (Cmd+R).
 
-If you use SPM packages, Xcode will resolve them when opening the project. If you use CocoaPods, run `pod install` in the iOS directory (if a Podfile exists) and open the `.xcworkspace`.
+Notes
+- If you add package dependencies, Xcode will prompt to resolve them.
+- If a Podfile is added in the future, use `pod install` and open the generated workspace.
 
 ## Project structure
 
-Top-level
-- .swiftformat — code formatter configuration
-- BasicBusiness-xcodeproj/ — Xcode project
-- BasicBusiness-iOS/ — app source and resources
+High level
+- .swiftformat — code formatting rules
+- BasicBusiness.xcodeproj — Xcode project
+- BasicBusiness-iOS/ — app source and feature modules
 
-Inside BasicBusiness-iOS (high level)
-- BasicBusinessApp.swift — App entry
-- MainTabView.swift — Tab navigation
-- AppTheme.swift — App-wide theming
-- Features/ — feature modules (BusinessStats, Customers, Documents, Domain, Expenses, Inventory, Materials, PricingMethod, Shared, User)
-- Testing/ — test utilities and test targets (if present)
+Inside BasicBusiness-iOS
+- BasicBusinessApp.swift
+- AppTheme.swift
+- MainTabView.swift
+- Features/
+  - BusinessStats/
+  - Customers/
+  - Documents/
+  - Domain/
+  - Expenses/
+  - Inventory/
+  - Materials/
+  - PricingMethod/
+  - Shared/
+  - User/
+- Testing/ — test helpers and test targets
+
+Feature modules are intentionally scoped: UI, ViewModel, and domain models live close together, and persistence is colocated with the authoritative model.
 
 ## Code style & formatting
 
-This repository includes a `.swiftformat` file to enforce formatting. To format the code locally:
+- SwiftFormat is configured in `.swiftformat`. Run locally:
 ```bash
 brew install swiftformat
 swiftformat .
 ```
-Consider adding SwiftLint or pre-commit hooks if you want to enforce linting rules.
+- Keep Views thin; prefer putting logic into ViewModels or domain services.
+- Write small, testable domain types and expose save/load as async functions.
 
 ## Testing
 
-Run unit/UI tests in Xcode:
-- Product -> Test (Cmd+U)
-
-Check the `BasicBusiness-iOS/Testing` folder for test helpers and test targets. Add or extend tests especially around domain logic and pricing calculations.
+- Unit and integration tests live under `BasicBusiness-iOS/Testing` (see the folder for helpers).
+- Focus tests on domain models, pricing calculations, and persistence (save/load/migration).
+- Run tests in Xcode: Product → Test (Cmd+U).
 
 ## Contributing
 
-Thank you for contributing! Suggested workflow:
+This project welcomes contributions that align with the codebase philosophy (modular, local‑first, clear source‑of‑truth).
+
+Suggested workflow
 1. Fork the repo.
-2. Create a feature branch: `git checkout -b feat/short-description`
-3. Make changes, run formatting and tests locally.
-4. Open a pull request with a clear description of what changed and why.
+2. Create a descriptive branch: `git checkout -b feat/<short-description>`.
+3. Implement and format code; include or update tests for domain logic and persistence.
+4. Open a pull request with a clear summary of changes, rationale, and any migration steps.
 
-When opening PRs, include:
-- What was changed and motivation
-- Screenshots or sample data for UI changes
-- Any migration or setup steps
+When contributing
+- Add or update tests for domain behavior.
+- Keep Views declarative and move side effects into ViewModels/services.
+- Document persistence schema changes and provide migration code where appropriate.
 
-If you'd like, I can add a CONTRIBUTING.md with PR templates and issue templates.
+If you want, I can prepare PR templates or a CONTRIBUTING.md with checklists and testing expectations.
 
-## Troubleshooting
+## Planned work / Roadmap
 
-- Build errors: ensure Xcode version and Swift toolchain match the project settings. Clean the build folder (Shift+Cmd+K) if needed.
-- Missing dependencies: Check Package.swift or Podfile and run appropriate package manager commands.
-- Formatting: run `swiftformat .` to apply formatting.
+Short term
+- Exportable PDF/CSV reports from BusinessStats.
+- Improved Quote → Invoice lifecycle (numbering, statuses).
+- Backup/restore UX for JSON model files.
 
-Share specific build logs and I’ll help debug.
+Medium term
+- Optional cloud sync (opt‑in, user controlled).
+- Inventory quantity tracking as an optional module.
+- More robust migrations and versioning for JSON formats.
+
+Long term
+- Integrations (payments, accounting exports) as optional adapters.
+- Team/role support and server-backed sync as a clearly separated opt‑in feature.
+
+## Troubleshooting & Notes
+
+- Build issues: check your Xcode version and Swift toolchain. Clean build folder (Shift+Cmd+K) if necessary.
+- Persistence debugging: JSON files live in the app sandbox — you can inspect them via the simulator’s file system or the device backup.
+- If you change domain schemas, add a migration path and tests to ensure old JSON files can be loaded safely.
 
 ## License
 
-Add a LICENSE file to declare the project license (MIT, Apache-2.0, etc.). I can create this for you if you choose a license.
+Choose and add an explicit license file (e.g., MIT, Apache‑2.0). I can add a LICENSE file for you if you tell me which license to use.
 
 ## Contact
 
