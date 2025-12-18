@@ -119,9 +119,9 @@ struct CustomerDetailView: View {
         .ToolBarTitle(
             businessName: customer.draft.firstName + " " + customer.draft.lastName,
             primaryIconName: nil,
-            secondIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
-            secondButtonColor: isEditing ? AppColors.success : AppColors.accent,
-            secondIconTapped: {
+            editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
+            editButtonColor: isEditing ? AppColors.success : AppColors.accent,
+            editIconTapped: {
                 if isEditing {
                     attemptedEdit = true
                     let success = customer.trySubmit()

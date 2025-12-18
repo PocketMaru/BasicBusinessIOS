@@ -10,5 +10,3 @@ struct HandymanQM: Codable, Equatable, Hashable {
 extension HandymanQM {
     static let empty = HandymanQM(pricingMethods: [])
 }
-
-extension HandymanQM: InIndustryDetailRenderable {}

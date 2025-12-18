@@ -1,5 +1,10 @@
 import Foundation
+import SwiftUI
 
+@MainActor
+protocol PricingMethodContaining {
+    var pricingMethods: Binding<[PricingMethodModel]> { get }
+}
 enum PricingMethodType: String, CaseIterable, Hashable, Codable {
     case fixedRate
     case squareFootage

@@ -10,5 +10,3 @@ struct HVACQM: Codable, Equatable, Hashable {
 extension HVACQM {
     static let empty = HVACQM(pricingMethods: [])
 }
-
-extension HVACQM: InIndustryDetailRenderable {}

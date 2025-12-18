@@ -10,5 +10,3 @@ struct PressureWashQM: Codable, Equatable, Hashable {
 extension PressureWashQM {
     static let empty = PressureWashQM(pricingMethods: [])
 }
-
-extension PressureWashQM: InIndustryDetailRenderable {}

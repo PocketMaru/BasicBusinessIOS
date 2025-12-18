@@ -5,10 +5,13 @@ import Foundation
 @Observable
 final class JobDocumentRouterVM {
     
+    let userVM: UserVM
     let customerListVM: CustomerListVM
     let quoteListVM: QuoteListVM
     let invoiceListVM: InvoiceListVM
     var documentDateFilter: DocumentDateFilter = .today
+    var activeForm: JobDocumentForm? = nil
+    var route: JobDocumentRoute? = nil
     private let savedMaterials: [MaterialModel]
     private let saveQuoteUseCase: SaveQuoteUseCase
     private let saveInvoiceUseCase: SaveInvoiceUseCase
@@ -35,7 +38,7 @@ final class JobDocumentRouterVM {
         }
     }
 
-    enum DocumentForm {
+    enum JobDocumentForm {
         case quote(QuoteFormVM)
         case invoice(InvoiceFormVM)
     }
@@ -43,6 +46,10 @@ final class JobDocumentRouterVM {
     enum JobDocumentRoute: Hashable {
         case quoteDetail(id: UUID)
         case invoiceDetail(id: UUID)
+        case createQuote
+        case createInvoice
+        case editQuote(id: UUID)
+        case editInvoice(id: UUID)
     }
     
     enum JobDocumentDetail {
@@ -50,7 +57,12 @@ final class JobDocumentRouterVM {
         case invoice(InvoiceModel)
     }
     
+    enum JobDocumentCreationIntent {
+        case quote
+        case invoice
+    }
     init(
+        userVM: UserVM,
         customerListVM: CustomerListVM,
         quoteListVM: QuoteListVM,
         invoiceListVM: InvoiceListVM,
@@ -58,6 +70,7 @@ final class JobDocumentRouterVM {
         saveQuoteUseCase: SaveQuoteUseCase,
         saveInvoiceUseCase: SaveInvoiceUseCase,
     ) {
+        self.userVM = userVM
         self.customerListVM = customerListVM
         self.quoteListVM = quoteListVM
         self.invoiceListVM = invoiceListVM
@@ -74,7 +87,11 @@ final class JobDocumentRouterVM {
         invoiceListVM.allInvoices.first { $0.id == id }
     }
     
-    func form(for type: JobDocumentType) -> DocumentForm {
+    func startCreating(_ intent: JobDocumentCreationIntent) {
+        activeForm = form(for: intent)
+    }
+    
+    func form(for type: JobDocumentCreationIntent) -> JobDocumentForm {
         switch type {
         case .quote:
             return .quote(makeQuoteFormVM())
@@ -84,7 +101,7 @@ final class JobDocumentRouterVM {
     }
     
     private func makeQuoteFormVM() -> QuoteFormVM {
-        QuoteFormVM(
+        let form = QuoteFormVM(
             quote: QuoteModel(),
             mode: FormMode.add,
             availableCustomers: customerListVM.allCustomers,
@@ -93,10 +110,12 @@ final class JobDocumentRouterVM {
                 try self?.quoteListVM.addQuote(from: draft)
             }
         )
+        form.loadIndustryFields(for: userVM.user.industryType)
+        return form
     }
     
     private func makeInvoiceFormVM() -> InvoiceFormVM {
-        InvoiceFormVM(
+        let form = InvoiceFormVM(
             invoice: InvoiceModel(),
             mode: FormMode.add,
             availableCustomers: customerListVM.allCustomers,
@@ -105,6 +124,8 @@ final class JobDocumentRouterVM {
                 try self?.invoiceListVM.addInvoice(from: draft)
             }
         )
+        form.loadIndustryFields(for: userVM.user.industryType)
+        return form
     }
     
     func customer(for customerID: UUID) -> CustomerModel? {

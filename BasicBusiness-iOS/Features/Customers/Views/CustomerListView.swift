@@ -47,8 +47,10 @@ struct CustomerListView: View {
                     if activeSheet == nil {
                         activeSheet = .user
                     }
-                }, secondIconName: "person.crop.circle.badge.plus",
-                secondButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success, secondIconTapped: {
+                },
+                editIconName: "person.crop.circle.badge.plus",
+                editButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success,
+                editIconTapped: {
                 activeSheet = .addCustomer
             })
         .frame(maxWidth: .infinity, maxHeight: .infinity)

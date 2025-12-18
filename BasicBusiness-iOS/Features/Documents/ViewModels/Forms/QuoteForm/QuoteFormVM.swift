@@ -1,4 +1,6 @@
 import Foundation
+import Observation
+import SwiftUI
 
 @MainActor
 @Observable
@@ -121,5 +123,14 @@ final class QuoteFormVM: JobDocumentFormProtocol {
         pricingMethodError = nil
         customFieldError = nil
         generalError = nil
+    }
+}
+
+extension QuoteFormVM: PricingMethodContaining {
+    var pricingMethods: Binding<[PricingMethodModel]> {
+        Binding(
+            get: { self.draft.pricingMethods },
+            set: { self.draft.pricingMethods = $0 }
+        )
     }
 }

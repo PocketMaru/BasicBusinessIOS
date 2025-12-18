@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import SwiftUI
 
 @MainActor
 @Observable
@@ -121,5 +122,14 @@ final class InvoiceFormVM: JobDocumentFormProtocol {
         pricingMethodError = nil
         customFieldError = nil
         generalError = nil
+    }
+}
+
+extension InvoiceFormVM: PricingMethodContaining {
+    var pricingMethods: Binding<[PricingMethodModel]> {
+        Binding(
+            get: { self.draft.pricingMethods },
+            set: { self.draft.pricingMethods = $0 }
+        )
     }
 }

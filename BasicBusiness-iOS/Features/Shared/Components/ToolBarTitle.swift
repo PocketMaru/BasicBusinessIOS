@@ -8,11 +8,15 @@ extension View {
         primaryIconTapped: (() -> Void)? = nil,
         primaryIconColor: Color? = nil,
         
-        secondIconName: String? = "person.circle.fill",
-        toggleSecondIconState: Binding<Bool>? = nil,
+        editIconName: String? = "person.circle.fill",
+        toggleEditIconState: Binding<Bool>? = nil,
+        editButtonColor: Color? = nil,
+        editIconTapped: (() -> Void)? = nil,
+    
         calendarAction: ((DocumentDateFilter) -> Void)? = nil,
-        secondButtonColor: Color? = nil,
-        secondIconTapped: (() -> Void)? = nil,
+        
+        onCreateQuote: (() -> Void)? = nil,
+        onCreateInvoice: (() -> Void)? = nil,
         
         thirdIconName: String? = "book.fill",
         toggleThirdIconState: Binding<Bool>? = nil,
@@ -44,35 +48,66 @@ extension View {
                         }
                     }
                 }
-                if let action = secondIconTapped, let secondIconName, let secondButtonColor, let toggleSecondIconState, let calendarAction {
+                if let editIconTapped = editIconTapped, let editIconName, let editButtonColor, let toggleEditIconState {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            toggleSecondIconState.wrappedValue.toggle()
-                            action()
+                            toggleEditIconState.wrappedValue.toggle()
+                            editIconTapped()
                         } label: {
-                            Image(systemName: secondIconName)
+                            Image(systemName: editIconName)
                                 .font(.title3.bold())
-                                .foregroundStyle(secondButtonColor)
+                                .foregroundStyle(editButtonColor)
                         }
-                        .buttonStyle(.plain)
-                        .popover(
-                                    isPresented: toggleSecondIconState,
-                                    attachmentAnchor: .rect(.bounds),
-                                    arrowEdge: .top,
-                                ) {
-                                    CalendarQuickActions(
-                                        select: { filter in
-                                            calendarAction(filter)
-                                        },
-                                        dismiss: {
-                                                    toggleSecondIconState.wrappedValue = false
-                                                }
-                                    )
-                                        .padding(.top, 8)
-                                        .presentationCompactAdaptation(.popover)
-                                        .presentationBackground(AppColors.bg)
-                                        .presentationCornerRadius(22)
-                                }
+                    }
+                    
+                }
+                if let calendarAction = calendarAction {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            Button {
+                                calendarAction(.today)
+                            } label: {
+                                Label("Today", systemImage: "calendar.circle.fill")
+                                    
+                            }
+                            Button {
+                                calendarAction(.thisWeek)
+                            } label: {
+                                Label("This Week", systemImage: "calendar.badge.clock")
+                                    
+                            }
+                            Button {
+                                calendarAction(.thisMonth)
+                            } label: {
+                                Label("This Month", systemImage: "calendar")
+                                    
+                            }
+                        } label: {
+                            Image(systemName: "calendar")
+                                .font(.title3.bold())
+                        }
+                    }
+                }
+                if let onCreateQuote = onCreateQuote, let onCreateInvoice {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            Button {
+                                onCreateQuote()
+                            }
+                            label: {
+                                Label("Create Quote", systemImage: "plus.circle")
+                            }
+                            
+                            Button {
+                                onCreateInvoice()
+                            }
+                            label: {
+                                Label("Create Invoice", systemImage: "plus.circle.fill")
+                            }
+                        } label: {
+                            Image(systemName: "plus")
+                                .font(.title3.bold())
+                        }
                     }
                 }
                 if let action = thirdIconTapped, let thirdIconName = thirdIconName, let thirdButtonColor {
@@ -84,7 +119,7 @@ extension View {
                         }
                     }
                 }
-            }
+        }
     }
 }
 

@@ -30,9 +30,9 @@ struct JobDocumentDetailView: View {
         .ToolBarTitle(
             businessName: customer.displayName,
             primaryIconName: nil,
-            secondIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
-            secondButtonColor: isEditing ? AppColors.success : AppColors.accent,
-            secondIconTapped: nil
+            editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
+            editButtonColor: isEditing ? AppColors.success : AppColors.accent,
+            editIconTapped: nil
 //                {
 //                if isEditing {
 //                    attemptedEdit = true

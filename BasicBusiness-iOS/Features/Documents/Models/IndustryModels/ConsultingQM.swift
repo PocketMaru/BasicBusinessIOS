@@ -10,5 +10,3 @@ struct ConsultingQM: Codable, Equatable, Hashable{
 extension ConsultingQM {
     static let empty = ConsultingQM(pricingMethods: [])
 }
-
-extension ConsultingQM: InIndustryDetailRenderable {}

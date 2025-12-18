@@ -2,13 +2,10 @@ import SwiftUI
 
 struct JobDocumentFormView: View {
     var userVM: UserVM
-    var customerListVM: CustomerListVM
-    var quoteListVM: QuoteListVM
-    
-    @State private var quoteFormVM: QuoteFormVM? = nil
+    var form: JobDocumentRouterVM.JobDocumentForm
+    var customers: [CustomerModel]
     @State private var searchCustomer: String = ""
     @State private var selectedCustomer: CustomerModel? = nil
-    
     @Binding var activeSheet: ActiveUserSheet?
 
     var body: some View {
@@ -16,32 +13,51 @@ struct JobDocumentFormView: View {
             AppColors.bg.ignoresSafeArea()
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    customerSelectionSection
-                    searchResultsSection
-                    customerSelectedSection
-                    industrySelectedSection
-                    totalSection
+                    customerSelectionSection(from: customers)
+                    customerSelectedSection(
+                        from: form,
+                        with: userVM.user.industryType,
+                        using: $selectedCustomer
+                    )
                 }
                 .padding(.horizontal, 10)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .ToolBarTitle(
-            businessName: userVM.user.businessName,
+            businessName: formTitle(from: form),
             primaryIconTapped: {
                 if activeSheet == nil {
                     activeSheet = .user
                 }
-            }, secondIconName: "plusminus.circle",
-            secondButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success,
-            secondIconTapped: {
+            },
+            editIconName: "plusminus.circle",
+            editButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success,
+            editIconTapped: {
             
-        })
+            }
+        )
     }
-    
     // MARK: - Constants
     
-    private var customerSelectionSection: some View {
+    private func formTitle(
+        from form: JobDocumentRouterVM.JobDocumentForm
+    ) -> String{
+        switch form {
+            case .quote:
+            return "Create Quote"
+        case .invoice:
+            return "Create Invoice"
+        }
+    }
+    
+    private func hasSelectedCustomer(from customer: Binding<CustomerModel?>) -> Bool {
+        customer.wrappedValue != nil
+    }
+    
+    private func customerSelectionSection(
+        from customer: [CustomerModel]
+    ) -> some View {
         Group {
             if selectedCustomer == nil {
                 CustomFormView(header: "Select Customer") {
@@ -58,13 +74,19 @@ struct JobDocumentFormView: View {
                     }
                 }
             }
+            searchResultsSection(from: customer)
         }
     }
     
-    private var searchResultsSection: some View {
+    private func searchResultsSection(
+        from customer: [CustomerModel]
+    ) -> some View {
         Group {
             if !searchCustomer.isEmpty {
-                let results = customerListVM.searchCustomer(by: searchCustomer)
+                let results = customer.filter {
+                    $0.displayName
+                        .localizedCaseInsensitiveContains(searchCustomer)
+                }
                 if results.isEmpty {
                     HStack(alignment: .center) {
                         Text("No Customer Found")
@@ -77,10 +99,6 @@ struct JobDocumentFormView: View {
                             Button {
                                 selectedCustomer = customer
                                 searchCustomer = ""
-                                
-                                quoteFormVM = quoteListVM.addVM()
-                                quoteFormVM?.selectCustomer(customer)
-                                quoteFormVM?.loadIndustryFields(for: userVM.user.industryType)
                             } label: {
                                 HStack(spacing: 8) {
                                     Text("\(customer.firstName) \(customer.lastName)")
@@ -99,9 +117,13 @@ struct JobDocumentFormView: View {
         }
     }
     
-    private var customerSelectedSection: some View {
+    private func customerSelectedSection(
+        from form: JobDocumentRouterVM.JobDocumentForm,
+        with industryType: IndustryType,
+        using selectedCustomer: Binding<CustomerModel?>
+    ) -> some View {
         Group {
-            if let customer = selectedCustomer {
+            if hasSelectedCustomer(from: selectedCustomer), let customer = selectedCustomer.wrappedValue {
                 VStack(alignment: .leading, spacing: 16) {
                     CustomFormView(header: "Customer") {
                         HStack {
@@ -109,47 +131,72 @@ struct JobDocumentFormView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.primary)
                             Button {
-                                selectedCustomer = nil
+                                selectedCustomer.wrappedValue = nil
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.secondary)
                             }
                         }
                     }
+                    sharedFormFields(from: form)
+                    industrySelectedSection(from: industryType, with: form)
+                    totalSection(from: form)
                 }
+            } else {
+                EmptyView()
             }
         }
     }
     
-    private var industrySelectedSection: some View {
+    private func industrySelectedSection(
+        from industryType: IndustryType,
+        with form: JobDocumentRouterVM.JobDocumentForm
+    ) -> some View {
         Group {
-            if let quoteFormVM = quoteFormVM {
-                switch userVM.user.industryType {
-                case .landscaping:
-                    LandscapeSectionView(quoteFormVM: quoteFormVM)
-                case .pressureWashing:
-                    PressureWashSectionView(quoteFormVM: quoteFormVM)
-                case .consulting:
-                    ConsultingSectionView(quoteFormVM: quoteFormVM)
-                case .handyman:
-                    HandymanSectionView(quoteFormVM: quoteFormVM)
-                case .HVAC:
-                    HVACSectionView(quoteFormVM: quoteFormVM)
-                case .productSales:
-                    ProductSalesSectionView(quoteFormVM: quoteFormVM)
-                case .none:
-                    EmptyView()
-                }
+            switch industryType {
+            case .landscaping(_):
+                LandscapeSectionView(form: form)
+            case .pressureWashing(_):
+                PressureWashSectionView(form: form)
+            case .consulting(_):
+                ConsultingSectionView(form: form)
+            case .handyman(_):
+                HandymanSectionView(form: form)
+            case .HVAC(_):
+                HVACSectionView(form: form)
+            case .productSales(let priceModel):
+                ProductSalesSectionView(form: form, priceModel: priceModel)
+            case .none:
+                EmptyView()
             }
         }
     }
     
-    private var totalSection: some View {
+    private func totalSection(
+        from form: JobDocumentRouterVM.JobDocumentForm)
+    -> some View {
         Group{
-            if let totalCost = quoteFormVM?.draft.totalCost {
-            CustomFormView(header: "Total") {
-                Text(totalCost, format: .currency(code: "USD"))
-                }
+            switch form {
+            case .quote(let quoteVM):
+                CustomFormView(header: "Total") {
+                    Text(quoteVM.draft.totalCost, format: .currency(code: "USD"))
+                    }
+            case .invoice(let invoiceVM):
+                CustomFormView(header: "Total") {
+                    Text(invoiceVM.draft.totalCost, format: .currency(code: "USD"))
+                    }
+            }
+        }
+    }
+    
+    private func sharedFormFields(from form: JobDocumentRouterVM.JobDocumentForm ) -> some View {
+        Group{
+            switch form {
+            case .quote(let quoteVM):
+                
+                EmptyView()
+            case .invoice(let invoiceVM):
+                EmptyView()
             }
         }
     }

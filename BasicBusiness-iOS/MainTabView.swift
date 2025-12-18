@@ -59,6 +59,7 @@ struct MainTabView: View {
             invoiceData: invoiceListVM
         )
         let jobDocRouterVM = JobDocumentRouterVM(
+            userVM: userVM,
             customerListVM: customerListVM,
             quoteListVM: quoteListVM,
             invoiceListVM: invoiceListVM,

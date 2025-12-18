@@ -1,11 +1,16 @@
 import SwiftUI
 
 struct HVACSectionView: View {
-    @Bindable var quoteFormVM: QuoteFormVM
+    let form: JobDocumentRouterVM.JobDocumentForm
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            ForEach($quoteFormVM.draft.pricingMethods) { $method in
-                PricingMethodFormView(method: $method)
+            
+            switch form {
+            case .quote(let vm):
+                PricingMethodsSectionView(form: vm)
+            case .invoice(let vm):
+                PricingMethodsSectionView(form: vm)
             }
         }
     }

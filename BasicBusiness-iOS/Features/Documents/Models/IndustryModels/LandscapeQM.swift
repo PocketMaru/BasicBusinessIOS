@@ -9,5 +9,3 @@ struct LandscapeQM: Codable, Equatable, Hashable {
 extension LandscapeQM {
     static let empty = LandscapeQM(pricingMethods: [])
 }
-
-extension LandscapeQM: InIndustryDetailRenderable {}

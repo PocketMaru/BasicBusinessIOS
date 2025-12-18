@@ -12,5 +12,3 @@ struct ProductSalesQM: Codable, Equatable, Hashable {
 extension ProductSalesQM {
     static let empty = ProductSalesQM(pricingMethods: [])
 }
-
-extension ProductSalesQM: InIndustryDetailRenderable {}

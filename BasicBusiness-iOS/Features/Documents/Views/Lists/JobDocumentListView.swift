@@ -5,6 +5,7 @@ struct JobDocumentListView: View {
     @Bindable var jobDocRouter: JobDocumentRouterVM
     @Binding var activeSheet: ActiveUserSheet?
     @State private var documentType: JobDocumentType = .quote
+    
     @State private var showCalendarMenu = false
     var body: some View {
         ZStack {
@@ -33,7 +34,7 @@ struct JobDocumentListView: View {
                     }
                     .padding(.top, 25)
                     .scrollContentBackground(.hidden)
-                    .navigationDestination(for: JobDocumentRouterVM.JobDocumentRoute.self ) {
+                    .navigationDestination(item: $jobDocRouter.route ) {
                         route in
                         switch route {
                         case .quoteDetail(let id):
@@ -70,6 +71,26 @@ struct JobDocumentListView: View {
                                     customer: CustomerModel.mockList[2]
                                 )
                             }
+                        case .createQuote:
+                            JobDocumentFormView(
+                                userVM: userVM,
+                                form: jobDocRouter.form(for: .quote),
+                                customers: jobDocRouter.customerListVM.allCustomers,
+                                activeSheet: $activeSheet
+                            )
+                        case .createInvoice:
+                            JobDocumentFormView(
+                                userVM: userVM,
+                                form: jobDocRouter.form(for: .invoice),
+                                customers: jobDocRouter.customerListVM.allCustomers,
+                                activeSheet: $activeSheet
+                            )
+                        case .editQuote:
+                            // navigation logic to edit view with doc id in quote context
+                            EmptyView()
+                        case .editInvoice:
+                            // navigation logic to edit view with doc id in invoice context
+                            EmptyView()
                         }
                     }
                 }
@@ -92,20 +113,15 @@ struct JobDocumentListView: View {
                 if activeSheet == nil {
                     activeSheet = .user
                 }
-            }, secondIconName: "calendar",
-            toggleSecondIconState: $showCalendarMenu,
+            },
             calendarAction: { filter in
                 jobDocRouter.documentDateFilter = filter
             },
-            secondButtonColor: AppColors.accent,
-            secondIconTapped: {
-                
-                // Calendar Logic
-        },
-            thirdIconName: "person.crop.circle.badge.plus",
-            thirdButtonColor: AppColors.accent,
-            thirdIconTapped: {
-                // quote invoice forms
+            onCreateQuote: {
+                jobDocRouter.route = .createQuote
+            },
+            onCreateInvoice: {
+                jobDocRouter.route = .createInvoice
             }
         )
     .frame(maxWidth: .infinity, maxHeight: .infinity)

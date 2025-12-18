@@ -86,10 +86,11 @@ struct UserView: View {
                 primaryIconName: "arrowshape.backward.circle.fill",
                 primaryIconTapped: {
                     isPresented.toggle()
-                }, secondIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
-                toggleSecondIconState: $isEditing,
-                secondButtonColor: isEditing ? AppColors.success : AppColors.accent,
-                secondIconTapped:  {
+                },
+                editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
+                toggleEditIconState: $isEditing,
+                editButtonColor: isEditing ? AppColors.success : AppColors.accent,
+                editIconTapped:  {
                     attemptedEdit = true
                     isEditing.toggle()
                 })
