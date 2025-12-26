@@ -11,8 +11,6 @@ final class CustomerFormVM {
     
     let mode: FormMode
     
-    // private (set) — allows others to view this property
-    //  but only this vm can write to it.
     private(set) var original: CustomerModel
     
     var draft: CustomerModel

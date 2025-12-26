@@ -2,7 +2,7 @@ import SwiftUI
 
 struct JobDocumentListView: View {
     var userVM: UserVM
-    @Bindable var jobDocRouter: JobDocumentRouterVM
+    @Bindable var jobDocRouter: JobDocumentRouterFeature
     @Binding var activeSheet: ActiveUserSheet?
     @State private var documentType: JobDocumentType = .quote
     
@@ -19,13 +19,13 @@ struct JobDocumentListView: View {
                             case .quote:
                                 ForEach(jobDocRouter.quoteRowsFilteredByDate) { row in
                                     NavigationLink(
-                                        value: JobDocumentRouterVM.JobDocumentRoute.quoteDetail(id: row.id)) {
+                                        value: JobDocumentRouterFeature.JobDocumentRoute.quoteDetail(id: row.id)) {
                                             JobDocumentItemView(document: row)
                                         }
                                 }
                             case .invoice:
                                 ForEach(jobDocRouter.invoiceRowsFilteredByDate) { row in
-                                    NavigationLink(value:JobDocumentRouterVM.JobDocumentRoute.invoiceDetail(id: row.id)) {
+                                    NavigationLink(value:JobDocumentRouterFeature.JobDocumentRoute.invoiceDetail(id: row.id)) {
                                         JobDocumentItemView(document: row)
                                     }
                                 }
@@ -34,64 +34,38 @@ struct JobDocumentListView: View {
                     }
                     .padding(.top, 25)
                     .scrollContentBackground(.hidden)
-                    .navigationDestination(item: $jobDocRouter.route ) {
+                    .navigationDestination(for: JobDocumentRouterFeature.JobDocumentRoute.self ) {
                         route in
                         switch route {
                         case .quoteDetail(let id):
-//                            if let quote = jobDocRouter
-//                                .quote(withID: id),
-//                                let customer = jobDocRouter
-//                                .customer(for: quote.customerID) {
-//                                JobDocumentDetailView(
-//                                    detail: .quote(quote),
-//                                    customer: customer
-//                                )
-//                            }
-                            
-                            if let quote = jobDocRouter.quote(withID: id) {
+                            if let quote = jobDocRouter
+                                .quote(withID: id),
+                               let customer = jobDocRouter
+                                .customer(for: quote.customerID) {
                                 JobDocumentDetailView(
                                     detail: .quote(quote),
-                                    customer: CustomerModel.mockList[2]
+                                    customer: customer
                                 )
                             }
                         case .invoiceDetail(let id):
-    //                        if let invoice = jobDocRouter
-    //                            .invoice(withID: id),
-    //                            let customer = jobDocRouter
-    //                            .customer(for: invoice.customerID) {
-    //                            JobDocumentDetailView(
-    //                                detail: .invoice(invoice),
-    //                                customer: customer
-    //                            )
-    //                        }
-                            
-                            if let invoice = jobDocRouter.invoice(withID: id) {
+                            if let invoice = jobDocRouter
+                                .invoice(withID: id),
+                               let customer = jobDocRouter
+                                .customer(for: invoice.customerID) {
                                 JobDocumentDetailView(
                                     detail: .invoice(invoice),
-                                    customer: CustomerModel.mockList[2]
+                                    customer: customer
                                 )
                             }
-                        case .createQuote:
-                            JobDocumentFormView(
-                                userVM: userVM,
-                                form: jobDocRouter.form(for: .quote),
-                                customers: jobDocRouter.customerListVM.allCustomers,
-                                activeSheet: $activeSheet
-                            )
-                        case .createInvoice:
-                            JobDocumentFormView(
-                                userVM: userVM,
-                                form: jobDocRouter.form(for: .invoice),
-                                customers: jobDocRouter.customerListVM.allCustomers,
-                                activeSheet: $activeSheet
-                            )
-                        case .editQuote:
-                            // navigation logic to edit view with doc id in quote context
-                            EmptyView()
-                        case .editInvoice:
-                            // navigation logic to edit view with doc id in invoice context
-                            EmptyView()
                         }
+                    }
+                    .navigationDestination(item: $jobDocRouter.activeForm) { form in
+                        JobDocumentFormView(
+                            userVM: userVM,
+                            form: form,
+                            customers: jobDocRouter.customerFeatureVM.allCustomers,
+                            activeSheet: $activeSheet
+                        )
                     }
                 }
                 .mask(
@@ -118,10 +92,10 @@ struct JobDocumentListView: View {
                 jobDocRouter.documentDateFilter = filter
             },
             onCreateQuote: {
-                jobDocRouter.route = .createQuote
+                jobDocRouter.startCreating(.quote)
             },
             onCreateInvoice: {
-                jobDocRouter.route = .createInvoice
+                jobDocRouter.startCreating(.invoice)
             }
         )
     .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -125,11 +125,18 @@ final class InvoiceFormVM: JobDocumentFormProtocol {
     }
 }
 
-extension InvoiceFormVM: PricingMethodContaining {
-    var pricingMethods: Binding<[PricingMethodModel]> {
+extension InvoiceFormVM {
+    var pricingMethodsBinding: Binding<[PricingMethodModel]> {
         Binding(
             get: { self.draft.pricingMethods },
             set: { self.draft.pricingMethods = $0 }
         )
+    }
+}
+
+extension InvoiceFormVM: PricingMethodProviding {
+    var pricingMethods: [PricingMethodModel] {
+        get { draft.pricingMethods }
+        set { draft.pricingMethods = newValue }
     }
 }

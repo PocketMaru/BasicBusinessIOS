@@ -16,15 +16,12 @@ protocol SaveCustomerUseCase {
         customer: CustomerModel,
         currentList: [CustomerModel]
     ) throws -> [CustomerModel]
+    
+    func load() throws -> [CustomerModel]
 }
 
 struct SaveCustomer: SaveCustomerUseCase {
-    private let fileStorage: FileStorageManager
     private let filename = "customers.json"
-    
-    init (fileStorage: FileStorageManager) {
-        self.fileStorage = fileStorage
-    }
     
     func create(
         newCustomer: CustomerModel,
@@ -34,7 +31,7 @@ struct SaveCustomer: SaveCustomerUseCase {
             throw SaveError.writeFailed(reason: "Customer with that id already exists")
         }
         let newList = currentList + [newCustomer]
-        try fileStorage.save(newList, as: filename)
+        try FileStorageManager.save(newList, as: filename)
         return newList
     }
     
@@ -47,7 +44,7 @@ struct SaveCustomer: SaveCustomerUseCase {
         }
         var snapshot = currentList
         snapshot[index] = updated
-        try fileStorage.save(snapshot, as: filename)
+        try FileStorageManager.save(snapshot, as: filename)
         return snapshot
     }
     
@@ -60,8 +57,12 @@ struct SaveCustomer: SaveCustomerUseCase {
             throw SaveError.writeFailed(reason: "Customer not found")
         }
         updatedList.remove(at: index)
-        try fileStorage.save(updatedList, as: filename)
+        try FileStorageManager.save(updatedList, as: filename)
         return updatedList
+    }
+    
+    func load() throws -> [CustomerModel] {
+        try FileStorageManager.load(from: filename)
     }
 }
 

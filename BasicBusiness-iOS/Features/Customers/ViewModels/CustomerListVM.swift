@@ -4,28 +4,22 @@ import Observation
 @MainActor
 @Observable
 final class CustomerListVM {
-    var allCustomers: [CustomerModel]
+    let customerFeatureVM: CustomerFeatureVM
     
     var paidCustomers: [CustomerModel] {
-        allCustomers.filter { $0.paidBill == true }
+        customerFeatureVM.allCustomers.filter { $0.paidBill == true }
     }
     var unpaidCustomers: [CustomerModel] {
-        allCustomers.filter { $0.paidBill == false }
+        customerFeatureVM.allCustomers.filter { $0.paidBill == false }
     }
     var newCustomerFromQuote: ((CustomerModel) -> Void)? = nil
     
-    private let saveCustomer: SaveCustomerUseCase
-    
-    init(
-        initialCustomers: [CustomerModel],
-        saveCustomer: SaveCustomerUseCase
-    ) {
-        self.allCustomers = initialCustomers
-        self.saveCustomer = saveCustomer
+    func getCustomer(for id: UUID) -> CustomerModel? {
+        customerFeatureVM.allCustomers.first { $0.id == id }
     }
     
-    func getCustomer(for id: UUID) -> CustomerModel? {
-        allCustomers.first { $0.id == id }
+    init(customerFeatureVM: CustomerFeatureVM) {
+        self.customerFeatureVM = customerFeatureVM
     }
     
     func addVM() -> CustomerFormVM {
@@ -34,7 +28,7 @@ final class CustomerListVM {
             customer: CustomerModel(),
             mode: .add,
             onSubmit: { [weak self] draft in
-               try self?.addCustomer(from: draft)
+              try self?.addCustomer(from: draft)
             }
         )
         return vm
@@ -56,48 +50,35 @@ final class CustomerListVM {
             customer: customer,
             mode: .edit,
             onSubmit: { [weak self] draft in
-               try self?.updateCustomer(from: draft)
+              try self?.updateCustomer(from: draft)
             }
         )
         return vm
     }
     
     func addCustomer(from draft: CustomerModel) throws {
-        let newCustomer = try saveCustomer.create(newCustomer: draft, currentList: allCustomers)
-        allCustomers = newCustomer
+        try customerFeatureVM.addCustomer(from: draft)
     }
     
     func updateCustomer(from draft: CustomerModel) throws {
-        guard let _ = allCustomers.firstIndex(where: { $0.id == draft.id}) else {
-            throw SaveError.writeFailed(reason: "Customer not found")
-        }
-        let updated = try saveCustomer.update(updated: draft, currentList: allCustomers)
-        allCustomers = updated
+        try customerFeatureVM.updateCustomer(from: draft)
     }
     
     func removeCustomer(at index: Int) {
-        guard allCustomers.indices.contains(index) else {
-            print("Invalid index \(index) for removal")
-            return
-        }
-        let customerToRemove = allCustomers[index]
         do {
-            allCustomers = try saveCustomer.delete(
-                customer: customerToRemove,
-                currentList: allCustomers
-            )
+            try customerFeatureVM.removeCustomer(at: index)
         } catch {
-            print("Failed to delete customer: \(error)")
+            print("This will be an alert")
         }
     }
     
     func searchCustomer(by name: String) -> [CustomerModel] {
         let query = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        print("Query is \(query) | Total Customers is \(allCustomers.count)")
+        print("Query is \(query) | Total Customers is \(customerFeatureVM.allCustomers.count)")
         guard !query.isEmpty else {
-            return allCustomers
+            return customerFeatureVM.allCustomers
         }
-        return allCustomers.filter {
+        return customerFeatureVM.allCustomers.filter {
             let fullName = "\($0.firstName) \($0.lastName)".lowercased()
             return fullName.contains(query)
         }

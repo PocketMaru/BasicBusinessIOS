@@ -22,3 +22,18 @@ enum ServiceType: Equatable, Codable, Hashable {
         }
     }
 }
+struct ServiceChoice: Identifiable, Hashable {
+    let id: String
+    let displayName: String
+    let type: ServiceType
+}
+
+extension ServiceChoice {
+    static let all: [ServiceChoice] = [
+        .init(id: "installation", displayName: "Installation", type: .installation),
+        .init(id: "maintenance", displayName: "Maintenance", type: .maintenance),
+        .init(id: "repair", displayName: "Repair", type: .repair),
+        .init(id: "recurring", displayName: "Recurring", type: .recurring),
+        .init(id: "none", displayName: "None", type: .none)
+    ]
+}

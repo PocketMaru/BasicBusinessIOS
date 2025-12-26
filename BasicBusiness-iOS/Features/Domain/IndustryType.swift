@@ -67,3 +67,21 @@ extension IndustryType {
         }
     }
 }
+
+struct IndustryChoice: Identifiable, Hashable {
+    let id: String
+    let displayName: String
+    let type: IndustryType
+}
+
+extension IndustryChoice {
+    static let all: [IndustryChoice] = [
+        .init(id: "landscaping", displayName: "Landscaping", type: .landscaping(.empty)),
+        .init(id: "pressureWashing", displayName: "Pressure Washing", type: .pressureWashing(.empty)),
+        .init(id: "consulting", displayName: "Consulting", type: .consulting(.empty)),
+        .init(id: "handyman", displayName: "Handyman", type: .handyman(.empty)),
+        .init(id: "hvac", displayName: "HVAC", type: .HVAC(.empty)),
+        .init(id: "productSales", displayName: "Product Sales", type: .productSales(.empty)),
+        .init(id: "none", displayName: "None", type: .none)
+    ]
+}

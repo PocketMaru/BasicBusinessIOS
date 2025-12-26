@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 struct CustomMultiForm: View {
     let titleOne: String
@@ -178,30 +179,35 @@ struct CustomMultiForm: View {
 }
 
 // MARK: - Future detail form view refactor
+enum EditControl {
+    case industryPicker(Binding<IndustryType>)
+    case servicePicker(Binding<ServiceType>)
+    case customField(Binding<[CustomField]>)
+    case textField(Binding<String>)
+    case currencyField(Binding<Double>)
+    case none
+}
 
 struct DetailField: Identifiable {
     let id = UUID()
     let title: String
     let value: String?
-    let extraView: (() -> AnyView)?
+    let edit: EditControl
 }
 
 struct MultiForm: View {
     let fields: [DetailField]
-
+    let isEditing: Bool
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             ForEach(fields) { field in
                 Text(field.title)
                     .font(.system(size: 15, weight: .medium))
                     .foregroundStyle(AppColors.accent)
-                if let fieldValue = field.value {
-                    Text(fieldValue)
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundStyle(AppColors.secondaryText)
-                }
-                if let extraView = field.extraView {
-                    extraView()
+                if isEditing {
+                    editView(for: field.edit)
+                    if let value = field.value { Text(value) }
                 }
                 if field.id != fields.last?.id {
                     Divider()
@@ -211,6 +217,38 @@ struct MultiForm: View {
         .padding(.horizontal, 28)
         .padding(.vertical, 16)
         .statBubbleStyle()
+    }
+    
+    @ViewBuilder
+    private func editView(for control: EditControl) -> some View {
+        
+        switch control {
+        case .industryPicker(let binding):
+            Picker("Industry", selection: binding) {
+                ForEach(IndustryChoice.all) {
+                    Text($0.displayName).tag($0.type)
+                }
+            }
+        case .servicePicker(let binding):
+            Picker("Service", selection: binding) {
+                ForEach(ServiceChoice.all) {
+                    Text($0.displayName).tag($0.type)
+                }
+            }
+            
+        case .customField(let binding):
+            ForEach(binding) { binding in
+                TextField("", text: binding.label)
+                TextField("", value: binding.value, format: .currency(code: "USD"))
+            }
+            
+        case .textField(let binding):
+            TextField("", text: binding)
+        case .currencyField(let binding):
+            TextField("", value: binding, format: .currency(code: "USD"))
+        case .none:
+            EmptyView()
+        }
     }
 }
 

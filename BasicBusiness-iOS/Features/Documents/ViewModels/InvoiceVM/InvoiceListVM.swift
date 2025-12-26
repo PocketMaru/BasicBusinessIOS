@@ -4,22 +4,18 @@ import Observation
 @MainActor
 @Observable
 final class InvoiceListVM {
-    var allInvoices: [InvoiceModel]
-    var customerListVM: CustomerListVM
-    var materialCatalogVM: MaterialListVM
-    
-    private let saveInvoice: SaveInvoiceUseCase
+    let invoiceFeatureVM: InvoiceFeatureVM
+    let customerFeatureVM: CustomerFeatureVM
+    var materialFeatureVM: MaterialFeatureVM
     
     init(
-        initialInvoices: [InvoiceModel],
-        customerListVM: CustomerListVM,
-        materialCatalogVM: MaterialListVM,
-        saveInvoice: SaveInvoiceUseCase
+        invoiceFeatureVM: InvoiceFeatureVM,
+        customerFeatureVM: CustomerFeatureVM,
+        materialFeatureVM: MaterialFeatureVM,
     ) {
-        self.allInvoices = initialInvoices
-        self.customerListVM = customerListVM
-        self.materialCatalogVM = materialCatalogVM
-        self.saveInvoice = saveInvoice
+        self.invoiceFeatureVM = invoiceFeatureVM
+        self.customerFeatureVM = customerFeatureVM
+        self.materialFeatureVM = materialFeatureVM
     }
     
     func addVM() -> InvoiceFormVM {
@@ -27,10 +23,10 @@ final class InvoiceListVM {
         let vm = InvoiceFormVM(
             invoice: InvoiceModel(),
             mode: .add,
-            availableCustomers: customerListVM.allCustomers,
-            savedMaterials: materialCatalogVM.allMaterials,
+            availableCustomers: customerFeatureVM.allCustomers,
+            savedMaterials: materialFeatureVM.allMaterials,
             onSubmit: {[weak self] draft in
-                try self?.addInvoice(from: draft)
+               try self?.addInvoice(from: draft)
             }
         )
         return vm
@@ -41,8 +37,8 @@ final class InvoiceListVM {
         let vm = InvoiceFormVM(
             invoice: newInvoice,
             mode: .edit,
-            availableCustomers: customerListVM.allCustomers,
-            savedMaterials: materialCatalogVM.allMaterials,
+            availableCustomers: customerFeatureVM.allCustomers,
+            savedMaterials: materialFeatureVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.updateInvoice(from: draft)
             }
@@ -51,42 +47,22 @@ final class InvoiceListVM {
     }
     
     func addInvoice(from draft: InvoiceModel) throws {
-        let newInvoice = try saveInvoice.create(
-            draft: draft,
-            currentList: allInvoices
-        )
-        allInvoices = newInvoice
+        try invoiceFeatureVM.addInvoice(from: draft)
     }
     
     func updateInvoice(from draft: InvoiceModel) throws {
-        guard let _ = allInvoices.firstIndex(where: { $0.id == draft.id }) else {
-            throw SaveError.writeFailed(reason: "Invoice not found")
-        }
-        
-        let updated = try saveInvoice.update(
-            invoice: draft,
-            currentList: allInvoices
-        )
-        allInvoices = updated
+        try invoiceFeatureVM.updateInvoice(from: draft)
     }
     
-    func deleteInvoice(at index: Int) throws {
-        guard allInvoices.indices.contains(index) else {
-            print("Invalid index \(index) for removal")
-            return
-        }
-        let invoiceToRemove = allInvoices[index]
+    func deleteInvoice(at index: Int) {
         do {
-            allInvoices = try saveInvoice.delete(
-                invoice: invoiceToRemove,
-                currentList: allInvoices
-            )
+            try invoiceFeatureVM.deleteInvoice(at: index)
         } catch {
-            print("Failed to delete invoice: \(error)")
+            print("This will be an alert")
         }
     }
     
     func invoices(for customerID: UUID) -> [InvoiceModel] {
-        allInvoices.filter { $0.customerID == customerID }
+        invoiceFeatureVM.allInvoices.filter { $0.customerID == customerID }
     }
 }

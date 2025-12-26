@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct JobDocumentDetailView: View {
-    var detail: JobDocumentRouterVM.JobDocumentDetail
+    var detail: JobDocumentRouterFeature.JobDocumentDetail
     var customer: CustomerModel
     @State private var isEditing: Bool = false
     @State private var attemptedEdit: Bool = false

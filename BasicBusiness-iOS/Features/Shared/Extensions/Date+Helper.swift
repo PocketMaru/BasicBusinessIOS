@@ -36,7 +36,7 @@ extension Date {
         formatter.timeStyle = .none
         return formatter.string(from: self)
     }
-
+    
     func isInSameDay(as other: Date) -> Bool {
         Calendar.current.isDate(self, inSameDayAs: other)
     }
@@ -50,7 +50,11 @@ extension Date {
     }
 
     static var today: Date { Date() }
-
+    
+    func currentMonth(_ date: Date) -> String {
+        date.formatted(.dateTime.month(.wide))
+    }
+    
     static var yesterday: Date {
         Calendar.current.date(byAdding: .day, value: -1, to: .today)!
     }

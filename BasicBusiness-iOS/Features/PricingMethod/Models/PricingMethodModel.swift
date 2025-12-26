@@ -2,9 +2,11 @@ import Foundation
 import SwiftUI
 
 @MainActor
-protocol PricingMethodContaining {
-    var pricingMethods: Binding<[PricingMethodModel]> { get }
+protocol PricingMethodProviding {
+    var pricingMethods: [PricingMethodModel] { get set }
 }
+
+@MainActor
 enum PricingMethodType: String, CaseIterable, Hashable, Codable {
     case fixedRate
     case squareFootage
@@ -46,6 +48,42 @@ extension PricingMethodModel {
             return amount ?? 0
         case .none:
             return 0
+        }
+    }
+}
+
+extension PricingMethodModel {
+
+    static func make(_ type: PricingMethodType) -> PricingMethodModel {
+        switch type {
+        case .fixedRate:
+            return PricingMethodModel(
+                type: .fixedRate,
+                amount: 0
+            )
+
+        case .squareFootage:
+            return PricingMethodModel(
+                type: .squareFootage,
+                amount: 0,
+                rate: 0
+            )
+
+        case .liquidSolution:
+            return PricingMethodModel(
+                type: .liquidSolution,
+                amount: 0,
+                rate: 0
+            )
+
+        case .subscription:
+            return PricingMethodModel(
+                type: .subscription,
+                amount: 0
+            )
+
+        case .none:
+            return PricingMethodModel(type: .none)
         }
     }
 }

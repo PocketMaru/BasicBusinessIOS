@@ -16,15 +16,12 @@ protocol SaveQuoteUseCase {
         quote: QuoteModel,
         currentList: [QuoteModel]
     ) throws -> [QuoteModel]
+    
+    func load() throws -> [QuoteModel]
 }
 
 final class SaveQuote: SaveQuoteUseCase {
-    private let fileStorage: FileStorageManager
     private let filename = "quotes.json"
-    
-    init(fileStorage: FileStorageManager) {
-        self.fileStorage = fileStorage
-    }
     
     func create(
         draft: QuoteModel,
@@ -34,7 +31,7 @@ final class SaveQuote: SaveQuoteUseCase {
             throw SaveError.writeFailed(reason: "Duplicate Quote ID")
         }
         let updatedList = currentList + [draft]
-        try fileStorage.save(updatedList, as: filename)
+        try FileStorageManager.save(updatedList, as: filename)
         return updatedList
     }
     
@@ -48,7 +45,7 @@ final class SaveQuote: SaveQuoteUseCase {
             throw SaveError.writeFailed(reason: "Quote Not Found")
         }
         snapShot[index] = quote
-        try fileStorage.save(snapShot, as: filename)
+        try FileStorageManager.save(snapShot, as: filename)
         return snapShot
     }
     
@@ -61,7 +58,11 @@ final class SaveQuote: SaveQuoteUseCase {
             throw SaveError.writeFailed(reason: "Quote not found")
         }
         updatedList.remove(at: index)
-        try fileStorage.save(updatedList, as: filename)
+        try FileStorageManager.save(updatedList, as: filename)
         return updatedList
+    }
+    
+    func load() throws -> [QuoteModel] {
+        try FileStorageManager.load(from: filename)
     }
 }

@@ -8,7 +8,7 @@ struct CustomerListView: View {
             ZStack {
                 AppColors.bg.ignoresSafeArea()
                 List {
-                    ForEach(customerListVM.allCustomers, id: \.id) { customer in
+                    ForEach(customerListVM.customerFeatureVM.allCustomers, id: \.id) { customer in
                         NavigationLink(
                             destination:
                                 CustomerDetailView(

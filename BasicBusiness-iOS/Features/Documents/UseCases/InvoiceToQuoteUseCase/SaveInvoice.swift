@@ -16,15 +16,12 @@ protocol SaveInvoiceUseCase {
         invoice: InvoiceModel,
         currentList: [InvoiceModel]
     ) throws -> [InvoiceModel]
+    
+    func load() throws -> [InvoiceModel]
 }
 
 final class SaveInvoice: SaveInvoiceUseCase {
-    private let fileStorage: FileStorageManager
     private let fileName = "invoices.json"
-    
-    init(fileStorage: FileStorageManager) {
-        self.fileStorage = fileStorage
-    }
     
     func create(
         draft: InvoiceModel,
@@ -34,7 +31,7 @@ final class SaveInvoice: SaveInvoiceUseCase {
             throw SaveError.writeFailed(reason: "Duplicate Invoice ID")
         }
         let updatedList = currentList + [draft]
-        try fileStorage.save(updatedList, as: fileName)
+        try FileStorageManager.save(updatedList, as: fileName)
         return updatedList
     }
     
@@ -47,7 +44,7 @@ final class SaveInvoice: SaveInvoiceUseCase {
             throw SaveError.writeFailed(reason: "Invoice not found")
         }
         snapshot[index] = invoice
-        try fileStorage.save(snapshot, as: fileName)
+        try FileStorageManager.save(snapshot, as: fileName)
         return snapshot
     }
     
@@ -60,7 +57,11 @@ final class SaveInvoice: SaveInvoiceUseCase {
             throw SaveError.writeFailed(reason: "Invoice not found")
         }
         updatedList.remove(at: index)
-        try fileStorage.save(updatedList, as: fileName)
+        try FileStorageManager.save(updatedList, as: fileName)
         return updatedList
+    }
+    
+    func load() throws -> [InvoiceModel] {
+        try FileStorageManager.load(from: fileName)
     }
 }

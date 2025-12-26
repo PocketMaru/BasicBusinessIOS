@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProductSalesSectionView: View {
-    let form: JobDocumentRouterVM.JobDocumentForm
+    let form: JobDocumentRouterFeature.JobDocumentForm
     let priceModel: ProductSalesQM
     
     var body: some View {
@@ -12,13 +12,6 @@ struct ProductSalesSectionView: View {
             }
             CustomFormView(header: "Quantity") {
                 TextField("Amount", text: .constant("\(priceModel.quantity ?? 0)"))
-            }
-            
-            switch form {
-            case .quote(let vm):
-                PricingMethodsSectionView(form: vm)
-            case .invoice(let vm):
-                PricingMethodsSectionView(form: vm)
             }
         }
     }

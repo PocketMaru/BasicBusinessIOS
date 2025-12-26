@@ -28,7 +28,7 @@ struct PricingMethodFormView: View {
     
     private var squareFootageFields: some View {
         VStack(alignment: .leading) {
-            CustomFormView(header: "Square Footage") {
+            Section {
                 TextField("Square Footage",
                           value: Binding(
                             get: {method.amount ?? 0 },
@@ -37,9 +37,7 @@ struct PricingMethodFormView: View {
                           format: .number)
                 .focused($focusedField)
                 .keyboardType(.decimalPad)
-            }
-            
-            CustomFormView(header:"Price Per Sq Ft") {
+                Divider()
                 TextField("Price per Sq Ft",
                           value: Binding(
                             get: { method.rate ?? 0 },
@@ -48,59 +46,53 @@ struct PricingMethodFormView: View {
                           format: .currency(code: "USD"))
                 .focused($focusedField)
                 .keyboardType(.decimalPad)
+            } header: {
+                Text("Pricing Methods")
             }
         }
     }
     
     private var fixedRateFields: some View {
-        CustomFormView(header: "Fixed Rate") {
-            TextField("Fixed Rate",
-                      value: Binding(
-                        get: { method.amount ?? 0 },
-                        set: { method.amount = $0}
-                      ),
-                      format: .currency(code: "USD")
-            )
-            .keyboardType(.decimalPad)
-        }
+        TextField("Fixed Rate",
+                  value: Binding(
+                    get: { method.amount ?? 0 },
+                    set: { method.amount = $0}
+                  ),
+                  format: .currency(code: "USD")
+        )
+        .keyboardType(.decimalPad)
     }
     
     private var liquidSolutionFields: some View {
         VStack(alignment: .leading) {
-            CustomFormView(header: "Liter Total") {
-                TextField("Liters of Solution",
-                          value: Binding(
-                            get: { method.amount ?? 0 },
-                            set: { method.amount = $0 }
-                          ),
-                          format: .number
-                )
-                .keyboardType(.decimalPad)
-            }
-            
-            CustomFormView(header: "Pricer Per Liter") {
-                TextField("Price per Liter",
-                          value: Binding(
-                            get: { method.rate ?? 0 },
-                            set: { method.rate = $0}
-                          ),
-                          format: .currency(code: "USD")
-                )
-                .keyboardType(.decimalPad)
-            }
-        }
-    }
-    
-    private var subscriptionFields: some View {
-        CustomFormView(header: "Industry Fields") {
-            TextField("Subscription Amount",
+            TextField("Liters of Solution",
                       value: Binding(
                         get: { method.amount ?? 0 },
-                        set: { method.amount = $0}
+                        set: { method.amount = $0 }
+                      ),
+                      format: .number
+            )
+            .keyboardType(.decimalPad)
+            Divider()
+            TextField("Price per Liter",
+                      value: Binding(
+                        get: { method.rate ?? 0 },
+                        set: { method.rate = $0}
                       ),
                       format: .currency(code: "USD")
             )
             .keyboardType(.decimalPad)
         }
+    }
+    
+    private var subscriptionFields: some View {
+        TextField("Subscription Amount",
+                  value: Binding(
+                    get: { method.amount ?? 0 },
+                    set: { method.amount = $0}
+                  ),
+                  format: .currency(code: "USD")
+        )
+        .keyboardType(.decimalPad)
     }
 }

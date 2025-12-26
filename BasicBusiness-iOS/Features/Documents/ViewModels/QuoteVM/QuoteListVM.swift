@@ -4,22 +4,18 @@ import Observation
 @MainActor
 @Observable
 final class QuoteListVM {
-    var allQuotes: [QuoteModel]
-    var customerListVM: CustomerListVM
-    var materialCatalogVM: MaterialListVM
-    
-    private let saveQuote: SaveQuoteUseCase
+    let quoteFeatureVM: QuoteFeatureVM
+    let customerFeatureVM: CustomerFeatureVM
+    let materialListVM: MaterialListVM
     
     init(
-        initialQuotes: [QuoteModel],
-        customerListVM: CustomerListVM,
-        materialCatalogVM: MaterialListVM,
-        saveQuoteUseCase: SaveQuoteUseCase
+        quoteFeatureVM: QuoteFeatureVM,
+        customerFeatureVM: CustomerFeatureVM,
+        materialListVM: MaterialListVM,
     ) {
-        self.allQuotes = initialQuotes
-        self.customerListVM = customerListVM
-        self.materialCatalogVM = materialCatalogVM
-        self.saveQuote = saveQuoteUseCase
+        self.quoteFeatureVM = quoteFeatureVM
+        self.customerFeatureVM = customerFeatureVM
+        self.materialListVM = materialListVM
     }
     
     func addVM() -> QuoteFormVM {
@@ -27,8 +23,8 @@ final class QuoteListVM {
         let vm = QuoteFormVM(
             quote: QuoteModel(),
             mode: .add,
-            availableCustomers: customerListVM.allCustomers,
-            savedMaterials: materialCatalogVM.allMaterials,
+            availableCustomers: customerFeatureVM.allCustomers,
+            savedMaterials: materialListVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.addQuote(from: draft)
             }
@@ -41,8 +37,8 @@ final class QuoteListVM {
         let vm = QuoteFormVM(
             quote: newQuote,
             mode: .edit,
-            availableCustomers: customerListVM.allCustomers,
-            savedMaterials: materialCatalogVM.allMaterials,
+            availableCustomers: customerFeatureVM.allCustomers,
+            savedMaterials: materialListVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.updateQuote(from: draft)
             }
@@ -51,41 +47,22 @@ final class QuoteListVM {
     }
     
     func addQuote(from draft: QuoteModel) throws {
-        let newQuote = try saveQuote.create(
-            draft: draft,
-            currentList: allQuotes
-        )
-        allQuotes = newQuote
+        try quoteFeatureVM.addQuote(from: draft)
     }
     
     func updateQuote(from draft: QuoteModel) throws {
-        guard let _ = allQuotes.firstIndex(where: { $0.id == draft.id }) else {
-            throw SaveError.writeFailed(reason: "Quote not found")
-        }
-        let updated = try saveQuote.update(
-            quote: draft,
-            currentList: allQuotes
-        )
-        allQuotes = updated
+        try quoteFeatureVM.updateQuote(from: draft)
     }
     
-    func deleteQuote(at index: Int) throws {
-        guard allQuotes.indices.contains(index) else {
-            print("Invalid index \(index) for removal")
-            return
-        }
-        let quoteToRemove = allQuotes[index]
+    func deleteQuote(at index: Int) {
         do {
-            allQuotes = try saveQuote.delete(
-                quote: quoteToRemove,
-                currentList: allQuotes
-            )
+            try quoteFeatureVM.deleteQuote(at: index)
         } catch {
-            print("Failed to delete quote: \(error)")
+            print("This will be an alert")
         }
     }
     
     func quotes(for customerID: UUID) -> [QuoteModel] {
-        allQuotes.filter { $0.customerID == customerID }
+        quoteFeatureVM.allQuotes.filter { $0.customerID == customerID }
     }
 }

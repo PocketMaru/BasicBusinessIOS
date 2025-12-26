@@ -121,7 +121,7 @@ struct LargeStatButtonView: View {
     }
     var body: some View {
         if titleThree != nil {
-            HStack(spacing: 20) {
+            HStack(alignment: .center, spacing: 27) {
                 Button(action: tapActionOne) {
                     VStack(spacing: 4) {
                         Text(valueOne.formatted(.number.precision(.fractionLength(0))))
@@ -165,7 +165,7 @@ struct LargeStatButtonView: View {
             .frame(width: 400, height: 120)
             .statBubbleStyle()
         } else {
-            HStack(spacing: 20) {
+            HStack(alignment: .center, spacing: 20) {
                 Button(action: tapActionOne) {
                     VStack(spacing: 4) {
                         Text(valueOne.formatted(.number.precision(.fractionLength(0))))
@@ -193,8 +193,6 @@ struct LargeStatButtonView: View {
             .frame(width: 360, height: 120)
             .statBubbleStyle()
         }
-        
-        
     }
 }
 

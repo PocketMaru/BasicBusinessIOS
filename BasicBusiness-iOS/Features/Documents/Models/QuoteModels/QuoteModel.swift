@@ -1,8 +1,9 @@
 import Foundation
 
-struct CustomField: Codable, Hashable {
-    let label: String
-    let value: Double
+struct CustomField: Identifiable, Codable, Hashable {
+    var id: UUID = UUID()
+    var label: String
+    var value: Double
 }
 
 struct QuoteModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hashable {

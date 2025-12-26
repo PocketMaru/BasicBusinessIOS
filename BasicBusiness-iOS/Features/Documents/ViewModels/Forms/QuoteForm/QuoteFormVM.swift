@@ -126,11 +126,17 @@ final class QuoteFormVM: JobDocumentFormProtocol {
     }
 }
 
-extension QuoteFormVM: PricingMethodContaining {
-    var pricingMethods: Binding<[PricingMethodModel]> {
+extension QuoteFormVM {
+    var pricingMethodsBinding: Binding<[PricingMethodModel]> {
         Binding(
             get: { self.draft.pricingMethods },
             set: { self.draft.pricingMethods = $0 }
         )
+    }
+}
+extension QuoteFormVM: PricingMethodProviding {
+    var pricingMethods: [PricingMethodModel] {
+        get { draft.pricingMethods }
+        set { draft.pricingMethods = newValue }
     }
 }
