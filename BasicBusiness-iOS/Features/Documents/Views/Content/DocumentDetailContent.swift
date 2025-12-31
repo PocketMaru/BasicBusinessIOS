@@ -20,7 +20,7 @@ struct DocumentDetailContent: View {
                      ),
                 .init(
                     title: "Service",
-                    value: quote.serviceType.name,
+                    value: quote.serviceType.id,
                     edit: EditControl.none
                      ),
                 .init(
@@ -48,7 +48,7 @@ struct DocumentDetailContent: View {
                      ),
                 .init(
                     title: "Service",
-                    value: invoice.serviceType.name,
+                    value: invoice.serviceType.id,
                     edit: EditControl.none
                      ),
                 .init(

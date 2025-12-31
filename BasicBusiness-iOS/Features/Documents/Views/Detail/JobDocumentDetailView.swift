@@ -31,7 +31,6 @@ struct JobDocumentDetailView: View {
             businessName: customer.displayName,
             primaryIconName: nil,
             editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
-            editButtonColor: isEditing ? AppColors.success : AppColors.accent,
             editIconTapped: nil
 //                {
 //                if isEditing {

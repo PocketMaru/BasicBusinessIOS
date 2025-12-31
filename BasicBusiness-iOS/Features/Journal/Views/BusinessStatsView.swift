@@ -15,7 +15,7 @@ struct BusinessStatsView: View {
     
     var body: some View {
         NavigationStack(path: $journalDestination) {
-            VStack(alignment: .center, spacing: 15) {
+            VStack(alignment: .center, spacing: 25) {
                 AppColors.bg.ignoresSafeArea()
                 StatDetailComponent(
                     titleOne: "Revenue",
@@ -25,17 +25,15 @@ struct BusinessStatsView: View {
                     titleThree: "Expenses",
                     valueThree: journalFeature.expenseTotal
                 )
-                .statButtonBG(emphasis: .raised)
-                HStack(spacing: 15) {
-                    StatButtonView(label: "Status",
-                                   value: Double(journalFeature.customerFeature.allCustomers.count),
+                .statButtonBG(emphasis: .subtle)
+                HStack(spacing: 10) {
+                    StatButtonView(label: "Ledger",
                                    tapAction: {
                         journalDestination.append(.customers)
                     })
                     .statButtonBG(emphasis: .raised)
                     
                     StatButtonView(label: "Materials",
-                                   value: Double(journalFeature.allMaterials.count),
                                    tapAction: {
                         journalDestination.append(.materials)
                     })
@@ -43,51 +41,43 @@ struct BusinessStatsView: View {
                 }
                 
                 VStack(alignment: .center) {
-                    Text("Journal")
-                        .fontWeight(.semibold)
-                    Divider()
-                        .padding(.horizontal, 24)
-                        .frame(width: 300)
                     Text(today.formattedMonthDayYear)
                         .fontWeight(.regular)
+                        .frame(width: 225)
                 }
                 .bubbleStyle()
-                .statButtonBG(emphasis: .raised)
-                .padding(.top, 10)
+                .statButtonBG(emphasis: .subtle)
                 
-                Button {
-                    journalDestination.append(.journal)
-                } label: {
-                    CustomMultiForm(
-                        titleOne: "Revenue",
-                        valueOne: "\(journalFeature.invoicedRevenue)",
-                        titleTwo: "Expenses",
-                        valueTwo: "\(journalFeature.expenseTotal)",
-                        titleThree: "Forecasted Revenue",
-                        valueThree: "\(journalFeature.forecastedProfit)",
-                        titleFour: "Forecasted Expenses",
-                        valueFour: "\(journalFeature.forecastedExpenseTotal)",
-                        titleFive: nil,
-                        valueFive: nil,
-                        titleSix: nil,
-                        valueSix: nil,
-                        titleSeven: nil,
-                        valueSeven: nil,
-                        titleEight: nil,
-                        valueEight: nil,
-                        titleNine: nil,
-                        valueNine: nil,
-                        titleTen: nil,
-                        valueTen: nil,
-                        titleEleven: nil,
-                        valueEleven: nil
-                    )
-                    .statButtonBG(emphasis: .raised)
-                    .padding(.horizontal, 15)
-                }
+                CustomMultiForm(
+                    titleOne: "Quoted Revenue",
+                    valueOne: "\(Int(journalFeature.quotedRevenue))",
+                    titleTwo: "Quoted Expenses",
+                    valueTwo: "\(Int(journalFeature.forecastedExpense))",
+                    titleThree: "Total Open Quotes",
+                    valueThree: "\(journalFeature.allQuotes.count)",
+                    titleFour: "Total Customers",
+                    valueFour: "\(journalFeature.allCustomers)",
+                    titleFive: nil,
+                    valueFive: nil,
+                    titleSix: nil,
+                    valueSix: nil,
+                    titleSeven: nil,
+                    valueSeven: nil,
+                    titleEight: nil,
+                    valueEight: nil,
+                    titleNine: nil,
+                    valueNine: nil,
+                    titleTen: nil,
+                    valueTen: nil,
+                    titleEleven: nil,
+                    valueEleven: nil
+                )
+                .statButtonBG(emphasis: .subtle)
+                .padding(.horizontal, 15)
+                
             }
         }
-        .padding([.bottom,.horizontal])
+        .padding(.bottom, 20)
         .background(AppColors.bg)
         .scrollContentBackground(.hidden)
         .navigationDestination(for: JournalDestination.self) {
@@ -105,6 +95,11 @@ struct BusinessStatsView: View {
             businessName: journalFeature.businessName,
             primaryIconTapped: {
                 activeSheet = .user
-            })
+            },
+            thirdIconName: "books.vertical",
+            thirdIconTapped: {
+                journalDestination.append(.journal)
+            }
+        )
     }
 }

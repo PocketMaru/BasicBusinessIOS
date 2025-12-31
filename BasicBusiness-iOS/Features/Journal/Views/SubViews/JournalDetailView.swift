@@ -13,7 +13,7 @@ struct JournalDetailView: View {
                 titleThree: "Forecasted Revenue",
                 valueThree: "\(journalFeature.forecastedProfit)",
                 titleFour: "Forecasted Expenses",
-                valueFour: "\(journalFeature.forecastedExpenseTotal)",
+                valueFour: "\(journalFeature.forecastedExpense)",
                 titleFive: nil,
                 valueFive: nil,
                 titleSix: nil,

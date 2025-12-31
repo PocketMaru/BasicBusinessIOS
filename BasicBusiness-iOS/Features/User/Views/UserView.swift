@@ -89,7 +89,6 @@ struct UserView: View {
                 },
                 editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
                 toggleEditIconState: $isEditing,
-                editButtonColor: isEditing ? AppColors.success : AppColors.accent,
                 editIconTapped:  {
                     attemptedEdit = true
                     isEditing.toggle()

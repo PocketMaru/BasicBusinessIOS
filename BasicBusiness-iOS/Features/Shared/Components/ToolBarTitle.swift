@@ -10,7 +10,6 @@ extension View {
         
         editIconName: String? = "person.circle.fill",
         toggleEditIconState: Binding<Bool>? = nil,
-        editButtonColor: Color? = nil,
         editIconTapped: (() -> Void)? = nil,
     
         calendarAction: ((DocumentDateFilter) -> Void)? = nil,
@@ -20,7 +19,6 @@ extension View {
         
         thirdIconName: String? = "book.fill",
         toggleThirdIconState: Binding<Bool>? = nil,
-        thirdButtonColor: Color? = nil,
         thirdIconTapped: (() -> Void)? = nil,
         
     ) -> some View {
@@ -48,15 +46,15 @@ extension View {
                         }
                     }
                 }
-                if let editIconTapped = editIconTapped, let editIconName, let editButtonColor, let toggleEditIconState {
+                if let editIconTapped {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            toggleEditIconState.wrappedValue.toggle()
+                            toggleEditIconState?.wrappedValue.toggle()
                             editIconTapped()
                         } label: {
-                            Image(systemName: editIconName)
+                            Image(systemName: editIconName ?? "person.crop.circle.badge.plus")
                                 .font(.title3.bold())
-                                .foregroundStyle(editButtonColor)
+                                .foregroundStyle(AppColors.accent)
                         }
                     }
                     
@@ -110,12 +108,12 @@ extension View {
                         }
                     }
                 }
-                if let action = thirdIconTapped, let thirdIconName = thirdIconName, let thirdButtonColor {
+                if let action = thirdIconTapped, let thirdIconName = thirdIconName {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: action) {
                             Image(systemName: thirdIconName)
                                 .font(.title3.bold())
-                                .foregroundStyle(thirdButtonColor)
+                                .foregroundStyle(AppColors.accent)
                         }
                     }
                 }

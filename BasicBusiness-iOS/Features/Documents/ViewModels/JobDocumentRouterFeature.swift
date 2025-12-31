@@ -1,5 +1,6 @@
 import Observation
 import Foundation
+import SwiftUI
 
 @MainActor
 @Observable
@@ -184,13 +185,13 @@ final class JobDocumentRouterFeature {
             id = quote.id
             customerID = quote.customerID
             total = quote.totalCost
-            date = quote.quoteDate
+            date = quote.documentDate
             type = .quote
         case .invoice(let invoice):
             id = invoice.id
             customerID = invoice.customerID
             total = invoice.totalCost
-            date = invoice.invoiceDate
+            date = invoice.documentDate
             type = .invoice
         }
         
@@ -203,5 +204,117 @@ final class JobDocumentRouterFeature {
             date: date,
             documentType: type
         )
+    }
+}
+
+// MARK: - Shared Form Bindings/Fields
+@MainActor
+extension JobDocumentRouterFeature.JobDocumentForm {
+    var serviceTypeBinding: Binding<ServiceType> {
+        switch self {
+        case .quote(_, let quoteVM):
+            return quoteVM.selectedServiceBinding
+        case . invoice(_, let invoiceVM):
+            return invoiceVM.selectedServiceBinding
+        }
+    }
+    
+    var selectedCustomService: Binding<String> {
+        switch self {
+        case .quote(_, let quoteVM):
+            return quoteVM.selectedCustomServiceBinding
+        case .invoice(_, let invoiceVM):
+            return invoiceVM.selectedCustomServiceBinding
+        }
+    }
+    
+    var pricingMethodsBinding: Binding<[PricingMethodModel]> {
+        switch self {
+        case .quote(_, let quoteVM):
+            return quoteVM.pricingMethodsBinding
+        case .invoice(_, let invoiceVM):
+            return invoiceVM.pricingMethodsBinding
+        }
+    }
+    
+    var customFieldsBinding: Binding<[CustomField]> {
+        switch self {
+        case .quote(id: _, vm: let quoteVM):
+            return quoteVM.customFieldsBinding
+        case .invoice(id: _, vm: let invoiceVM):
+            return invoiceVM.customFieldsBinding
+        }
+    }
+    
+    var notesBinding: Binding<String> {
+        switch self {
+        case .quote(id: _, vm: let quoteVM):
+            return quoteVM.notesBinding
+        case .invoice(id: _, vm: let invoiceVM):
+            return invoiceVM.notesBinding
+        }
+    }
+    
+    var creationDateBinding: Binding<Date> {
+        switch self {
+        case .quote(id: _, vm: let quoteVM):
+            return quoteVM.creationDateBinding
+        case .invoice(id: _, vm: let invoiceVM):
+            return invoiceVM.creationDateBinding
+        }
+    }
+    
+    var dueDateBinding: Binding<Date> {
+        switch self {
+        case .quote(id: _, vm: let quoteVM):
+            return quoteVM.dueDateBinding
+        case .invoice(id: _, vm: let invoiceVM):
+            return invoiceVM.dueDateBinding
+        }
+    }
+    
+    var installationDateBinding: Binding<Date> {
+        switch self {
+        case .quote(id: _, vm: let quoteVM):
+            return quoteVM.installationDateBinding
+        case .invoice(id: _, vm: let invoiceVM):
+            return invoiceVM.installationDateBinding
+        }
+    }
+    
+    var serviceDateBinding: Binding<Date> {
+        switch self {
+        case .quote(id: _, vm: let quoteVM):
+            return quoteVM.serviceDateBinding
+        case .invoice(id: _, vm: let invoiceVM):
+            return invoiceVM.serviceDateBinding
+        }
+    }
+    
+    var customDateRangeBinding: Binding<Set<DateComponents>> {
+        switch self {
+        case .quote(id: _, vm: let quoteVM):
+            return quoteVM.customDateRangeBinding
+        case .invoice(id: _, vm: let invoiceVM):
+            return invoiceVM.customDateRangeBinding
+        }
+    }
+    
+    var formTitle: String {
+        switch self {
+        case .quote:
+            return "Create Quote"
+        case .invoice:
+            return "Create Invoice"
+        }
+    }
+    
+    var total: Double {
+        switch self {
+        case .quote( _, let quoteVM):
+            return quoteVM.draft.totalCost
+        case .invoice( _, let invoiceVM):
+            return invoiceVM.draft.totalCost
+        }
     }
 }

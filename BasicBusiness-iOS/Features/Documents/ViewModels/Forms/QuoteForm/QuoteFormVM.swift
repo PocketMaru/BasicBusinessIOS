@@ -45,29 +45,38 @@ final class QuoteFormVM: JobDocumentFormProtocol {
     func loadIndustryFields(for industry: IndustryType) {
         switch industry {
         case .landscaping:
-            draft.pricingMethods = [PricingMethodModel(type: .squareFootage, amount: 0, rate: 0)]
-            
+            draft.pricingMethods = [
+                PricingMethodModel(type: .squareFootage)
+            ]
+
         case .consulting, .productSales, .handyman, .HVAC, .none:
-            draft.pricingMethods = [PricingMethodModel(type: .fixedRate, amount: 0)]
-            
+            draft.pricingMethods = [
+                PricingMethodModel(type: .fixedRate)
+            ]
+
         case .pressureWashing:
-            draft.pricingMethods = [PricingMethodModel(type: .liquidSolution, amount: 0, rate: 0)]
+            draft.pricingMethods = [
+                PricingMethodModel(type: .liquidSolution)
+            ]
         }
     }
     
-    func addIndustryField(_ type: PricingMethodType ) {
-        switch type {
-        case .fixedRate:
-            draft.pricingMethods.append(PricingMethodModel(type: .fixedRate, amount: 0))
-        case .squareFootage:
-            draft.pricingMethods.append(PricingMethodModel(type: .squareFootage, amount: 0, rate: 0))
-        case .liquidSolution:
-            draft.pricingMethods.append(PricingMethodModel(type: .liquidSolution, amount: 0, rate: 0))
-        case .subscription:
-            draft.pricingMethods.append(PricingMethodModel(type: .subscription , amount: 0))
-        case .none:
-            return
-        }
+    func addPricingMethod(_ type: PricingMethodType ) {
+        draft.pricingMethods.append(
+                PricingMethodModel(type: type)
+            )
+    }
+    
+    func removePricingMethod(id: UUID) {
+        draft.pricingMethods.removeAll(where: { $0.id == id })
+    }
+    
+    func addCustomField(_ field: CustomField) {
+        draft.customFields.append(field)
+    }
+    
+    func removeCustomField(id: UUID) {
+        draft.customFields.removeAll(where: { $0.id == id })
     }
     
     func selectCustomer(_ customer: CustomerModel) {
@@ -125,18 +134,86 @@ final class QuoteFormVM: JobDocumentFormProtocol {
         generalError = nil
     }
 }
-
-extension QuoteFormVM {
+// MARK: - Form field bindings
+extension QuoteFormVM: PricingMethodProviding {
+    
+    var pricingMethods: [PricingMethodModel] {
+        get { draft.pricingMethods }
+        set { draft.pricingMethods = newValue }
+    }
+    
     var pricingMethodsBinding: Binding<[PricingMethodModel]> {
         Binding(
             get: { self.draft.pricingMethods },
             set: { self.draft.pricingMethods = $0 }
         )
     }
-}
-extension QuoteFormVM: PricingMethodProviding {
-    var pricingMethods: [PricingMethodModel] {
-        get { draft.pricingMethods }
-        set { draft.pricingMethods = newValue }
+    
+    var selectedServiceBinding: Binding<ServiceType> {
+        Binding(
+            get: { self.draft.serviceType },
+            set: { self.draft.serviceType = $0 }
+        )
+    }
+    
+    var selectedCustomServiceBinding: Binding<String> {
+        Binding(
+            get: { self.draft.selectedCustomService },
+            set: { self.draft.selectedCustomService = $0 }
+        )
+    }
+    
+    var notesBinding: Binding<String> {
+        Binding(
+            get: { self.draft.notes ?? "" },
+            set: { self.draft.notes = $0 }
+        )
+    }
+    
+    var customFields: [CustomField] {
+        get { draft.customFields }
+        set { draft.customFields = newValue }
+    }
+    
+    var customFieldsBinding: Binding<[CustomField]> {
+        Binding(
+            get: { self.draft.customFields },
+            set: { self.draft.customFields = $0 }
+        )
+    }
+    
+    var creationDateBinding: Binding<Date> {
+        Binding(
+            get: { self.draft.documentDate },
+            set: { self.draft.documentDate = $0 }
+        )
+    }
+    
+    var dueDateBinding: Binding<Date> {
+        Binding(
+            get: { self.draft.documentDueDate },
+            set: { self.draft.documentDueDate = $0 }
+        )
+    }
+    
+    var installationDateBinding: Binding<Date> {
+        Binding(
+            get: { self.draft.documentInstallationDate ?? Date() },
+            set: { self.draft.documentInstallationDate = $0 }
+        )
+    }
+    
+    var serviceDateBinding: Binding<Date> {
+        Binding(
+            get: { self.draft.documentServiceDate ?? Date() },
+            set: { self.draft.documentServiceDate = $0 }
+        )
+    }
+    
+    var customDateRangeBinding: Binding<Set<DateComponents>> {
+        Binding(
+            get: { self.draft.customDateRange },
+            set: { self.draft.customDateRange = $0}
+        )
     }
 }

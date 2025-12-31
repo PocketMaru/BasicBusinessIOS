@@ -10,7 +10,10 @@ protocol JobDocumentProtocol: Codable {
     var customerID: UUID { get set }
     
     var industryType: IndustryType { get set }
+    
     var serviceType: ServiceType { get set }
+    var selectedCustomService: String { get set }
+    
     var pricingMethods: [PricingMethodModel] { get set }
     
     var notes: String? { get set }
@@ -18,7 +21,6 @@ protocol JobDocumentProtocol: Codable {
     var materialExpenses: [MaterialExpenseModel] { get set }
 
     var laborCost: LaborType? { get set }
-    var additionalFees: Double? { get set }
     
     var customFields: [CustomField] { get set }
 
@@ -33,10 +35,9 @@ extension JobDocumentProtocol {
     var totalCost: Double {
         let materialCost = materialTotalCost ?? 0
         let laborCost = laborCost?.calculateTotal() ?? 0
-        let customFieldCost = customFields.map { Double($0.value) }.reduce(0, +)
-        let additionalFeesCost = additionalFees ?? 0
+        let customFieldCost = customFields.map { Double($0.value ?? 0) }.reduce(0, +)
         let subscriptionTotalCost = subscriptionTotal ?? 0
         let pricingMethodTotal = pricingMethods.reduce(0) { $0 + $1.calculateTotal() }
-        return materialCost + laborCost + customFieldCost + additionalFeesCost + subscriptionTotalCost + pricingMethodTotal
+        return materialCost + laborCost + customFieldCost + subscriptionTotalCost + pricingMethodTotal
     }
 }

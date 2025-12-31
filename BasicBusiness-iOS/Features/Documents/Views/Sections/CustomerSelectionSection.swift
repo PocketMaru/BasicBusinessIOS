@@ -13,25 +13,29 @@ struct CustomerSelectionSection: View {
         from customer: [CustomerModel]
     ) -> some View {
         Group {
-            if selectedCustomer == nil {
-                CustomFormView(header: "Select Customer") {
-                    HStack{
+            VStack {
+                if selectedCustomer == nil {
+                    HStack (alignment: .center, spacing: 5) {
                         TextField ("Search Customer", text: $searchCustomer)
+                            .foregroundStyle(AppColors.secondaryText)
+                            .padding(.top, 10)
                         if !searchCustomer.isEmpty {
                             Button {
                                 searchCustomer = ""
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(AppColors.secondaryText)
+                                    .padding(.horizontal, 10)
                             }
                         }
                     }
+                    .padding(.horizontal, 15)
                 }
+                searchResultsSection(from: customer)
+                customerSelectedSection(
+                    using: $selectedCustomer
+                )
             }
-            searchResultsSection(from: customer)
-            customerSelectedSection(
-                using: $selectedCustomer
-            )
         }
     }
     
@@ -45,13 +49,15 @@ struct CustomerSelectionSection: View {
                         .localizedCaseInsensitiveContains(searchCustomer)
                 }
                 if results.isEmpty {
+                    Divider()
                     HStack(alignment: .center) {
                         Text("No Customer Found")
                             .bubbleStyle()
-                            .statButtonBG()
+                            .foregroundStyle(AppColors.secondaryText)
                     }
                 } else {
                     VStack(alignment: .leading, spacing: 16) {
+                        Divider()
                         ForEach(results, id: \.id) { customer in
                             Button {
                                 selectedCustomer = customer
@@ -60,12 +66,13 @@ struct CustomerSelectionSection: View {
                                 HStack(spacing: 8) {
                                     Text("\(customer.firstName) \(customer.lastName)")
                                         .bubbleStyle()
-                                        .statButtonBG()
+                                        .padding(.bottom, 5)
                                     if selectedCustomer?.id == customer.id {
                                         Image(systemName: "checkmark")
                                             .foregroundColor(AppColors.accent)
                                     }
                                 }
+                                .padding(.horizontal, 15)
                             }
                         }
                     }
@@ -83,20 +90,25 @@ struct CustomerSelectionSection: View {
     ) -> some View {
         Group {
             if hasSelectedCustomer(from: selectedCustomer), let customer = selectedCustomer.wrappedValue {
-                VStack(alignment: .center, spacing: 16) {
-                    CustomFormView(header: "Customer") {
-                        HStack {
-                            Text("\(customer.firstName) \(customer.lastName)")
-                                .font(.subheadline)
-                                .foregroundColor(.primary)
-                            Button {
-                                selectedCustomer.wrappedValue = nil
-                            } label: {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.secondary)
-                            }
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Customer")
+                        .foregroundStyle(AppColors.accent)
+                        .padding(.top, 12)
+                        .padding(.horizontal, 15)
+                    Divider()
+                    HStack {
+                        Text("\(customer.firstName) \(customer.lastName)")
+                            .font(.subheadline)
+                            .foregroundStyle(AppColors.secondaryText)
+                        Button {
+                            selectedCustomer.wrappedValue = nil
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.secondary)
                         }
                     }
+                    .padding(.horizontal, 15)
+                    Divider()
                 }
             } else {
                 EmptyView()

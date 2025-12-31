@@ -59,27 +59,27 @@ extension PricingMethodModel {
         case .fixedRate:
             return PricingMethodModel(
                 type: .fixedRate,
-                amount: 0
+                amount: nil
             )
 
         case .squareFootage:
             return PricingMethodModel(
                 type: .squareFootage,
-                amount: 0,
-                rate: 0
+                amount: nil,
+                rate: nil
             )
 
         case .liquidSolution:
             return PricingMethodModel(
                 type: .liquidSolution,
-                amount: 0,
-                rate: 0
+                amount: nil,
+                rate: nil
             )
 
         case .subscription:
             return PricingMethodModel(
                 type: .subscription,
-                amount: 0
+                amount: nil
             )
 
         case .none:

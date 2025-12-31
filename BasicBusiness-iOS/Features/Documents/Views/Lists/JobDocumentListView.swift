@@ -19,13 +19,16 @@ struct JobDocumentListView: View {
                             case .quote:
                                 ForEach(jobDocRouter.quoteRowsFilteredByDate) { row in
                                     NavigationLink(
-                                        value: JobDocumentRouterFeature.JobDocumentRoute.quoteDetail(id: row.id)) {
-                                            JobDocumentItemView(document: row)
-                                        }
+                                        value: JobDocumentRouterFeature.JobDocumentRoute.quoteDetail(id: row.id)
+                                    ) {
+                                        JobDocumentItemView(document: row)
+                                    }
                                 }
                             case .invoice:
                                 ForEach(jobDocRouter.invoiceRowsFilteredByDate) { row in
-                                    NavigationLink(value:JobDocumentRouterFeature.JobDocumentRoute.invoiceDetail(id: row.id)) {
+                                    NavigationLink(
+                                        value:JobDocumentRouterFeature.JobDocumentRoute.invoiceDetail(id: row.id)
+                                    ) {
                                         JobDocumentItemView(document: row)
                                     }
                                 }
@@ -63,8 +66,7 @@ struct JobDocumentListView: View {
                         JobDocumentFormView(
                             userVM: userVM,
                             form: form,
-                            customers: jobDocRouter.customerFeatureVM.allCustomers,
-                            activeSheet: $activeSheet
+                            customers: jobDocRouter.customerFeatureVM.allCustomers
                         )
                     }
                 }
@@ -98,7 +100,7 @@ struct JobDocumentListView: View {
                 jobDocRouter.startCreating(.invoice)
             }
         )
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     private var documentTypeHeader: some View {
@@ -108,7 +110,7 @@ struct JobDocumentListView: View {
                 tapAction: { documentType = .quote },
                 isSelected: documentType == .quote
             )
-
+            
             StatButtonView(
                 label: "Invoices",
                 tapAction: { documentType = .invoice },

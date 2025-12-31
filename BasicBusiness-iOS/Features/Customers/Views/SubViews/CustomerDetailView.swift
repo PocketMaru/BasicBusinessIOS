@@ -120,7 +120,6 @@ struct CustomerDetailView: View {
             businessName: customer.draft.firstName + " " + customer.draft.lastName,
             primaryIconName: nil,
             editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
-            editButtonColor: isEditing ? AppColors.success : AppColors.accent,
             editIconTapped: {
                 if isEditing {
                     attemptedEdit = true

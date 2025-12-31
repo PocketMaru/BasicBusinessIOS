@@ -231,8 +231,8 @@ struct MultiForm: View {
             }
         case .servicePicker(let binding):
             Picker("Service", selection: binding) {
-                ForEach(ServiceChoice.all) {
-                    Text($0.displayName).tag($0.type)
+                ForEach(ServiceType.allCases) {
+                    Text($0.displayName)
                 }
             }
             

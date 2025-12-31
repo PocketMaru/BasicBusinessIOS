@@ -28,71 +28,110 @@ struct PricingMethodFormView: View {
     
     private var squareFootageFields: some View {
         VStack(alignment: .leading) {
-            Section {
-                TextField("Square Footage",
-                          value: Binding(
-                            get: {method.amount ?? 0 },
-                            set: {method.amount = $0}
-                          ),
-                          format: .number)
-                .focused($focusedField)
-                .keyboardType(.decimalPad)
-                Divider()
-                TextField("Price per Sq Ft",
-                          value: Binding(
-                            get: { method.rate ?? 0 },
-                            set: { method.rate = $0 }
-                          ),
-                          format: .currency(code: "USD"))
-                .focused($focusedField)
-                .keyboardType(.decimalPad)
-            } header: {
-                Text("Pricing Methods")
-            }
+            Text("Square Footage")
+                .foregroundStyle(AppColors.accent)
+                .padding(.top, 10)
+                .padding(.horizontal, 10)
+            Divider()
+            
+            TextField("",
+                value: $method.amount,
+                format: .number,
+                prompt: Text("Total Sq Ft")
+            )
+            .focused($focusedField)
+            .keyboardType(.decimalPad)
+            .padding(.horizontal, 10)
+            .foregroundStyle(AppColors.secondaryText)
+            Divider()
+            
+            TextField("Price per Sq Ft",
+                      value: $method.rate,
+                      format: .currency(code: "USD")
+            )
+            .focused($focusedField)
+            .keyboardType(.decimalPad)
+            .padding(.horizontal, 10)
+            .padding(.bottom, 10)
+            .foregroundStyle(AppColors.secondaryText)
         }
+        .statBubbleStyle()
+        .statButtonBG(emphasis: .subtle)
+        .padding(.horizontal, 15)
     }
     
     private var fixedRateFields: some View {
-        TextField("Fixed Rate",
-                  value: Binding(
-                    get: { method.amount ?? 0 },
-                    set: { method.amount = $0}
-                  ),
-                  format: .currency(code: "USD")
-        )
-        .keyboardType(.decimalPad)
+        VStack(alignment: .leading) {
+            Text("Fixed Rate")
+                .foregroundStyle(AppColors.accent)
+                .padding(.top, 10)
+                .padding(.horizontal, 10)
+            Divider()
+            
+            TextField("Total",
+                      value: $method.amount,
+                      format: .currency(code: "USD")
+            )
+            .keyboardType(.decimalPad)
+            .padding(.horizontal, 10)
+            .padding(.bottom, 10)
+            .foregroundStyle(AppColors.secondaryText)
+        }
+        .statBubbleStyle()
+        .statButtonBG(emphasis: .subtle)
+        .padding(.horizontal, 15)
     }
     
     private var liquidSolutionFields: some View {
         VStack(alignment: .leading) {
+            Text("Liquid Solution")
+                .foregroundStyle(AppColors.accent)
+                .padding(.top, 10)
+                .padding(.horizontal, 10)
+            Divider()
+            
             TextField("Liters of Solution",
-                      value: Binding(
-                        get: { method.amount ?? 0 },
-                        set: { method.amount = $0 }
-                      ),
+                      value: $method.amount,
                       format: .number
             )
             .keyboardType(.decimalPad)
+            .padding(.horizontal, 10)
+            .foregroundStyle(AppColors.secondaryText)
             Divider()
+            
             TextField("Price per Liter",
-                      value: Binding(
-                        get: { method.rate ?? 0 },
-                        set: { method.rate = $0}
-                      ),
+                      value: $method.rate,
                       format: .currency(code: "USD")
             )
             .keyboardType(.decimalPad)
+            .padding(.horizontal, 10)
+            .padding(.bottom, 10)
+            .foregroundStyle(AppColors.secondaryText)
         }
+        .statBubbleStyle()
+        .statButtonBG(emphasis: .subtle)
+        .padding(.horizontal, 15)
     }
     
     private var subscriptionFields: some View {
-        TextField("Subscription Amount",
-                  value: Binding(
-                    get: { method.amount ?? 0 },
-                    set: { method.amount = $0}
-                  ),
-                  format: .currency(code: "USD")
-        )
-        .keyboardType(.decimalPad)
+        VStack(alignment: .leading) {
+            Text("Subscription Total")
+                .foregroundStyle(AppColors.accent)
+                .padding(.top, 10)
+                .padding(.horizontal, 10)
+            Divider()
+            
+            TextField("Subscription Total",
+                      value: $method.amount,
+                      format: .currency(code: "USD")
+            )
+            .keyboardType(.decimalPad)
+            .padding(.horizontal, 10)
+            .padding(.bottom, 10)
+            .foregroundStyle(AppColors.secondaryText)
+        }
+        .statBubbleStyle()
+        .statButtonBG(emphasis: .subtle)
+        .padding(.horizontal, 15)
     }
 }

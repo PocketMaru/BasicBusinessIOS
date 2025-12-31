@@ -27,7 +27,7 @@ enum DocumentDateFilter {
 }
 
 extension Date {
-
+    
     var formattedMonthDayYear: String {
         let formatter = DateFormatter()
         formatter.locale = .current

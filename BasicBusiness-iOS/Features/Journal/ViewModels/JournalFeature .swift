@@ -27,31 +27,26 @@ final class JournalFeature {
         self.materialFeature = materialFeature
     }
     
-    // Total of all quotes.
     var quotedRevenue: Double {
         quoteFeature.allQuotes.reduce(0) { $0 + $1.totalCost}
     }
     
-    // Total of all invoices.
     var invoicedRevenue: Double {
         invoiceFeature.allInvoices.reduce(0) {$0 + $1.totalCost}
     }
     
-    // Total of all confirmed expenses.
     var expenseTotal: Double {
         expenseFeature.allExpenses.reduce(0) {$0 + $1.calcTotal}
     }
     
-    // Total of all pending expenses in quotes.
-    var forecastedExpenseTotal: Double {
+    var forecastedExpense: Double {
         quoteFeature.allQuotes.reduce(0) { $0 + $1.pendingMaterialExpense.reduce(0) { $0 + $1.estimatedCost}}
     }
     
-    // Total revenue including quote profit and loss.
     var forecastedProfit: Double {
-        (invoicedRevenue + quotedRevenue) - (forecastedExpenseTotal + expenseTotal)
+        (invoicedRevenue + quotedRevenue) - (forecastedExpense + expenseTotal)
     }
-    // Total revenue, including only confirmed profit and loss.
+
     var totalProfit: Double {
         invoicedRevenue - expenseTotal
     }
@@ -79,5 +74,11 @@ final class JournalFeature {
     var businessName: String {
         userVM.user.businessName
     }
+    
+    var totalCustomers: Int {
+        customerFeature.allCustomers.count
+    }
+    
+    
 }
 

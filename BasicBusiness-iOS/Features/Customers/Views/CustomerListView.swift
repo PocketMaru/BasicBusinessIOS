@@ -49,7 +49,7 @@ struct CustomerListView: View {
                     }
                 },
                 editIconName: "person.crop.circle.badge.plus",
-                editButtonColor: activeSheet == nil ? AppColors.accent : AppColors.success,
+                toggleEditIconState: nil,
                 editIconTapped: {
                 activeSheet = .addCustomer
             })

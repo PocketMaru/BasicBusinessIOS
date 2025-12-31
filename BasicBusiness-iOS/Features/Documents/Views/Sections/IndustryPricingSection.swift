@@ -1,40 +1,34 @@
 import SwiftUI
 
+#warning("UI needs to be modified to a list")
 struct IndustryPricingSection: View {
     let industryType: IndustryType
-    let form: JobDocumentRouterFeature.JobDocumentForm
+    @Binding var pricingMethods: [PricingMethodModel]
+    let isVisible: Bool
     var body: some View {
-        Section {
-            industrySpecificFields
-            pricingMethodsBlock
-        } header: {
-            Text("Industry Pricing")
+        if isVisible {
+            Section {
+                Divider()
+                industrySpecificFields
+                pricingMethodsBlock
+            }
         }
-        .statBubbleStyle()
     }
     
     @ViewBuilder
     private var industrySpecificFields: some View {
         switch industryType {
         case .productSales(let priceModel):
-            ProductSalesSectionView(form: form, priceModel: priceModel)
+            ProductSalesSectionView(priceModel: priceModel)
         default:
             EmptyView()
         }
     }
+    
     @ViewBuilder
     private var pricingMethodsBlock: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Pricing Methods")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(AppColors.accent)
-
-            switch form {
-            case .quote(_, let vm):
-                PricingMethodsSectionView(pricingMethods: vm.pricingMethodsBinding)
-            case .invoice(_, let vm):
-                PricingMethodsSectionView(pricingMethods: vm.pricingMethodsBinding)
-            }
+        VStack(alignment: .leading, spacing: 5) {
+            PricingMethodsSectionView(pricingMethods: $pricingMethods)
         }
     }
 }

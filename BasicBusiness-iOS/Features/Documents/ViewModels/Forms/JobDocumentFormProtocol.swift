@@ -11,8 +11,12 @@ protocol JobDocumentFormProtocol: AnyObject {
     var selectedCustomer: CustomerModel? { get set }
     func selectCustomer(_ customer: CustomerModel)
     
+    func addCustomField(_ field: CustomField)
+    func removeCustomField(id: UUID)
+    
     func loadIndustryFields(for industry: IndustryType)
-    func addIndustryField(_ type: PricingMethodType)
+    func addPricingMethod(_ type: PricingMethodType)
+    func removePricingMethod(id: UUID)
     
     var savedMaterials: [MaterialModel] { get }
     

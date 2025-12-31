@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ProductSalesSectionView: View {
-    let form: JobDocumentRouterFeature.JobDocumentForm
     let priceModel: ProductSalesQM
     
     var body: some View {
