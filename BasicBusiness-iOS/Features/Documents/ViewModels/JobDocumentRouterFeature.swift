@@ -299,6 +299,16 @@ extension JobDocumentRouterFeature.JobDocumentForm {
             return invoiceVM.customDateRangeBinding
         }
     }
+    // MARK: - Constants
+    
+    var applyNetTerms: (Int) -> Void {
+            switch self {
+            case .quote(_, let vm):
+                return vm.applyNetTerms
+            case .invoice(_, let vm):
+                return vm.applyNetTerms
+            }
+        }
     
     var formTitle: String {
         switch self {

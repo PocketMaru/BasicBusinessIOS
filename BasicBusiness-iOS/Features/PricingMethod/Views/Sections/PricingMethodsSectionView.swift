@@ -37,44 +37,52 @@ struct PricingMethodsSectionView: View {
     }
     
     private func addMethod() -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("Pricing Methods")
-                    .foregroundStyle(AppColors.accent)
-                    .padding(.horizontal, 10)
-                Spacer()
-                if #available(iOS 26.0, *) {
-                    Button {
-                        showAddMethod = true
-                    } label: {
-                        Image(systemName: "document.badge.plus")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(AppColors.accent)
-                            .frame(width: 36, height: 36)
-                            .background(
-                                Circle()
-                                    .stroke(AppColors.accent.opacity(0.25), lineWidth: 1)
-                            )
-                            .contentShape(Circle())
-                    }
-                    .buttonStyle(.plain)
-                    .glassEffect()
-                    .confirmationDialog(
-                        "Add Pricing Method",
-                        isPresented: $showAddMethod
-                    ) {
-                        ForEach(PricingMethodType.allCases.filter { $0 != .none }, id: \.self) { type in
-                            Button(type.rawValue) {
-                                pricingMethods.append(.make(type))
-                                isExpanded = true
-                            }
-                        }
-                        Button("Cancel", role: .cancel) {}
-                    }
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                if isExpanded {
+                    Text("Pricing Methods")
+                        .foregroundStyle(AppColors.accent)
+                    Rectangle()
+                        .fill(AppColors.accent.opacity(0.25))
+                        .frame(width: 125, height: 1)
+                } else {
+                    Text("Pricing Methods")
+                        .foregroundStyle(AppColors.accent)
                 }
             }
-            .padding(.horizontal, 8)
+            .padding(.horizontal, 15)
+            Spacer()
+            if #available(iOS 26.0, *) {
+                Button {
+                    showAddMethod = true
+                } label: {
+                    Image(systemName: "document.badge.plus")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(AppColors.accent)
+                        .frame(width: 36, height: 36)
+                        .background(
+                            Circle()
+                                .stroke(AppColors.accent.opacity(0.25), lineWidth: 1)
+                        )
+                        .contentShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .glassEffect()
+                .confirmationDialog(
+                    "Add Pricing Method",
+                    isPresented: $showAddMethod
+                ) {
+                    ForEach(PricingMethodType.allCases.filter { $0 != .none }, id: \.self) { type in
+                        Button(type.rawValue) {
+                            pricingMethods.append(.make(type))
+                            isExpanded = true
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {}
+                }
+            }
         }
+        .padding(.horizontal, 8)
     }
     
     private func deleteMethod(id: UUID) {

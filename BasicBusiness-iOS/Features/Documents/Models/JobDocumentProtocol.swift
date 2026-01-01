@@ -25,6 +25,9 @@ protocol JobDocumentProtocol: Codable {
     var customFields: [CustomField] { get set }
 
     var jobDocumentType: JobDocumentType { get set }
+    
+    var documentDate: Date { get set }
+    var documentDueDate: Date { get set }
 }
 
 extension JobDocumentProtocol {

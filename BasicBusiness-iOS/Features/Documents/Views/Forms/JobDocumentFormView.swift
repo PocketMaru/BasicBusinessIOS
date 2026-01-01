@@ -18,17 +18,18 @@ struct JobDocumentFormView: View {
                         searchCustomer: $searchCustomer,
                         selectedCustomer: $selectedCustomer
                     )
+                    ServiceSection(
+                        serviceType: form.serviceTypeBinding,
+                        customServiceName: form.selectedCustomService,
+                        isVisible: selectedCustomer != nil
+                    )
                     DateSection(
                         documentDate: form.creationDateBinding,
                         documentDueDate: form.dueDateBinding,
                         installationDate: form.installationDateBinding,
                         serviceDate: form.serviceDateBinding,
                         customDateRange: form.customDateRangeBinding,
-                        isVisible: selectedCustomer != nil
-                    )
-                    ServiceSection(
-                        serviceType: form.serviceTypeBinding,
-                        customServiceName: form.selectedCustomService,
+                        applyNetTerms: form.applyNetTerms,
                         isVisible: selectedCustomer != nil
                     )
                     IndustryPricingSection(
@@ -53,7 +54,7 @@ struct JobDocumentFormView: View {
                 .statButtonBG(emphasis: .raised)
                 .padding(.horizontal, 10)
             }
-            .scrollDismissesKeyboard(.immediately)
+            .scrollDismissesKeyboard(.interactively)
         }
         .navigationBarTitleDisplayMode(.inline)
         .ToolBarTitle(

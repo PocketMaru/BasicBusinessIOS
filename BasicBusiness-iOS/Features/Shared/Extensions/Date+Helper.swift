@@ -70,4 +70,8 @@ extension Date {
     static func monthsAgo(_ months: Int) -> Date {
         Calendar.current.date(byAdding: .month, value: -months, to: .today)!
     }
+    
+    static func netDate(_ days: Int, from base: Date = .today) -> Date {
+        Calendar.current.date(byAdding: .day, value: days, to: base) ?? base
+    }
 }

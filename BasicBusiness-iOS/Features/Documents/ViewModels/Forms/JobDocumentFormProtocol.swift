@@ -26,3 +26,12 @@ protocol JobDocumentFormProtocol: AnyObject {
     @discardableResult
     func trySubmit() -> Bool
 }
+
+extension JobDocumentFormProtocol where Document: JobDocumentProtocol {
+    func applyNetTerms(_ days: Int) {
+        draft.documentDueDate = Date.netDate(
+            days,
+            from: draft.documentDate
+        )
+    }
+}

@@ -36,7 +36,7 @@ struct QuoteModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hashab
         self.id = UUID()
         self.customerID = UUID()
         self.industryType = .none
-        self.serviceType = .none
+        self.serviceType = .recurring
         self.selectedCustomService = ""
         self.pricingMethods = []
         self.notes = nil

@@ -9,6 +9,7 @@ struct DateSection: View {
     @State private var toggleOptional: Bool = false
     @State private var isExpanded: Bool = false
     @FocusState private var isFocused: Bool
+    let applyNetTerms: (Int) -> Void
     let isVisible: Bool
     
     var body: some View {
@@ -33,7 +34,6 @@ struct DateSection: View {
                     toggleOptionalContent()
                 }
             } label: {
-                
                 if isExpanded {
                     showOptionalFields()
                     .padding(.bottom, 10)
@@ -42,35 +42,17 @@ struct DateSection: View {
                 }
             }
             .padding(.trailing, 20)
-            Divider()
         }
     }
     
     private func showOptionalFields() -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading) {
             HStack {
                 Text("Dates")
                     .foregroundStyle(AppColors.accent)
                     .padding(.horizontal, 10)
                 Spacer()
-                if #available(iOS 26.0, *) {
-                    Button {
-                        toggleOptional.toggle()
-                        isExpanded = true
-                    } label: {
-                        Image(systemName: toggleOptional ? "calendar.badge.minus" : "calendar.badge.plus")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(AppColors.accent)
-                            .frame(width: 36, height: 36)
-                            .background(
-                                Circle()
-                                    .stroke(AppColors.accent.opacity(0.25), lineWidth: 1)
-                            )
-                            .contentShape(Circle())
-                            .buttonStyle(.plain)
-                            .glassEffect()
-                    }
-                }
+                netDateButtons()
             }
             .padding(.horizontal, 8)
         }
@@ -108,10 +90,47 @@ struct DateSection: View {
         }
     }
     
-    private func optionalDateBinding(_ date: Binding<Date?>) -> Binding<Date> {
-            Binding(
-                get: { date.wrappedValue ?? Date() },
-                set: { date.wrappedValue = $0 }
-            )
+    private func netDateButtons() -> some View {
+        HStack {
+            if #available(iOS 26.0, *) {
+
+                DGButtonStyle(
+                    action: {
+                        applyNetTerms(10)
+                    },
+                    image: "10.calendar",
+                    isExpanded: $isExpanded,
+                    toggleState: $toggleOptional,
+                    isToggleButton: false
+                )
+                DGButtonStyle(
+                    action: {
+                        applyNetTerms(15)
+                    },
+                    image: "15.calendar",
+                    isExpanded: $isExpanded,
+                    toggleState: $toggleOptional,
+                    isToggleButton: false
+                )
+                DGButtonStyle(
+                    action: {
+                        applyNetTerms(30)
+                    },
+                    image: "30.calendar",
+                    isExpanded: $isExpanded,
+                    toggleState: $toggleOptional,
+                    isToggleButton: false
+                )
+                DGButtonStyle(
+                    action: {
+                        toggleOptional.toggle()
+                    },
+                    image: toggleOptional ? "calendar.badge.minus" : "calendar.badge.plus",
+                    isExpanded: $isExpanded,
+                    toggleState: $toggleOptional,
+                    isToggleButton: true
+                )
+            }
         }
+    }
 }

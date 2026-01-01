@@ -111,6 +111,7 @@
 				Features/PricingMethod/Views/Sections/PricingMethodsSectionView.swift,
 				Features/Shared/Buttons/CalendarButtonView.swift,
 				Features/Shared/Buttons/CustomButtonBG.swift,
+				Features/Shared/Buttons/DGButtonStyle.swift,
 				Features/Shared/Buttons/SaveButton.swift,
 				Features/Shared/Buttons/StatButtonBG.swift,
 				Features/Shared/Buttons/StatButtonView.swift,

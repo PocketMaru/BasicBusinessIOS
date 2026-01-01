@@ -149,6 +149,8 @@ extension QuoteFormVM: PricingMethodProviding {
         )
     }
     
+    // MARK: - Service Bindings
+    
     var selectedServiceBinding: Binding<ServiceType> {
         Binding(
             get: { self.draft.serviceType },
@@ -162,6 +164,8 @@ extension QuoteFormVM: PricingMethodProviding {
             set: { self.draft.selectedCustomService = $0 }
         )
     }
+    
+    // MARK: - Notes and Custom Field Bindings
     
     var notesBinding: Binding<String> {
         Binding(
@@ -181,6 +185,7 @@ extension QuoteFormVM: PricingMethodProviding {
             set: { self.draft.customFields = $0 }
         )
     }
+    // MARK: - Date Bindings
     
     var creationDateBinding: Binding<Date> {
         Binding(
@@ -215,5 +220,10 @@ extension QuoteFormVM: PricingMethodProviding {
             get: { self.draft.customDateRange },
             set: { self.draft.customDateRange = $0}
         )
+    }
+    // MARK: - Date Business Logic
+    
+    func applyNetTerms(_ days: Int) {
+        draft.documentDueDate = Date.netDate(days, from: draft.documentDate)
     }
 }
