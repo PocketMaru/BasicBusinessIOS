@@ -62,7 +62,7 @@ struct JobDocumentListView: View {
                             }
                         }
                     }
-                    .navigationDestination(isPresented: jobDocRouter.formIsActive) {
+                    .navigationDestination(isPresented: jobDocRouter.isFormPresented) {
                         JobDocumentFormView(
                             userVM: userVM,
                             form: jobDocRouter,

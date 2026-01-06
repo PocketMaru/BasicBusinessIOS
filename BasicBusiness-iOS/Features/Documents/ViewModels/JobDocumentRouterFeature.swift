@@ -19,7 +19,7 @@ final class JobDocumentRouterFeature {
         return adapter(for: form)
     }
     
-    var formIsActive: Binding<Bool> {
+    var isFormPresented: Binding<Bool> {
         Binding(
             get: { self.activeForm != nil },
             set: { isPresented in
@@ -58,9 +58,8 @@ final class JobDocumentRouterFeature {
         
         var id: UUID {
             switch self {
-            case .quote(let id, _),
-                    .invoice(let id, _):
-                return id
+            case .quote(let id, _), .invoice(let id, _):
+            return id
             }
         }
         
@@ -87,6 +86,7 @@ final class JobDocumentRouterFeature {
         case quote
         case invoice
     }
+    
     init(
         userVM: UserVM,
         customerFeatureVM: CustomerFeatureVM,

@@ -44,7 +44,7 @@ final class InvoiceFeatureVM {
         )
     }
     
-    func invoices(for customerID: UUID) -> [InvoiceModel] {
+    func invoiceSearchByID(for customerID: UUID) -> [InvoiceModel] {
         allInvoices.filter { $0.customerID == customerID }
     }
 }

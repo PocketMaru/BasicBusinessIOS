@@ -37,7 +37,7 @@ final class CustomerFeatureVM {
         )
     }
     
-    func customer(with customerID: UUID) -> CustomerModel? {
+    func customerSearchByID(with customerID: UUID) -> CustomerModel? {
         allCustomers.first(where: { $0.id == customerID })
     }
 }

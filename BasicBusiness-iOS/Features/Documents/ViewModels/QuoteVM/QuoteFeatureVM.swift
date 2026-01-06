@@ -44,7 +44,7 @@ final class QuoteFeatureVM {
         )
     }
     
-    func quotes(for customerID: UUID) -> [QuoteModel] {
+    func quoteSearchByID(for customerID: UUID) -> [QuoteModel] {
         allQuotes.filter { $0.customerID == customerID }
     }
 }
