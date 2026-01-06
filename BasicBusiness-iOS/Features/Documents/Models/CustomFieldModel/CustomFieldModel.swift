@@ -1,14 +1,14 @@
 import Foundation
 
-struct CustomField: Identifiable, Codable, Hashable {
+struct CustomFieldModel: Identifiable, Codable, Hashable {
     var id: UUID = UUID()
     var label: String
     var value: Double?
 }
 
-extension CustomField {
-    static func make() -> CustomField {
-        return CustomField(
+extension CustomFieldModel {
+    static func make() -> CustomFieldModel {
+        return CustomFieldModel(
             label: "",
             value: nil
         )

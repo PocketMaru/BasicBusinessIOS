@@ -17,8 +17,7 @@ struct QuoteModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hashab
     
     var laborCost: LaborType?
     
-    var customFields: [CustomField] = []
-    var materialExpenses: [MaterialExpenseModel] = []
+    var customFields: [CustomFieldModel] = []
 
     var jobDocumentType: JobDocumentType = .quote
     
@@ -29,7 +28,7 @@ struct QuoteModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hashab
     var customDateRange: Set<DateComponents> = []
     
     // Pending expenses, these are expenses tied to quotes, this allows the user to see what expenses will be when a job converts to invoice, allowing forecasting of future expenses from jobs.
-    var pendingMaterialExpense: [MaterialExpensePreview] = []
+    var documentMaterials: [DocumentMaterialModel] = []
     
     /// This initializer is needed to create a quote, the initializer provides default values for properties provided from the outside.
     init() {
@@ -43,14 +42,13 @@ struct QuoteModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hashab
         self.subscriptionTotal = nil
         self.laborCost = nil
         self.customFields = []
-        self.materialExpenses = []
         self.jobDocumentType = .quote
-        self.pendingMaterialExpense = []
         self.documentDate = Date()
         self.documentDueDate = Date()
         self.documentInstallationDate = nil
         self.documentServiceDate = nil
         self.customDateRange = []
+        self.documentMaterials = []
     }
 }
 
@@ -67,13 +65,13 @@ extension QuoteModel {
         invoice.subscriptionTotal = self.subscriptionTotal
         invoice.laborCost = self.laborCost
         invoice.customFields = self.customFields
-        invoice.materialExpenses = self.materialExpenses
         invoice.jobDocumentType = .invoice
         invoice.documentDate = self.documentDate
         invoice.documentDueDate = self.documentDueDate
         invoice.documentInstallationDate = self.documentInstallationDate
         invoice.documentServiceDate = self.documentServiceDate
         invoice.customDateRange = self.customDateRange
+        invoice.documentMaterials = self.documentMaterials
         return invoice
     }
 }
@@ -89,15 +87,15 @@ extension QuoteModel {
         notes: String = "This is the note for the quote.",
         subscriptionTotal: Double = 0.0,
         laborCost: LaborType = .none,
-        customFields: [CustomField] = [],
-        materialExpenses: [MaterialExpenseModel] = [],
+        customFields: [CustomFieldModel] = [],
+        materialExpenses: [DocumentMaterialModel] = [],
         jobType: JobDocumentType = .quote,
         documentDate: Date = Date(),
         documentDueDate: Date = Date(),
         documentInstallationDate: Date? = nil,
         documentServiceDate: Date? = nil,
         customDateRange: Set<DateComponents> = [],
-        pendingMaterialExpense: [MaterialExpensePreview] = []
+        documentMaterials: [DocumentMaterialModel] = []
         
     ) -> QuoteModel {
         var mockModel = QuoteModel()
@@ -112,14 +110,13 @@ extension QuoteModel {
         mockModel.subscriptionTotal = subscriptionTotal
         mockModel.laborCost = laborCost
         mockModel.customFields = customFields
-        mockModel.materialExpenses = materialExpenses
         mockModel.jobDocumentType = jobType
         mockModel.documentDate = documentDate
         mockModel.documentDueDate = documentDueDate
         mockModel.documentInstallationDate = documentInstallationDate
         mockModel.documentServiceDate = documentServiceDate
         mockModel.customDateRange = customDateRange
-        mockModel.pendingMaterialExpense = pendingMaterialExpense
+        mockModel.documentMaterials = documentMaterials
         return mockModel
     }
     
@@ -136,18 +133,13 @@ extension QuoteModel {
                 subscriptionTotal: 100.0,
                 laborCost: .flatRate(100.0),
                 customFields: [.init(label: "Added Expense", value: 100.0)],
-                materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
                 documentDate: .today,
                 documentDueDate: .today,
                 documentInstallationDate: .today,
                 documentServiceDate: .today,
                 customDateRange: [],
-                pendingMaterialExpense: [
-                    MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material1", unitCost: 100.0, unitType: .unit)),
-                    MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material2", unitCost: 100.0, unitType: .unit)),
-                    MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material3", unitCost: 100.0, unitType: .unit)),
-                ],
+                documentMaterials: [],
             ),
             .mock(
                 id: UUID(),
@@ -160,18 +152,12 @@ extension QuoteModel {
                 subscriptionTotal: 100.0,
                 laborCost: .flatRate(100.0),
                 customFields: [.init(label: "Added Expense", value: 100.0)],
-                materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
-                jobType: .quote,
                 documentDate: .today,
                 documentDueDate: .today,
                 documentInstallationDate: .today,
                 documentServiceDate: .today,
                 customDateRange: [],
-                pendingMaterialExpense: [
-                    MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material4", unitCost: 100.0, unitType: .unit)),
-                    MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material5", unitCost: 100.0, unitType: .unit)),
-                    MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material6", unitCost: 100.0, unitType: .unit)),
-                ],
+                documentMaterials: [],
             ),
             .mock(
                 id: UUID(),
@@ -184,18 +170,13 @@ extension QuoteModel {
                 subscriptionTotal: 100.0,
                 laborCost: .flatRate(100.0),
                 customFields: [.init(label: "Added Expense", value: 100.0)],
-                materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
                 documentDate: .today,
                 documentDueDate: .today,
                 documentInstallationDate: .today,
                 documentServiceDate: .today,
                 customDateRange: [],
-                pendingMaterialExpense: [
-                    MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material7", unitCost: 100.0, unitType: .unit)),
-                    MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material8", unitCost: 100.0, unitType: .unit)),
-                    MaterialExpensePreview(from: MaterialExpenseModel(id: UUID(), name: "Material9", unitCost: 100.0, unitType: .unit)),
-                ],
+                documentMaterials: [],
             )
         ]
     }

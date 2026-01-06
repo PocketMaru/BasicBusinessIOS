@@ -36,13 +36,13 @@ final class AppFeature {
         )
         
         self.materialFeatureVM = MaterialFeatureVM()
-        self.materialListVM = MaterialListVM()
+        self.materialListVM = MaterialListVM(
+            materialFeatureVM: materialFeatureVM
+        )
         
         self.quoteFeatureVM = QuoteFeatureVM()
         self.quoteListVM = QuoteListVM(
-            quoteFeatureVM: quoteFeatureVM,
-            customerFeatureVM: customerFeatureVM,
-            materialListVM: materialListVM
+            quoteFeatureVM: quoteFeatureVM
         )
         
         self.invoiceFeatureVM = InvoiceFeatureVM()
@@ -55,21 +55,17 @@ final class AppFeature {
         self.expenseFeatureVM = ExpenseFeatureVM()
         self.expenseListVM = ExpenseListVM()
         
-        journalFeature = JournalFeature(
-            userVM: userVM,
-            customerFeature: customerFeatureVM,
-            quoteFeature: quoteFeatureVM,
-            invoiceFeature: invoiceFeatureVM,
-            expenseFeature: expenseFeatureVM,
-            materialFeature: materialFeatureVM
-        )
-        
         jobDocRouterFeature = JobDocumentRouterFeature(
             userVM: userVM,
             customerFeatureVM: customerFeatureVM,
             quoteFeatureVM: quoteFeatureVM,
             invoiceFeatureVM: invoiceFeatureVM,
             materialFeatureVM: materialFeatureVM
+        )
+        
+        journalFeature = JournalFeature(
+            router: jobDocRouterFeature,
+            expenseFeature: expenseFeatureVM
         )
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CustomFieldFormSection: View {
-    @Binding var customField: CustomField
+    @Binding var customField: CustomFieldModel
     @FocusState private var focusedField: Bool
     var body: some View {
         VStack(alignment: .leading) {

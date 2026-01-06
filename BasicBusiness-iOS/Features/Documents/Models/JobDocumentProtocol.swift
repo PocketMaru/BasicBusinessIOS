@@ -18,29 +18,30 @@ protocol JobDocumentProtocol: Codable {
     
     var notes: String? { get set }
     var subscriptionTotal: Double? { get set }
-    var materialExpenses: [MaterialExpenseModel] { get set }
 
     var laborCost: LaborType? { get set }
     
-    var customFields: [CustomField] { get set }
+    var customFields: [CustomFieldModel] { get set }
 
     var jobDocumentType: JobDocumentType { get set }
     
     var documentDate: Date { get set }
     var documentDueDate: Date { get set }
+    var documentInstallationDate: Date? { get set}
+    var documentServiceDate: Date? { get set }
+    var customDateRange: Set<DateComponents> { get set }
+    
+    var documentMaterials: [DocumentMaterialModel] { get set }
 }
 
 extension JobDocumentProtocol {
-    var materialTotalCost: Double? {
-        materialExpenses.map(\.unitCost).reduce(0, +)
-    }
-    
-    var totalCost: Double {
-        let materialCost = materialTotalCost ?? 0
-        let laborCost = laborCost?.calculateTotal() ?? 0
-        let customFieldCost = customFields.map { Double($0.value ?? 0) }.reduce(0, +)
-        let subscriptionTotalCost = subscriptionTotal ?? 0
-        let pricingMethodTotal = pricingMethods.reduce(0) { $0 + $1.calculateTotal() }
-        return materialCost + laborCost + customFieldCost + subscriptionTotalCost + pricingMethodTotal
+    func documentMaterialTotal(
+    materialCost: (UUID) -> Double
+    ) -> Double {
+        documentMaterials.reduce(0) { total, docMaterial in
+            total + docMaterial.totalCost(
+                with: materialCost(docMaterial.materialID)
+            )
+        }
     }
 }

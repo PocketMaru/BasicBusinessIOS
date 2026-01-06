@@ -23,8 +23,6 @@ final class InvoiceListVM {
         let vm = InvoiceFormVM(
             invoice: InvoiceModel(),
             mode: .add,
-            availableCustomers: customerFeatureVM.allCustomers,
-            savedMaterials: materialFeatureVM.allMaterials,
             onSubmit: {[weak self] draft in
                try self?.addInvoice(from: draft)
             }
@@ -37,8 +35,6 @@ final class InvoiceListVM {
         let vm = InvoiceFormVM(
             invoice: newInvoice,
             mode: .edit,
-            availableCustomers: customerFeatureVM.allCustomers,
-            savedMaterials: materialFeatureVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.updateInvoice(from: draft)
             }
@@ -60,9 +56,5 @@ final class InvoiceListVM {
         } catch {
             print("This will be an alert")
         }
-    }
-    
-    func invoices(for customerID: UUID) -> [InvoiceModel] {
-        invoiceFeatureVM.allInvoices.filter { $0.customerID == customerID }
     }
 }

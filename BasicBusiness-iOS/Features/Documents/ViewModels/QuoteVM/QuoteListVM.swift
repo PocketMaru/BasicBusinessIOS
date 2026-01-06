@@ -5,17 +5,11 @@ import Observation
 @Observable
 final class QuoteListVM {
     let quoteFeatureVM: QuoteFeatureVM
-    let customerFeatureVM: CustomerFeatureVM
-    let materialListVM: MaterialListVM
     
     init(
         quoteFeatureVM: QuoteFeatureVM,
-        customerFeatureVM: CustomerFeatureVM,
-        materialListVM: MaterialListVM,
     ) {
         self.quoteFeatureVM = quoteFeatureVM
-        self.customerFeatureVM = customerFeatureVM
-        self.materialListVM = materialListVM
     }
     
     func addVM() -> QuoteFormVM {
@@ -23,8 +17,6 @@ final class QuoteListVM {
         let vm = QuoteFormVM(
             quote: QuoteModel(),
             mode: .add,
-            availableCustomers: customerFeatureVM.allCustomers,
-            savedMaterials: materialListVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.addQuote(from: draft)
             }
@@ -37,8 +29,6 @@ final class QuoteListVM {
         let vm = QuoteFormVM(
             quote: newQuote,
             mode: .edit,
-            availableCustomers: customerFeatureVM.allCustomers,
-            savedMaterials: materialListVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.updateQuote(from: draft)
             }
@@ -60,9 +50,5 @@ final class QuoteListVM {
         } catch {
             print("This will be an alert")
         }
-    }
-    
-    func quotes(for customerID: UUID) -> [QuoteModel] {
-        quoteFeatureVM.allQuotes.filter { $0.customerID == customerID }
     }
 }

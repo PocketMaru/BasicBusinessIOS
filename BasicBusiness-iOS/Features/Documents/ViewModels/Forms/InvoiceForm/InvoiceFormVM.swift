@@ -9,19 +9,13 @@ final class InvoiceFormVM: JobDocumentFormProtocol {
     
     let mode: FormMode
     
-    private let onSubmit: (InvoiceModel) throws -> Void
-    
     private(set) var original: InvoiceModel
     var draft: InvoiceModel
     
-    var savedMaterials: [MaterialModel] = []
-    
-    var customerSelection: [CustomerModel] = []
-    var selectedCustomer: CustomerModel? = nil
+    private let onSubmit: (InvoiceModel) throws -> Void
     
     var serviceTypeError: String? = nil
     var pricingMethodError: String? = nil
-    var customerError: String? = nil
     var customFieldError: String? = nil
     var generalError: String? = nil
     var showAlert: Bool = false
@@ -29,15 +23,11 @@ final class InvoiceFormVM: JobDocumentFormProtocol {
     init(
         invoice: InvoiceModel,
         mode: FormMode,
-        availableCustomers: [CustomerModel],
-        savedMaterials: [MaterialModel],
         onSubmit: @escaping (InvoiceModel) throws -> Void
     ) {
         self.original = invoice
         self.draft = invoice
         self.mode = mode
-        self.customerSelection = availableCustomers
-        self.savedMaterials = savedMaterials
         self.onSubmit = onSubmit
     }
     
@@ -60,42 +50,12 @@ final class InvoiceFormVM: JobDocumentFormProtocol {
         }
     }
     
-    func addPricingMethod(_ type: PricingMethodType ) {
-        draft.pricingMethods.append(
-                PricingMethodModel(type: type)
-            )
-    }
-    
-    func removePricingMethod(id: UUID) {
-        draft.pricingMethods.removeAll(where: { $0.id == id })
-    }
-    
-    func addCustomField(_ field: CustomField) {
-        draft.customFields.append(field)
-    }
-    
-    func removeCustomField(id: UUID) {
-        draft.customFields.removeAll(where: { $0.id == id })
-    }
-    
-    func selectCustomer(_ customer: CustomerModel) {
-        selectedCustomer = customer
-        draft.customerID = customer.id
-    }
-    
-    func addMaterialToInvoice(from savedMaterial: MaterialModel, markAsExpense: Bool = false) {
-        let invoiceMaterial = MaterialExpenseModel(from: savedMaterial, addedAsExpense: markAsExpense)
-        draft.materialExpenses.append(invoiceMaterial)
-    }
-    
     func validateFields() -> Bool {
         serviceTypeError = draft.serviceType == .none ? "Please select a service." : nil
         pricingMethodError = draft.pricingMethods.isEmpty ? "Please select a pricing method." : nil
-        customerError = selectedCustomer == nil ? "Please select a customer." : nil
         customFieldError = nil
         
         return [
-            customerError,
             serviceTypeError,
             pricingMethodError,
             customFieldError,
@@ -106,124 +66,23 @@ final class InvoiceFormVM: JobDocumentFormProtocol {
         draft = original
     }
     
-    @discardableResult
-    func trySubmit() -> Bool {
-        let isValid = validateFields()
-        if isValid {
-            if let selected = selectedCustomer {
-                draft.customerID = selected.id
-            }
-            do {
-                try onSubmit(draft)
-                return true
-            } catch {
-                generalError = error.localizedDescription
-                showAlert = true
-                return false
-            }
-        }
-        return false
-    }
-    
     func clearErrors() {
-        customerError = nil
         serviceTypeError = nil
         pricingMethodError = nil
         customFieldError = nil
         generalError = nil
     }
-}
-
-// MARK: - PricingMethod Bindings
-extension InvoiceFormVM: PricingMethodProviding {
     
-    var pricingMethods: [PricingMethodModel] {
-        get { draft.pricingMethods }
-        set { draft.pricingMethods = newValue }
-    }
-    
-    var pricingMethodsBinding: Binding<[PricingMethodModel]> {
-        Binding(
-            get: { self.draft.pricingMethods },
-            set: { self.draft.pricingMethods = $0 }
-        )
-    }
-    
-    // MARK: - Service Bindings
-    
-    var selectedServiceBinding: Binding<ServiceType> {
-        Binding(
-            get: { self.draft.serviceType },
-            set: { self.draft.serviceType = $0 }
-        )
-    }
-    
-    var selectedCustomServiceBinding: Binding<String> {
-        Binding(
-            get: { self.draft.selectedCustomService },
-            set: { self.draft.selectedCustomService = $0 }
-        )
-    }
-    // MARK: - Notes and Custom Field Bindings
-    
-    var notesBinding: Binding<String> {
-        Binding(
-            get: { self.draft.notes ?? "" },
-            set: { self.draft.notes = $0 }
-        )
-    }
-    
-    var customFields: [CustomField] {
-        get { draft.customFields }
-        set { draft.customFields = newValue }
-    }
-    
-    var customFieldsBinding: Binding<[CustomField]> {
-        Binding(
-            get: { self.draft.customFields },
-            set: { self.draft.customFields = $0 }
-        )
-    }
-    // MARK: - Date Bindings
-    
-    var creationDateBinding: Binding<Date> {
-        Binding(
-            get: { self.draft.documentDate },
-            set: { self.draft.documentDate = $0 }
-        )
-    }
-    
-    var dueDateBinding: Binding<Date> {
-        Binding(
-            get: { self.draft.documentDueDate },
-            set: { self.draft.documentDueDate = $0 }
-        )
-    }
-    
-    var installationDateBinding: Binding<Date> {
-        Binding(
-            get: { self.draft.documentInstallationDate ?? Date() },
-            set: { self.draft.documentInstallationDate = $0 }
-        )
-    }
-    
-    var serviceDateBinding: Binding<Date> {
-        Binding(
-            get: { self.draft.documentServiceDate ?? Date() },
-            set: { self.draft.documentServiceDate = $0 }
-        )
-    }
-    
-    var customDateRangeBinding: Binding<Set<DateComponents>> {
-        Binding(
-            get: { self.draft.customDateRange },
-            set: { self.draft.customDateRange = $0}
-        )
-    }
-    
-    // MARK: - Date Business Logic
-    
-    func applyNetTerms(_ days: Int) {
-        draft.documentDueDate = Date.netDate(days, from: draft.documentDate)
+    @discardableResult
+    func trySubmit() -> Bool {
+        guard validateFields() else { return false }
+        do {
+            try onSubmit(draft)
+            return true
+        } catch {
+            generalError = error.localizedDescription
+            showAlert = true
+            return false
+        }
     }
 }

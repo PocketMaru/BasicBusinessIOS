@@ -36,4 +36,8 @@ final class CustomerFeatureVM {
             currentList: allCustomers
         )
     }
+    
+    func customer(with customerID: UUID) -> CustomerModel? {
+        allCustomers.first(where: { $0.id == customerID })
+    }
 }

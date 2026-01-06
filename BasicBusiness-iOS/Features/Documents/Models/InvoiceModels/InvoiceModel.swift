@@ -17,8 +17,7 @@ struct InvoiceModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hash
     
     var laborCost: LaborType?
     
-    var customFields: [CustomField] = []
-    var materialExpenses: [MaterialExpenseModel] = []
+    var customFields: [CustomFieldModel] = []
     
     var jobDocumentType: JobDocumentType = .invoice
     
@@ -27,6 +26,8 @@ struct InvoiceModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hash
     var documentInstallationDate: Date?
     var documentServiceDate: Date?
     var customDateRange: Set<DateComponents> = []
+    
+    var documentMaterials: [DocumentMaterialModel] = []
     
     init() {
         self.id = UUID()
@@ -39,13 +40,13 @@ struct InvoiceModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hash
         self.subscriptionTotal = nil
         self.laborCost = nil
         self.customFields = []
-        self.materialExpenses = []
         self.jobDocumentType = .invoice
         self.documentDate = Date()
         self.documentDueDate = Date()
         self.documentInstallationDate = nil
         self.documentServiceDate = nil
         self.customDateRange = []
+        self.documentMaterials = []
     }
 }
 
@@ -62,13 +63,13 @@ extension InvoiceModel {
         quote.subscriptionTotal = self.subscriptionTotal
         quote.laborCost = self.laborCost
         quote.customFields = self.customFields
-        quote.materialExpenses = self.materialExpenses
         quote.jobDocumentType = .quote
         quote.documentDate = self.documentDate
         quote.documentDueDate = self.documentDueDate
         quote.documentInstallationDate = self.documentInstallationDate
         quote.documentServiceDate = self.documentServiceDate
         quote.customDateRange = self.customDateRange
+        quote.documentMaterials = self.documentMaterials
         return quote
     }
 }
@@ -84,14 +85,14 @@ extension InvoiceModel {
         notes: String = "This is the note for the quote.",
         subscriptionTotal: Double = 0.0,
         laborCost: LaborType = .none,
-        customFields: [CustomField] = [],
-        materialExpenses: [MaterialExpenseModel] = [],
+        customFields: [CustomFieldModel] = [],
         jobType: JobDocumentType = .invoice,
         documentDate: Date = Date(),
         documentDueDate: Date = Date(),
         documentInstallationDate: Date? = nil,
         documentServiceDate: Date? = nil,
         customDateRange: Set<DateComponents> = [],
+        documentMaterials: [DocumentMaterialModel] = []
     ) -> InvoiceModel {
         var mockModel = InvoiceModel()
         
@@ -105,13 +106,13 @@ extension InvoiceModel {
         mockModel.subscriptionTotal = subscriptionTotal
         mockModel.laborCost = laborCost
         mockModel.customFields = customFields
-        mockModel.materialExpenses = materialExpenses
         mockModel.jobDocumentType = jobType
         mockModel.documentDate = documentDate
         mockModel.documentDueDate = documentDueDate
         mockModel.documentInstallationDate = documentInstallationDate
         mockModel.documentServiceDate = documentServiceDate
         mockModel.customDateRange = customDateRange
+        mockModel.documentMaterials = documentMaterials
         return mockModel
     }
     
@@ -128,13 +129,13 @@ extension InvoiceModel {
                 subscriptionTotal: 0.0,
                 laborCost: .flatRate(1000.0),
                 customFields: [.init(label: "Added Expense", value: 100.0)],
-                materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
                 documentDate: .today,
                 documentDueDate: .today,
                 documentInstallationDate: .today,
                 documentServiceDate: .today,
-                customDateRange: []
+                customDateRange: [],
+                documentMaterials: []
             ),
             .mock(
                 id: UUID(),
@@ -147,13 +148,13 @@ extension InvoiceModel {
                 subscriptionTotal: 100.0,
                 laborCost: .flatRate(100.0),
                 customFields: [.init(label: "Added Expense", value: 100.0)],
-                materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
                 documentDate: .today,
                 documentDueDate: .today,
                 documentInstallationDate: .today,
                 documentServiceDate: .today,
-                customDateRange: []
+                customDateRange: [],
+                documentMaterials: []
             ),
             .mock(
                 id: UUID(),
@@ -166,13 +167,13 @@ extension InvoiceModel {
                 subscriptionTotal: 100.0,
                 laborCost: .flatRate(100.0),
                 customFields: [.init(label: "Added Expense", value: 100.0)],
-                materialExpenses: [.init(id: UUID(), name: "Material Expenses1", unitCost: 100.0, unitType: .unit)],
                 jobType: .quote,
                 documentDate: .today,
                 documentDueDate: .today,
                 documentInstallationDate: .today,
                 documentServiceDate: .today,
-                customDateRange: []
+                customDateRange: [],
+                documentMaterials: []
             ),
         ]
     }

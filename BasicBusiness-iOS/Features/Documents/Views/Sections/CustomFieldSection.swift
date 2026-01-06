@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CustomFieldSection: View {
-    @Binding var customFields: [CustomField]
+    @Binding var customFields: [CustomFieldModel]
     @State private var isExpanded: Bool = false
     let isVisible: Bool
     

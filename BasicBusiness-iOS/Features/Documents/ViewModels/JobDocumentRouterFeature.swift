@@ -14,6 +14,21 @@ final class JobDocumentRouterFeature {
     var documentDateFilter: DocumentDateFilter = .today
     var activeForm: JobDocumentForm? = nil
     var route: JobDocumentRoute? = nil
+    var adapter: JobDocFormAdapter? {
+        guard let form = activeForm else { return nil }
+        return adapter(for: form)
+    }
+    
+    var formIsActive: Binding<Bool> {
+        Binding(
+            get: { self.activeForm != nil },
+            set: { isPresented in
+                if !isPresented {
+                    self.activeForm = nil
+                }
+            }
+        )
+    }
     
     var quoteRows: [JobDocumentRowData] {
         quoteFeatureVM.allQuotes.map { jobDocumentRowItems(for:.quote($0)
@@ -36,7 +51,7 @@ final class JobDocumentRouterFeature {
             documentDateFilter.matches(row.date)
         }
     }
-
+    
     enum JobDocumentForm: Identifiable, Hashable {
         case quote(id: UUID, vm: QuoteFormVM)
         case invoice(id: UUID, vm: InvoiceFormVM)
@@ -44,7 +59,7 @@ final class JobDocumentRouterFeature {
         var id: UUID {
             switch self {
             case .quote(let id, _),
-                .invoice(let id, _):
+                    .invoice(let id, _):
                 return id
             }
         }
@@ -52,7 +67,7 @@ final class JobDocumentRouterFeature {
         static func == (lhs: JobDocumentForm, rhs: JobDocumentForm) -> Bool {
             lhs.id == rhs.id
         }
-
+        
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
         }
@@ -77,7 +92,7 @@ final class JobDocumentRouterFeature {
         customerFeatureVM: CustomerFeatureVM,
         quoteFeatureVM: QuoteFeatureVM,
         invoiceFeatureVM: InvoiceFeatureVM,
-        materialFeatureVM: MaterialFeatureVM
+        materialFeatureVM: MaterialFeatureVM,
     ) {
         self.userVM = userVM
         self.customerFeatureVM = customerFeatureVM
@@ -89,7 +104,7 @@ final class JobDocumentRouterFeature {
     func quote(withID id: UUID) -> QuoteModel? {
         quoteFeatureVM.allQuotes.first { $0.id == id }
     }
-
+    
     func invoice(withID id: UUID) -> InvoiceModel? {
         invoiceFeatureVM.allInvoices.first { $0.id == id }
     }
@@ -117,8 +132,6 @@ final class JobDocumentRouterFeature {
             vm: QuoteFormVM(
                 quote: quote,
                 mode: .edit,
-                availableCustomers: customerFeatureVM.allCustomers,
-                savedMaterials: materialFeatureVM.allMaterials,
                 onSubmit: { [weak self] draft in
                     try self?.quoteFeatureVM.updateQuote(from: draft)
                 })
@@ -133,8 +146,6 @@ final class JobDocumentRouterFeature {
             vm: InvoiceFormVM(
                 invoice: invoice,
                 mode: .edit,
-                availableCustomers: customerFeatureVM.allCustomers,
-                savedMaterials: materialFeatureVM.allMaterials,
                 onSubmit: { [weak self] draft in
                     try self?.invoiceFeatureVM.updateInvoice(from: draft)
                 })
@@ -144,8 +155,6 @@ final class JobDocumentRouterFeature {
         let form = QuoteFormVM(
             quote: QuoteModel(),
             mode: FormMode.add,
-            availableCustomers: customerFeatureVM.allCustomers,
-            savedMaterials: materialFeatureVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.quoteFeatureVM.addQuote(from: draft)
             }
@@ -158,8 +167,6 @@ final class JobDocumentRouterFeature {
         let form = InvoiceFormVM(
             invoice: InvoiceModel(),
             mode: FormMode.add,
-            availableCustomers: customerFeatureVM.allCustomers,
-            savedMaterials: materialFeatureVM.allMaterials,
             onSubmit: { [weak self] draft in
                 try self?.invoiceFeatureVM.addInvoice(from: draft)
             }
@@ -184,13 +191,13 @@ final class JobDocumentRouterFeature {
         case .quote(let quote):
             id = quote.id
             customerID = quote.customerID
-            total = quote.totalCost
+            total = self.totalCost(for: quote)
             date = quote.documentDate
             type = .quote
         case .invoice(let invoice):
             id = invoice.id
             customerID = invoice.customerID
-            total = invoice.totalCost
+            total = self.totalCost(for: invoice)
             date = invoice.documentDate
             type = .invoice
         }
@@ -206,125 +213,170 @@ final class JobDocumentRouterFeature {
         )
     }
 }
-
-// MARK: - Shared Form Bindings/Fields
+// MARK: - Bindings routed from adapter
 @MainActor
-extension JobDocumentRouterFeature.JobDocumentForm {
-    var serviceTypeBinding: Binding<ServiceType> {
-        switch self {
-        case .quote(_, let quoteVM):
-            return quoteVM.selectedServiceBinding
-        case . invoice(_, let invoiceVM):
-            return invoiceVM.selectedServiceBinding
+extension JobDocumentRouterFeature {
+    func adapter(for form: JobDocumentForm) -> JobDocFormAdapter {
+        switch form {
+        case .quote(_, let vm):
+            return JobDocFormAdapter(
+                serviceType: Binding(
+                    get: { vm.draft.serviceType },
+                    set: { vm.draft.serviceType = $0 }
+                ),
+                customService: Binding(
+                    get: { vm.draft.selectedCustomService },
+                    set: { vm.draft.selectedCustomService = $0 }
+                ),
+                pricingMethods: Binding(
+                    get: { vm.draft.pricingMethods },
+                    set: { vm.draft.pricingMethods = $0}
+                ),
+                customFields: Binding(
+                    get: { vm.draft.customFields },
+                    set: { vm.draft.customFields = $0}
+                ),
+                notes: Binding(
+                    get: { vm.draft.notes ?? ""},
+                    set: { vm.draft.notes = $0}
+                ),
+                creationDate: Binding(
+                    get: { vm.draft.documentDate },
+                    set: { vm.draft.documentDate = $0 }
+                ),
+                dueDate: Binding(
+                    get: { vm.draft.documentDueDate },
+                    set: { vm.draft.documentDueDate = $0 }
+                ),
+                installationDate: Binding(
+                    get: { vm.draft.documentInstallationDate ?? Date() },
+                    set: { vm.draft.documentInstallationDate = $0 }
+                ),
+                serviceDate: Binding(
+                    get: { vm.draft.documentServiceDate ?? Date() },
+                    set: { vm.draft.documentServiceDate = $0 }
+                ),
+                customDate: Binding(
+                    get: { vm.draft.customDateRange },
+                    set: { vm.draft.customDateRange = $0 }
+                ),
+                netTerms: { days in
+                    vm.draft.documentDueDate = Date.netDate(days, from: vm.draft.documentDate)
+                },
+                formTitle: "Create Quote",
+                total: totalCost(for: vm.draft)
+            )
+        case .invoice(_, let vm):
+            return JobDocFormAdapter(
+                serviceType: Binding(
+                    get: { vm.draft.serviceType },
+                    set: { vm.draft.serviceType = $0 }
+                ),
+                customService: Binding(
+                    get: { vm.draft.selectedCustomService },
+                    set: { vm.draft.selectedCustomService = $0 }
+                ),
+                pricingMethods: Binding(
+                    get: { vm.draft.pricingMethods },
+                    set: { vm.draft.pricingMethods = $0}
+                ),
+                customFields: Binding(
+                    get: { vm.draft.customFields },
+                    set: { vm.draft.customFields = $0}
+                ),
+                notes: Binding(
+                    get: { vm.draft.notes ?? "" },
+                    set: { vm.draft.notes = $0}
+                ),
+                creationDate: Binding(
+                    get: { vm.draft.documentDate },
+                    set: { vm.draft.documentDate = $0 }
+                ),
+                dueDate: Binding(
+                    get: { vm.draft.documentDueDate },
+                    set: { vm.draft.documentDueDate = $0 }
+                ),
+                installationDate: Binding(
+                    get: { vm.draft.documentInstallationDate ?? Date() },
+                    set: { vm.draft.documentInstallationDate = $0 }
+                ),
+                serviceDate: Binding(
+                    get: { vm.draft.documentServiceDate ?? Date() },
+                    set: { vm.draft.documentServiceDate = $0 }
+                ),
+                customDate: Binding(
+                    get: { vm.draft.customDateRange },
+                    set: { vm.draft.customDateRange = $0 }
+                ),
+                netTerms: { days in
+                    vm.draft.documentDueDate = Date.netDate(days, from: vm.draft.documentDate)
+                },
+                formTitle: "Create Invoice",
+                total: totalCost(for: vm.draft)
+            )
         }
     }
+}
+
+@MainActor
+extension JobDocumentRouterFeature {
+    func convertDocMaterialToExpense(
+        from docMaterial: DocumentMaterialModel,
+        with docType: JobDocumentForm
+    ) throws -> ExpenseModel {
+        
+        guard let material = materialFeatureVM.materialSearchByID(with: docMaterial.materialID) else {
+            throw ConversionError.writeFailed(reason: "Could not find material with ID: \(docMaterial.materialID)")
+            #warning("Will trigger an alert")
+        }
     
-    var selectedCustomService: Binding<String> {
-        switch self {
-        case .quote(_, let quoteVM):
-            return quoteVM.selectedCustomServiceBinding
-        case .invoice(_, let invoiceVM):
-            return invoiceVM.selectedCustomServiceBinding
+        let total = docMaterial.totalCost(with: material.unitCost)
+        
+        switch docType {
+        case .quote(let quoteID, let quoteVM):
+            return ExpenseModel(
+                name: material.name,
+                type: .materialExpense,
+                date: quoteVM.draft.documentDate,
+                description: material.description,
+                documentMaterialID: docMaterial.id,
+                linkedQuoteID: quoteID,
+                linkedInvoiceID: nil,
+                itemTotal: total,
+                laborTotal: nil
+            )
+        case .invoice(let invoiceID, let invoiceVM):
+            return ExpenseModel(
+                name: material.name,
+                type: .materialExpense,
+                date: invoiceVM.draft.documentDate,
+                description: material.description,
+                documentMaterialID: docMaterial.id,
+                linkedQuoteID: nil,
+                linkedInvoiceID: invoiceID,
+                itemTotal: total,
+                laborTotal: nil
+            )
         }
     }
+}
+
+@MainActor
+extension JobDocumentRouterFeature {
     
-    var pricingMethodsBinding: Binding<[PricingMethodModel]> {
-        switch self {
-        case .quote(_, let quoteVM):
-            return quoteVM.pricingMethodsBinding
-        case .invoice(_, let invoiceVM):
-            return invoiceVM.pricingMethodsBinding
+    func totalCost(for document: JobDocumentProtocol) -> Double {
+        
+        let materialTotal = document.documentMaterialTotal { materialID in
+            materialFeatureVM.materialSearchByID(with: materialID)?.unitCost ?? 0
         }
-    }
-    
-    var customFieldsBinding: Binding<[CustomField]> {
-        switch self {
-        case .quote(id: _, vm: let quoteVM):
-            return quoteVM.customFieldsBinding
-        case .invoice(id: _, vm: let invoiceVM):
-            return invoiceVM.customFieldsBinding
-        }
-    }
-    
-    var notesBinding: Binding<String> {
-        switch self {
-        case .quote(id: _, vm: let quoteVM):
-            return quoteVM.notesBinding
-        case .invoice(id: _, vm: let invoiceVM):
-            return invoiceVM.notesBinding
-        }
-    }
-    
-    var creationDateBinding: Binding<Date> {
-        switch self {
-        case .quote(id: _, vm: let quoteVM):
-            return quoteVM.creationDateBinding
-        case .invoice(id: _, vm: let invoiceVM):
-            return invoiceVM.creationDateBinding
-        }
-    }
-    
-    var dueDateBinding: Binding<Date> {
-        switch self {
-        case .quote(id: _, vm: let quoteVM):
-            return quoteVM.dueDateBinding
-        case .invoice(id: _, vm: let invoiceVM):
-            return invoiceVM.dueDateBinding
-        }
-    }
-    
-    var installationDateBinding: Binding<Date> {
-        switch self {
-        case .quote(id: _, vm: let quoteVM):
-            return quoteVM.installationDateBinding
-        case .invoice(id: _, vm: let invoiceVM):
-            return invoiceVM.installationDateBinding
-        }
-    }
-    
-    var serviceDateBinding: Binding<Date> {
-        switch self {
-        case .quote(id: _, vm: let quoteVM):
-            return quoteVM.serviceDateBinding
-        case .invoice(id: _, vm: let invoiceVM):
-            return invoiceVM.serviceDateBinding
-        }
-    }
-    
-    var customDateRangeBinding: Binding<Set<DateComponents>> {
-        switch self {
-        case .quote(id: _, vm: let quoteVM):
-            return quoteVM.customDateRangeBinding
-        case .invoice(id: _, vm: let invoiceVM):
-            return invoiceVM.customDateRangeBinding
-        }
-    }
-    // MARK: - Constants
-    
-    var applyNetTerms: (Int) -> Void {
-            switch self {
-            case .quote(_, let vm):
-                return vm.applyNetTerms
-            case .invoice(_, let vm):
-                return vm.applyNetTerms
-            }
-        }
-    
-    var formTitle: String {
-        switch self {
-        case .quote:
-            return "Create Quote"
-        case .invoice:
-            return "Create Invoice"
-        }
-    }
-    
-    var total: Double {
-        switch self {
-        case .quote( _, let quoteVM):
-            return quoteVM.draft.totalCost
-        case .invoice( _, let invoiceVM):
-            return invoiceVM.draft.totalCost
-        }
+        let laborCost = document.laborCost?.calculateTotal() ?? 0
+        let customFieldCost = document.customFields.map { Double($0.value ?? 0) }.reduce(0, +)
+        let subscriptionTotalCost = document.subscriptionTotal ?? 0
+        let pricingMethodTotal = document.pricingMethods.reduce(0) { $0 + $1.calculateTotal() }
+        return materialTotal
+        + laborCost
+        + customFieldCost
+        + subscriptionTotalCost
+        + pricingMethodTotal
     }
 }

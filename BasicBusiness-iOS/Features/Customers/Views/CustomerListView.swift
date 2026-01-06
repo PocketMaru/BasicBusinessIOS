@@ -31,7 +31,7 @@ struct CustomerListView: View {
                     }
                     .onDelete { indexSet in
                         for index in indexSet{
-                            customerListVM.removeCustomer(at: index)
+                            customerListVM.deleteCustomer(at: index)
                         }
                     }
                 }

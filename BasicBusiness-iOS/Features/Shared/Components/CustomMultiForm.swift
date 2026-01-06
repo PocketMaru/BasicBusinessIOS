@@ -182,7 +182,7 @@ struct CustomMultiForm: View {
 enum EditControl {
     case industryPicker(Binding<IndustryType>)
     case servicePicker(Binding<ServiceType>)
-    case customField(Binding<[CustomField]>)
+    case customField(Binding<[CustomFieldModel]>)
     case textField(Binding<String>)
     case currencyField(Binding<Double>)
     case none

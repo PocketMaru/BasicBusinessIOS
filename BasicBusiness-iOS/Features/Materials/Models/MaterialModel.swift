@@ -8,11 +8,12 @@ struct MaterialModel: Identifiable, Codable, Equatable, Hashable {
     var unitCost: Double
     var unitType: ProductUnitTypes
     
-}
-
-extension MaterialModel {
-    func toQuoteMaterial(addedAsExpense: Bool = false) -> MaterialExpenseModel {
-        return MaterialExpenseModel(from: self, addedAsExpense: addedAsExpense)
+    init() {
+        self.id = UUID()
+        self.name = ""
+        self.description = nil
+        self.unitCost = 0
+        self.unitType = .unit
     }
 }
 

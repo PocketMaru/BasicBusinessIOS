@@ -7,16 +7,17 @@ struct ExpenseModel: Identifiable, Codable, Equatable, Hashable {
     var type: ExpenseType
     var date: Date
     var description: String?
-    var laborCharge: LaborType?
-    var materialExpense: MaterialExpenseModel?
+    
+    
+    var documentMaterialID: UUID?
     var linkedQuoteID: UUID?
     var linkedInvoiceID: UUID?
+    
     var itemTotal: Double
-    var calcTotal: Double {
-        let material = materialExpense?.unitCost ?? 0
-        let laborCharge = self.laborCharge?.calculateTotal() ?? 0
-        let finalCost = laborCharge + material + itemTotal
-        return finalCost
+    var laborTotal: Double?
+    
+    var total: Double {
+        itemTotal + (laborTotal ?? 0)
     }
 }
 

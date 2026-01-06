@@ -64,7 +64,7 @@ final class CustomerListVM {
         try customerFeatureVM.updateCustomer(from: draft)
     }
     
-    func removeCustomer(at index: Int) {
+    func deleteCustomer(at index: Int) {
         do {
             try customerFeatureVM.removeCustomer(at: index)
         } catch {

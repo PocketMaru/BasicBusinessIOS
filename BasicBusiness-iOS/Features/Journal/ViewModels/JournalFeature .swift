@@ -4,43 +4,35 @@ import Foundation
 @MainActor
 @Observable
 final class JournalFeature {
-    var userVM: UserVM
-    var customerFeature: CustomerFeatureVM
-    var quoteFeature: QuoteFeatureVM
-    var invoiceFeature: InvoiceFeatureVM
+    var router: JobDocumentRouterFeature
     var expenseFeature: ExpenseFeatureVM
-    var materialFeature: MaterialFeatureVM
     
     init (
-        userVM: UserVM,
-        customerFeature: CustomerFeatureVM,
-        quoteFeature: QuoteFeatureVM,
-        invoiceFeature: InvoiceFeatureVM,
+        router: JobDocumentRouterFeature,
         expenseFeature: ExpenseFeatureVM,
-        materialFeature: MaterialFeatureVM
     ) {
-        self.userVM = userVM
-        self.customerFeature = customerFeature
-        self.quoteFeature = quoteFeature
-        self.invoiceFeature = invoiceFeature
+        self.router = router
         self.expenseFeature = expenseFeature
-        self.materialFeature = materialFeature
     }
     
     var quotedRevenue: Double {
-        quoteFeature.allQuotes.reduce(0) { $0 + $1.totalCost}
+        router.quoteFeatureVM.allQuotes.reduce(0) { $0 + router.totalCost(for: $1) }
     }
     
     var invoicedRevenue: Double {
-        invoiceFeature.allInvoices.reduce(0) {$0 + $1.totalCost}
+        router.invoiceFeatureVM.allInvoices.reduce(0) { $0 + router.totalCost(for: $1) }
     }
     
     var expenseTotal: Double {
-        expenseFeature.allExpenses.reduce(0) {$0 + $1.calcTotal}
+        expenseFeature.allExpenses.reduce(0) {$0 + $1.total}
     }
     
     var forecastedExpense: Double {
-        quoteFeature.allQuotes.reduce(0) { $0 + $1.pendingMaterialExpense.reduce(0) { $0 + $1.estimatedCost}}
+        router.quoteFeatureVM.allQuotes.reduce(0) { total, quote in
+            total + quote.documentMaterialTotal { materialID in
+                router.materialFeatureVM.materialSearchByID(with: materialID)?.unitCost ?? 0
+            }
+        }
     }
     
     var forecastedProfit: Double {
@@ -52,15 +44,15 @@ final class JournalFeature {
     }
     
     var allCustomers: [CustomerModel] {
-        customerFeature.allCustomers
+        router.customerFeatureVM.allCustomers
     }
     
     var allQuotes: [QuoteModel] {
-        quoteFeature.allQuotes
+        router.quoteFeatureVM.allQuotes
     }
     
     var allInvoices: [InvoiceModel] {
-        invoiceFeature.allInvoices
+        router.invoiceFeatureVM.allInvoices
     }
     
     var allExpenses: [ExpenseModel] {
@@ -68,15 +60,15 @@ final class JournalFeature {
     }
     
     var allMaterials: [MaterialModel] {
-        materialFeature.allMaterials
+        router.materialFeatureVM.allMaterials
     }
     
     var businessName: String {
-        userVM.user.businessName
+        router.userVM.user.businessName
     }
     
     var totalCustomers: Int {
-        customerFeature.allCustomers.count
+        router.customerFeatureVM.allCustomers.count
     }
     
     

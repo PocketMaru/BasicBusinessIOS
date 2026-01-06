@@ -1,10 +1,5 @@
 import Foundation
 
-enum FormMode {
-    case add
-    case edit
-}
-
 @MainActor
 @Observable
 final class CustomerFormVM {
