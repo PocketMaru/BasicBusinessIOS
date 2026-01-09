@@ -23,10 +23,24 @@ protocol JobDocumentFormProtocol: AnyObject {
 
 extension JobDocumentFormProtocol {
     
-    func cleanDraft(_ customFields: [CustomFieldModel]) -> [CustomFieldModel] {
-        draft.customFields.filter {
+    func cleanDraft(_ draft: Draft) -> Draft {
+        var copy = draft
+        copy.customFields = cleanCustomFields(copy.customFields)
+        copy.pricingMethods = cleanPricingMethods(copy.pricingMethods)
+        return copy
+    }
+    
+    func cleanCustomFields(_ customFields: [CustomFieldModel]) -> [CustomFieldModel] {
+        customFields.filter {
             !$0.label.trimmingCharacters(in: .whitespaces).isEmpty ||
             $0.value != nil
+        }
+    }
+    
+    func cleanPricingMethods(_ pricingMethods: [PricingMethodModel]) -> [PricingMethodModel] {
+        pricingMethods.filter {
+            $0.amount != nil ||
+            $0.rate != nil
         }
     }
 }

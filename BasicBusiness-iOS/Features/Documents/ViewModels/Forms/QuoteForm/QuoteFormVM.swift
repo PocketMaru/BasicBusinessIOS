@@ -101,14 +101,22 @@ final class QuoteFormVM: JobDocumentFormProtocol {
         )
     }
     
+    func cancelCreation() {
+        cancelEdits()
+    }
+    
+    func attemptSave() {
+        trySubmit()
+    }
+    
     @discardableResult
     func trySubmit() -> Bool {
         guard validateFields() else { return false }
-        guard var document = convertDraftToDocument(draft) else { return false }
-        
-        document.customFields = cleanDraft(document.customFields)
+        let cleanedDraft = cleanDraft(draft)
+        guard var document = convertDraftToDocument(cleanedDraft) else { return false }
         do {
             try onSubmit(document)
+            clearErrors()
             return true
         } catch {
             generalError = error.localizedDescription
