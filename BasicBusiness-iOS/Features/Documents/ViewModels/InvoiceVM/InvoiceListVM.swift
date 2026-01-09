@@ -20,8 +20,12 @@ final class InvoiceListVM {
     
     func addVM() -> InvoiceFormVM {
         print("Creating addVM for new invoice")
+        let invoice = InvoiceDraftModel(
+            documentType: .invoice,
+            industryType: .none,
+        )
         let vm = InvoiceFormVM(
-            invoice: InvoiceModel(),
+            invoice: invoice,
             mode: .add,
             onSubmit: {[weak self] draft in
                try self?.addInvoice(from: draft)
@@ -30,7 +34,7 @@ final class InvoiceListVM {
         return vm
     }
     
-    func editVM(with newInvoice: InvoiceModel) -> InvoiceFormVM {
+    func editVM(with newInvoice: InvoiceDraftModel) -> InvoiceFormVM {
         print("Cash MISS -> creating VM for \(newInvoice.id)")
         let vm = InvoiceFormVM(
             invoice: newInvoice,

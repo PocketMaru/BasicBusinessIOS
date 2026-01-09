@@ -29,152 +29,71 @@ struct InvoiceModel: JobDocumentProtocol, Identifiable, Codable, Equatable, Hash
     
     var documentMaterials: [DocumentMaterialModel] = []
     
-    init() {
-        self.id = UUID()
-        self.customerID = UUID()
-        self.industryType = .none
-        self.serviceType = .none
-        self.selectedCustomService = ""
-        self.pricingMethods = []
-        self.notes = nil
-        self.subscriptionTotal = nil
-        self.laborCost = nil
-        self.customFields = []
-        self.jobDocumentType = .invoice
-        self.documentDate = Date()
-        self.documentDueDate = Date()
-        self.documentInstallationDate = nil
-        self.documentServiceDate = nil
-        self.customDateRange = []
-        self.documentMaterials = []
+    init(
+        id: UUID,
+        customerID: UUID,
+        industryType: IndustryType,
+        serviceType: ServiceType,
+        selectedCustomService: String,
+        pricingMethods: [PricingMethodModel],
+        notes: String?,
+        subscriptionTotal: Double?,
+        laborCost: LaborType?,
+        customFields: [CustomFieldModel],
+        jobDocumentType: JobDocumentType,
+        documentDate: Date,
+        documentDueDate: Date,
+        documentInstallationDate: Date?,
+        documentServiceDate: Date?,
+        customDateRange: Set<DateComponents>,
+        documentMaterials: [DocumentMaterialModel]
+    ) {
+        self.id = id
+        self.customerID = customerID
+        self.industryType = industryType
+        self.serviceType = serviceType
+        self.selectedCustomService = selectedCustomService
+        self.pricingMethods = pricingMethods
+        self.notes = notes
+        self.subscriptionTotal = subscriptionTotal
+        self.laborCost = laborCost
+        self.customFields = customFields
+        self.jobDocumentType = jobDocumentType
+        self.documentDate = documentDate
+        self.documentDueDate = documentDueDate
+        self.documentInstallationDate = documentInstallationDate
+        self.documentServiceDate = documentServiceDate
+        self.customDateRange = customDateRange
+        self.documentMaterials = documentMaterials
     }
 }
 
 extension InvoiceModel {
     func toQuote() -> QuoteModel {
-        var quote = QuoteModel()
-        quote.id = self.id
-        quote.customerID = self.customerID
-        quote.industryType = self.industryType
-        quote.serviceType = self.serviceType
-        quote.selectedCustomService = self.selectedCustomService
-        quote.pricingMethods = self.pricingMethods
-        quote.notes = self.notes
-        quote.subscriptionTotal = self.subscriptionTotal
-        quote.laborCost = self.laborCost
-        quote.customFields = self.customFields
-        quote.jobDocumentType = .quote
-        quote.documentDate = self.documentDate
-        quote.documentDueDate = self.documentDueDate
-        quote.documentInstallationDate = self.documentInstallationDate
-        quote.documentServiceDate = self.documentServiceDate
-        quote.customDateRange = self.customDateRange
-        quote.documentMaterials = self.documentMaterials
-        return quote
+        QuoteModel(
+            id: self.id,
+            customerID: self.customerID,
+            industryType: self.industryType,
+            serviceType: self.serviceType,
+            selectedCustomService: self.selectedCustomService,
+            pricingMethods: self.pricingMethods,
+            notes: self.notes,
+            subscriptionTotal: self.subscriptionTotal,
+            laborCost: self.laborCost,
+            customFields: self.customFields,
+            jobDocumentType: .quote,
+            documentDate: self.documentDate,
+            documentDueDate: self.documentDueDate,
+            documentInstallationDate: self.documentInstallationDate,
+            documentServiceDate: self.documentServiceDate,
+            customDateRange: self.customDateRange,
+            documentMaterials: self.documentMaterials
+        )
+    }
+    
+    func toDraft() -> InvoiceDraftModel {
+        InvoiceDraftModel(from: self)
     }
 }
 
-extension InvoiceModel {
-    static func mock(
-        id: UUID = UUID(),
-        customerID: UUID = UUID(),
-        industryType: IndustryType = .none,
-        serviceType: ServiceType = .none,
-        selectedCustomService: String = "",
-        pricingMethods: [PricingMethodModel] = [],
-        notes: String = "This is the note for the quote.",
-        subscriptionTotal: Double = 0.0,
-        laborCost: LaborType = .none,
-        customFields: [CustomFieldModel] = [],
-        jobType: JobDocumentType = .invoice,
-        documentDate: Date = Date(),
-        documentDueDate: Date = Date(),
-        documentInstallationDate: Date? = nil,
-        documentServiceDate: Date? = nil,
-        customDateRange: Set<DateComponents> = [],
-        documentMaterials: [DocumentMaterialModel] = []
-    ) -> InvoiceModel {
-        var mockModel = InvoiceModel()
-        
-        mockModel.id = id
-        mockModel.customerID = customerID
-        mockModel.industryType = industryType
-        mockModel.serviceType = serviceType
-        mockModel.selectedCustomService = selectedCustomService
-        mockModel.pricingMethods = pricingMethods
-        mockModel.notes = notes
-        mockModel.subscriptionTotal = subscriptionTotal
-        mockModel.laborCost = laborCost
-        mockModel.customFields = customFields
-        mockModel.jobDocumentType = jobType
-        mockModel.documentDate = documentDate
-        mockModel.documentDueDate = documentDueDate
-        mockModel.documentInstallationDate = documentInstallationDate
-        mockModel.documentServiceDate = documentServiceDate
-        mockModel.customDateRange = customDateRange
-        mockModel.documentMaterials = documentMaterials
-        return mockModel
-    }
-    
-    static var mockList: [InvoiceModel] {
-        [
-            .mock(
-                id: UUID(),
-                customerID: CustomerModel.mockList[1].id,
-                industryType: .none,
-                serviceType: .none,
-                selectedCustomService: "",
-                pricingMethods: [.init(type: .fixedRate)],
-                notes: "This is a quote for a fence.",
-                subscriptionTotal: 0.0,
-                laborCost: .flatRate(1000.0),
-                customFields: [.init(label: "Added Expense", value: 100.0)],
-                jobType: .quote,
-                documentDate: .today,
-                documentDueDate: .today,
-                documentInstallationDate: .today,
-                documentServiceDate: .today,
-                customDateRange: [],
-                documentMaterials: []
-            ),
-            .mock(
-                id: UUID(),
-                customerID: CustomerModel.mockList[2].id,
-                industryType: .none,
-                serviceType: .none,
-                selectedCustomService: "",
-                pricingMethods: [.init(type: .fixedRate)],
-                notes: "This is a quote note.",
-                subscriptionTotal: 100.0,
-                laborCost: .flatRate(100.0),
-                customFields: [.init(label: "Added Expense", value: 100.0)],
-                jobType: .quote,
-                documentDate: .today,
-                documentDueDate: .today,
-                documentInstallationDate: .today,
-                documentServiceDate: .today,
-                customDateRange: [],
-                documentMaterials: []
-            ),
-            .mock(
-                id: UUID(),
-                customerID: CustomerModel.mockList[1].id,
-                industryType: .none,
-                serviceType: .none,
-                selectedCustomService: "",
-                pricingMethods: [.init(type: .fixedRate)],
-                notes: "This is a quote note.",
-                subscriptionTotal: 100.0,
-                laborCost: .flatRate(100.0),
-                customFields: [.init(label: "Added Expense", value: 100.0)],
-                jobType: .quote,
-                documentDate: .today,
-                documentDueDate: .today,
-                documentInstallationDate: .today,
-                documentServiceDate: .today,
-                customDateRange: [],
-                documentMaterials: []
-            ),
-        ]
-    }
-}
+extension InvoiceModel: JobDocumentTotalProtocol {}

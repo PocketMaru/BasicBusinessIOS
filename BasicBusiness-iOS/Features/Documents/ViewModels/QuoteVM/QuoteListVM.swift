@@ -14,8 +14,12 @@ final class QuoteListVM {
     
     func addVM() -> QuoteFormVM {
         print("Creating addVM for new quote")
+        let quote = QuoteDraftModel(
+            documentType: .quote,
+            industryType: .none
+        )
         let vm = QuoteFormVM(
-            quote: QuoteModel(),
+            quote: quote,
             mode: .add,
             onSubmit: { [weak self] draft in
                 try self?.addQuote(from: draft)
@@ -24,7 +28,7 @@ final class QuoteListVM {
         return vm
     }
     
-    func editVM(with newQuote: QuoteModel) -> QuoteFormVM {
+    func editVM(with newQuote: QuoteDraftModel) -> QuoteFormVM {
         print("Cash MISS -> creating VM for \(newQuote.id)")
         let vm = QuoteFormVM(
             quote: newQuote,

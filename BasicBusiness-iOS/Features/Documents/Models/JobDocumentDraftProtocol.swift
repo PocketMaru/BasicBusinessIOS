@@ -1,13 +1,8 @@
 import Foundation
 
-enum JobDocumentType: String, Codable, CaseIterable {
-    case quote
-    case invoice
-}
-
-protocol JobDocumentProtocol: Codable {
+protocol JobDocumentDraftProtocol: Codable {
     var id: UUID { get set }
-    var customerID: UUID { get set }
+    var customerID: UUID? { get set }
     
     var industryType: IndustryType { get set }
     
@@ -32,4 +27,16 @@ protocol JobDocumentProtocol: Codable {
     var customDateRange: Set<DateComponents> { get set }
     
     var documentMaterials: [DocumentMaterialModel] { get set }
+}
+
+extension JobDocumentDraftProtocol {
+    func documentMaterialTotal(
+    materialCost: (UUID) -> Double
+    ) -> Double {
+        documentMaterials.reduce(0) { total, docMaterial in
+            total + docMaterial.totalCost(
+                with: materialCost(docMaterial.materialID)
+            )
+        }
+    }
 }

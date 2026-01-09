@@ -6,14 +6,16 @@ import SwiftUI
 @Observable
 final class InvoiceFormVM: JobDocumentFormProtocol {
     typealias Document = InvoiceModel
+    typealias Draft = InvoiceDraftModel
     
     let mode: FormMode
     
-    private(set) var original: InvoiceModel
-    var draft: InvoiceModel
+    private(set) var original: InvoiceDraftModel
+    var draft: InvoiceDraftModel
     
-    private let onSubmit: (InvoiceModel) throws -> Void
+    private let onSubmit: (Document) throws -> Void
     
+    var customerError: String? = nil
     var serviceTypeError: String? = nil
     var pricingMethodError: String? = nil
     var customFieldError: String? = nil
@@ -21,9 +23,9 @@ final class InvoiceFormVM: JobDocumentFormProtocol {
     var showAlert: Bool = false
     
     init(
-        invoice: InvoiceModel,
+        invoice: Draft,
         mode: FormMode,
-        onSubmit: @escaping (InvoiceModel) throws -> Void
+        onSubmit: @escaping (Document) throws -> Void
     ) {
         self.original = invoice
         self.draft = invoice
@@ -51,11 +53,13 @@ final class InvoiceFormVM: JobDocumentFormProtocol {
     }
     
     func validateFields() -> Bool {
+        customerError = draft.customerID == nil ? "Please select a customer." : nil
         serviceTypeError = draft.serviceType == .none ? "Please select a service." : nil
         pricingMethodError = draft.pricingMethods.isEmpty ? "Please select a pricing method." : nil
         customFieldError = nil
         
         return [
+            customerError,
             serviceTypeError,
             pricingMethodError,
             customFieldError,
@@ -67,17 +71,44 @@ final class InvoiceFormVM: JobDocumentFormProtocol {
     }
     
     func clearErrors() {
+        customerError = nil
         serviceTypeError = nil
         pricingMethodError = nil
         customFieldError = nil
         generalError = nil
     }
+
+    func convertDraftToDocument(_ draft: Draft) -> Document? {
+        guard let customerID = draft.customerID else { return nil }
+        return InvoiceModel(
+            id: draft.id,
+            customerID: customerID,
+            industryType: draft.industryType,
+            serviceType: draft.serviceType,
+            selectedCustomService: draft.selectedCustomService,
+            pricingMethods: draft.pricingMethods,
+            notes: draft.notes,
+            subscriptionTotal: draft.subscriptionTotal,
+            laborCost: draft.laborCost,
+            customFields: draft.customFields,
+            jobDocumentType: draft.jobDocumentType,
+            documentDate: draft.documentDate,
+            documentDueDate: draft.documentDueDate,
+            documentInstallationDate: draft.documentInstallationDate,
+            documentServiceDate: draft.documentServiceDate,
+            customDateRange: draft.customDateRange,
+            documentMaterials: draft.documentMaterials
+        )
+    }
     
     @discardableResult
     func trySubmit() -> Bool {
         guard validateFields() else { return false }
+        guard var document = convertDraftToDocument(draft) else { return false }
+        
+        document.customFields = cleanDraft(document.customFields)
         do {
-            try onSubmit(draft)
+            try onSubmit(document)
             return true
         } catch {
             generalError = error.localizedDescription

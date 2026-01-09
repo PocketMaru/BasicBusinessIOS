@@ -126,11 +126,10 @@ final class JobDocumentRouterFeature {
     
     func startEditingQuote(id: UUID) {
         guard let quote = quote(withID: id) else { return }
-        
         activeForm = .quote(
             id: quote.id,
             vm: QuoteFormVM(
-                quote: quote,
+                quote: quote.toDraft(),
                 mode: .edit,
                 onSubmit: { [weak self] draft in
                     try self?.quoteFeatureVM.updateQuote(from: draft)
@@ -144,7 +143,7 @@ final class JobDocumentRouterFeature {
         activeForm = .invoice(
             id: invoice.id,
             vm: InvoiceFormVM(
-                invoice: invoice,
+                invoice: invoice.toDraft(),
                 mode: .edit,
                 onSubmit: { [weak self] draft in
                     try self?.invoiceFeatureVM.updateInvoice(from: draft)
@@ -152,8 +151,13 @@ final class JobDocumentRouterFeature {
         )
     }
     private func makeQuoteFormVM() -> QuoteFormVM {
+        let quote = QuoteDraftModel(
+            documentType: .quote,
+            industryType: userVM.user.industryType
+        )
+        
         let form = QuoteFormVM(
-            quote: QuoteModel(),
+            quote: quote,
             mode: FormMode.add,
             onSubmit: { [weak self] draft in
                 try self?.quoteFeatureVM.addQuote(from: draft)
@@ -164,8 +168,13 @@ final class JobDocumentRouterFeature {
     }
     
     private func makeInvoiceFormVM() -> InvoiceFormVM {
+        let invoice = InvoiceDraftModel(
+            documentType: .invoice,
+            industryType: userVM.user.industryType
+        )
+        
         let form = InvoiceFormVM(
-            invoice: InvoiceModel(),
+            invoice: invoice,
             mode: FormMode.add,
             onSubmit: { [weak self] draft in
                 try self?.invoiceFeatureVM.addInvoice(from: draft)
@@ -364,7 +373,7 @@ extension JobDocumentRouterFeature {
 @MainActor
 extension JobDocumentRouterFeature {
     
-    func totalCost(for document: JobDocumentProtocol) -> Double {
+    func totalCost(for document: JobDocumentTotalProtocol) -> Double {
         
         let materialTotal = document.documentMaterialTotal { materialID in
             materialFeatureVM.materialSearchByID(with: materialID)?.unitCost ?? 0
