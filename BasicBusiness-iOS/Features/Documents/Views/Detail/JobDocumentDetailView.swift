@@ -1,26 +1,31 @@
 import SwiftUI
 
 struct JobDocumentDetailView: View {
-    var detail: JobDocumentRouterFeature.JobDocumentDetail
+    var router: JobDocumentRouterFeature
+    var route: JobDocumentRouterFeature.JobDocumentRoute
     var customer: CustomerModel
     @State private var isEditing: Bool = false
-    @State private var attemptedEdit: Bool = false
+    @State private var attemptedSave: Bool = false
     var body: some View {
         ZStack {
             AppColors.bg.ignoresSafeArea()
             ScrollView {
                 VStack(spacing: 16) {
-                    switch detail {
-                    case .quote(let quote):
-                        DocumentDetailContent(
-                            document: .quote(quote),
-                            customer: customer
-                        )
-                    case .invoice(let invoice):
-                        DocumentDetailContent(
-                            document: .invoice(invoice),
-                            customer: customer
-                        )
+                    switch route {
+                    case .quoteDetail(let id):
+                        if let quote = router.quote(withID: id) {
+                            DocumentDetailContent(
+                                document: .quote(quote),
+                                customer: customer
+                            )
+                        }
+                    case .invoiceDetail(let id):
+                        if let invoice = router.invoice(withID: id) {
+                            DocumentDetailContent(
+                                document: .invoice(invoice),
+                                customer: customer
+                            )
+                        }
                     }
                 }
                 .padding(.horizontal, 16)
@@ -28,24 +33,18 @@ struct JobDocumentDetailView: View {
         }
         .scrollContentBackground(.hidden)
         .ToolBarTitle(
-            businessName: customer.displayName,
+            title: customer.displayName,
             primaryIconName: nil,
             editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
-            editIconTapped: nil
-//                {
-//                if isEditing {
-//                    attemptedEdit = true
-//                    let success = customer.trySubmit()
-//                    if success {
-//                        isEditing = false
-//                        attemptedEdit = false
-//                    }
-//                } else {
-//                    customer.cancelEdits()
-//                    isEditing = true
-//                    attemptedEdit = true
-//                }
-//            }
+            editIconTapped: {
+                switch route {
+                case .quoteDetail(let id):
+                    router.startEditingQuote(id: id)
+                case .invoiceDetail(let id):
+                    router.startEditingInvoice(id: id)
+                }
+            },
+            editIconColor: AppColors.accent
         )
     }
 }

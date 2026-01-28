@@ -56,7 +56,7 @@ struct BusinessStatsView: View {
                     titleThree: "Total Open Quotes",
                     valueThree: "\(journalFeature.allQuotes.count)",
                     titleFour: "Total Customers",
-                    valueFour: "\(journalFeature.allCustomers)",
+                    valueFour: "\(journalFeature.allCustomers.count)",
                     titleFive: nil,
                     valueFive: nil,
                     titleSix: nil,
@@ -88,15 +88,19 @@ struct BusinessStatsView: View {
             case .customers:
                 EmptyView()
             case .materials:
-                EmptyView()
+                MaterialListView(materialListVM: MaterialListVM(
+                    materialFeatureVM: journalFeature.router.materialFeatureVM)
+                )
             }
         }
         .ToolBarTitle(
-            businessName: journalFeature.businessName,
+            title: journalFeature.businessName,
+            primaryIconName: "chart.bar",
             primaryIconTapped: {
                 activeSheet = .user
             },
             thirdIconName: "books.vertical",
+            thirdIconColor: AppColors.accent,
             thirdIconTapped: {
                 journalDestination.append(.journal)
             }

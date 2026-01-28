@@ -2,22 +2,24 @@ import SwiftUI
 // My version of liquid glass for titles, light and dark mode variants.
 extension View {
     func ToolBarTitle(
-        businessName: String = "Basic Business",
+        title: String = "Basic Business",
         
-        primaryIconName: String? = "chart.bar",
+        primaryIconName: String? = "",
         primaryIconTapped: (() -> Void)? = nil,
         primaryIconColor: Color? = nil,
         
-        editIconName: String? = "person.circle.fill",
+        editIconName: String? = "",
         toggleEditIconState: Binding<Bool>? = nil,
         editIconTapped: (() -> Void)? = nil,
-    
+        editIconColor: Color? = nil,
+        
         calendarAction: ((DocumentDateFilter) -> Void)? = nil,
         
         onCreateQuote: (() -> Void)? = nil,
         onCreateInvoice: (() -> Void)? = nil,
         
-        thirdIconName: String? = "book.fill",
+        thirdIconName: String? = "",
+        thirdIconColor: Color? = nil,
         toggleThirdIconState: Binding<Bool>? = nil,
         thirdIconTapped: (() -> Void)? = nil,
         
@@ -26,7 +28,7 @@ extension View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(businessName)
+                    Text(title)
                         .bubbleStyle(textColor: AppColors.accent)
                         .shadow(color: Color.black.opacity(0.08), radius: 2, x: 0, y: 1)
                 }
@@ -46,15 +48,15 @@ extension View {
                         }
                     }
                 }
-                if let editIconTapped {
+                if let editIconTapped = editIconTapped, let editIconColor = editIconColor, let editIconName = editIconName {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             toggleEditIconState?.wrappedValue.toggle()
                             editIconTapped()
                         } label: {
-                            Image(systemName: editIconName ?? "person.crop.circle.badge.plus")
+                            Image(systemName: editIconName )
                                 .font(.title3.bold())
-                                .foregroundStyle(AppColors.accent)
+                                .foregroundStyle(editIconColor)
                         }
                     }
                     
@@ -108,12 +110,12 @@ extension View {
                         }
                     }
                 }
-                if let action = thirdIconTapped, let thirdIconName = thirdIconName {
+                if let action = thirdIconTapped, let thirdIconName = thirdIconName, let thirdIconColor = thirdIconColor {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: action) {
                             Image(systemName: thirdIconName)
                                 .font(.title3.bold())
-                                .foregroundStyle(AppColors.accent)
+                                .foregroundStyle(thirdIconColor)
                         }
                     }
                 }

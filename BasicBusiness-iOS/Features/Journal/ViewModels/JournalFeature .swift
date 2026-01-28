@@ -30,7 +30,13 @@ final class JournalFeature {
     var forecastedExpense: Double {
         router.quoteFeatureVM.allQuotes.reduce(0) { total, quote in
             total + quote.documentMaterialTotal { materialID in
-                router.materialFeatureVM.materialSearchByID(with: materialID)?.unitCost ?? 0
+                guard
+                    let materials = router.materialFeatureVM.materialSearchByID(with: materialID),
+                    let unitCost = Double(materials.unitCost)
+                else {
+                    return 0
+                }
+                return unitCost
             }
         }
     }

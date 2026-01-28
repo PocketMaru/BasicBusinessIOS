@@ -10,7 +10,7 @@ final class JobDocumentRouterFeature {
     let customerFeatureVM: CustomerFeatureVM
     let quoteFeatureVM: QuoteFeatureVM
     let invoiceFeatureVM: InvoiceFeatureVM
-    let materialFeatureVM: MaterialFeatureVM
+    let materialFeatureVM: MaterialFeature
     var documentDateFilter: DocumentDateFilter = .today
     var activeForm: JobDocumentForm? = nil
     var route: JobDocumentRoute? = nil
@@ -77,6 +77,11 @@ final class JobDocumentRouterFeature {
         case invoiceDetail(id: UUID)
     }
     
+    enum JobDocumentEditRoute {
+        case quote(QuoteFormVM)
+        case invoice(InvoiceFormVM)
+    }
+    
     enum JobDocumentDetail {
         case quote(QuoteModel)
         case invoice(InvoiceModel)
@@ -92,7 +97,7 @@ final class JobDocumentRouterFeature {
         customerFeatureVM: CustomerFeatureVM,
         quoteFeatureVM: QuoteFeatureVM,
         invoiceFeatureVM: InvoiceFeatureVM,
-        materialFeatureVM: MaterialFeatureVM,
+        materialFeatureVM: MaterialFeature,
     ) {
         self.userVM = userVM
         self.customerFeatureVM = customerFeatureVM
@@ -339,7 +344,7 @@ extension JobDocumentRouterFeature {
             #warning("Will trigger an alert")
         }
     
-        let total = docMaterial.totalCost(with: material.unitCost)
+        let total = docMaterial.totalCost(with: Double(material.unitCost))
         
         switch docType {
         case .quote(let quoteID, let quoteVM):
@@ -376,7 +381,13 @@ extension JobDocumentRouterFeature {
     func totalCost(for document: JobDocumentTotalProtocol) -> Double {
         
         let materialTotal = document.documentMaterialTotal { materialID in
-            materialFeatureVM.materialSearchByID(with: materialID)?.unitCost ?? 0
+            guard
+                let material = materialFeatureVM.materialSearchByID(with: materialID),
+                let totalCost = Double(material.unitCost)
+            else {
+                return 0
+            }
+            return totalCost
         }
         let laborCost = document.laborCost?.calculateTotal() ?? 0
         let customFieldCost = document.customFields.map { Double($0.value ?? 0) }.reduce(0, +)

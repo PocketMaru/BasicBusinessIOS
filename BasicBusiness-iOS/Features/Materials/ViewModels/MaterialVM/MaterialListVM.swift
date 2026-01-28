@@ -3,10 +3,10 @@ import Foundation
 @MainActor
 @Observable
 final class MaterialListVM {
-    let materialFeatureVM: MaterialFeatureVM
+    let materialFeatureVM: MaterialFeature
     
     init(
-        materialFeatureVM: MaterialFeatureVM,
+        materialFeatureVM: MaterialFeature,
     ) {
         self.materialFeatureVM = materialFeatureVM
     }
@@ -14,7 +14,7 @@ final class MaterialListVM {
     func addVM() -> MaterialFormVM {
         print("Creating addVM for new material")
         let vm = MaterialFormVM(
-            material: MaterialModel(),
+            material: MaterialFormState(),
             mode: .add,
             onSubmit: { [weak self] draft in
                 try self?.addMaterial(from: draft)
@@ -26,7 +26,7 @@ final class MaterialListVM {
     func editVM(with newMaterial: MaterialModel) -> MaterialFormVM {
         print("Cash MISS -> creating VM for \(newMaterial.id)")
         let vm = MaterialFormVM(
-            material: newMaterial,
+            material: newMaterial.toFormState(),
             mode: .edit,
             onSubmit: { [weak self] draft in
                 try self?.updateMaterials(from: draft)

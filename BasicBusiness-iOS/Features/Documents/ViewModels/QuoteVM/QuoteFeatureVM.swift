@@ -4,7 +4,7 @@ import Foundation
 @Observable
 final class QuoteFeatureVM {
     var allQuotes: [QuoteModel] = []
-    private let saveQuote = SaveQuote()
+    private let saveQuote = ModelStorageUseCase<QuoteModel>(filename: "quotes.json")
     
     init () {
         do {
@@ -16,7 +16,7 @@ final class QuoteFeatureVM {
     
     func addQuote(from draft: QuoteModel) throws {
         let newQuote = try saveQuote.create(
-            draft: draft,
+            newModel: draft,
             currentList: allQuotes
         )
         allQuotes = newQuote
@@ -27,7 +27,7 @@ final class QuoteFeatureVM {
             throw SaveError.writeFailed(reason: "Quote not found")
         }
         let updated = try saveQuote.update(
-            quote: draft,
+            updated: draft,
             currentList: allQuotes
         )
         allQuotes = updated
@@ -39,7 +39,7 @@ final class QuoteFeatureVM {
         }
         let quoteToRemove = allQuotes[index]
         allQuotes = try saveQuote.delete(
-            quote: quoteToRemove,
+            model: quoteToRemove,
             currentList: allQuotes
         )
     }

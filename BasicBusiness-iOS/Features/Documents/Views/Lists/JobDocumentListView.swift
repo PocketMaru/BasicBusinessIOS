@@ -46,7 +46,8 @@ struct JobDocumentListView: View {
                                let customer = jobDocRouter
                                 .customer(for: quote.customerID) {
                                 JobDocumentDetailView(
-                                    detail: .quote(quote),
+                                    router: jobDocRouter,
+                                    route: .quoteDetail(id: id),
                                     customer: customer
                                 )
                             }
@@ -56,7 +57,8 @@ struct JobDocumentListView: View {
                                let customer = jobDocRouter
                                 .customer(for: invoice.customerID) {
                                 JobDocumentDetailView(
-                                    detail: .invoice(invoice),
+                                    router: jobDocRouter,
+                                    route: .invoiceDetail(id: id),
                                     customer: customer
                                 )
                             }
@@ -84,7 +86,8 @@ struct JobDocumentListView: View {
             }
         }
         .ToolBarTitle(
-            businessName: userVM.user.businessName,
+            title: userVM.user.businessName,
+            primaryIconName: "chart.bar",
             primaryIconTapped: {
                 if activeSheet == nil {
                     activeSheet = .user

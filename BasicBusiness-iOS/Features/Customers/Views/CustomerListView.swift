@@ -42,7 +42,8 @@ struct CustomerListView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .ToolBarTitle(
-                businessName: userVM.user.businessName,
+                title: userVM.user.businessName,
+                primaryIconName: "chart.bar",
                 primaryIconTapped: {
                     if activeSheet == nil {
                         activeSheet = .user
@@ -50,9 +51,12 @@ struct CustomerListView: View {
                 },
                 editIconName: "person.crop.circle.badge.plus",
                 toggleEditIconState: nil,
+                
                 editIconTapped: {
                 activeSheet = .addCustomer
-            })
+            },
+                editIconColor: AppColors.accent
+            )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

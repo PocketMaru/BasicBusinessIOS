@@ -117,7 +117,7 @@ struct CustomerDetailView: View {
         .scrollContentBackground(.hidden)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ToolBarTitle(
-            businessName: customer.draft.firstName + " " + customer.draft.lastName,
+            title: customer.draft.firstName + " " + customer.draft.lastName,
             primaryIconName: nil,
             editIconName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill",
             editIconTapped: {
@@ -133,7 +133,9 @@ struct CustomerDetailView: View {
                     isEditing = true
                     attemptedEdit = true
                 }
-            })
+            },
+            editIconColor: AppColors.accent
+        )
         
     }
 }

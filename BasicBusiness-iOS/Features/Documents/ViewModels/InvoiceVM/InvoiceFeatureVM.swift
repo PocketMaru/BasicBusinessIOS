@@ -4,7 +4,7 @@ import Foundation
 @Observable
 final class InvoiceFeatureVM {
     var allInvoices: [InvoiceModel] = []
-    private let saveInvoice = SaveInvoice()
+    private let saveInvoice = ModelStorageUseCase<InvoiceModel>(filename: "invoices.json")
     
     init() {
         do {
@@ -16,7 +16,7 @@ final class InvoiceFeatureVM {
     
     func addInvoice(from draft: InvoiceModel) throws {
         let newInvoice = try saveInvoice.create(
-            draft: draft,
+            newModel: draft,
             currentList: allInvoices
         )
         allInvoices = newInvoice
@@ -27,7 +27,7 @@ final class InvoiceFeatureVM {
             throw SaveError.writeFailed(reason: "Invoice not found")
         }
         let updated = try saveInvoice.update(
-            invoice: draft,
+            updated: draft,
             currentList: allInvoices
         )
         allInvoices = updated
@@ -39,7 +39,7 @@ final class InvoiceFeatureVM {
         }
         let invoiceToRemove = allInvoices[index]
         allInvoices = try saveInvoice.delete(
-            invoice: invoiceToRemove,
+            model: invoiceToRemove,
             currentList: allInvoices
         )
     }

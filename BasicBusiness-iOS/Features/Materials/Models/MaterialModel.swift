@@ -1,19 +1,57 @@
 import Foundation
 
+struct MaterialFormState: Identifiable, Equatable {
+    var id: UUID?
+    var name: String = ""
+    var description: String = ""
+    var unitCost: String = ""
+    var unitType: ProductUnitTypes = .unit
+}
+
+extension MaterialFormState {
+    func toMaterial() throws -> MaterialModel {
+        return MaterialModel(
+            id: id ?? UUID(),
+            name: name,
+            description: description,
+            unitCost: unitCost,
+            unitType: unitType
+        )
+    }
+}
+
 struct MaterialModel: Identifiable, Codable, Equatable, Hashable {
     
-    var id: UUID = UUID()
+    var id: UUID
     var name: String
-    var description: String?
-    var unitCost: Double
+    var description: String
+    var unitCost: String
     var unitType: ProductUnitTypes
     
-    init() {
-        self.id = UUID()
-        self.name = ""
-        self.description = nil
-        self.unitCost = 0
-        self.unitType = .unit
+    init(
+        id: UUID = UUID(),
+        name: String,
+        description: String,
+        unitCost: String,
+        unitType: ProductUnitTypes
+    ) {
+        self.id = id
+        self.name = name
+        self.description = description
+        self.unitCost = unitCost
+        self.unitType = unitType
+    }
+}
+
+extension MaterialModel {
+    func toFormState() -> MaterialFormState {
+        MaterialFormState(
+            id: id,
+            name: name,
+            description: description,
+            unitCost: unitCost,
+            unitType: unitType
+        )
     }
 }
 
@@ -24,14 +62,14 @@ enum ProductUnitTypes: String, CaseIterable, Identifiable, Codable {
     
     var displayName: String {
         switch self {
-        case .gram: return "grams"
-        case .ounce: return "ounces"
-        case .pound: return "pounds"
-        case .liter: return "liters"
-        case .gallon: return "gallons"
-        case .bag: return "bags"
-        case .unit: return "units"
-        case .piece: return "pieces"
+        case .gram: return "Gram"
+        case .ounce: return "Ounce"
+        case .pound: return "Pound"
+        case .liter: return "Liter"
+        case .gallon: return "Gallon"
+        case .bag: return "Bag"
+        case .unit: return "Unit"
+        case .piece: return "Piece"
         }
     }
     

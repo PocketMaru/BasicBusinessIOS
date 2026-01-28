@@ -8,7 +8,7 @@ final class AppFeature {
     let customerFeatureVM: CustomerFeatureVM
     let customerListVM: CustomerListVM
     
-    let materialFeatureVM: MaterialFeatureVM
+    let materialFeatureVM: MaterialFeature
     let materialListVM: MaterialListVM
     
     let quoteFeatureVM: QuoteFeatureVM
@@ -35,7 +35,7 @@ final class AppFeature {
             customerFeatureVM: customerFeatureVM
         )
         
-        self.materialFeatureVM = MaterialFeatureVM()
+        self.materialFeatureVM = MaterialFeature()
         self.materialListVM = MaterialListVM(
             materialFeatureVM: materialFeatureVM
         )

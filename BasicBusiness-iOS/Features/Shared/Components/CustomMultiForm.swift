@@ -180,34 +180,46 @@ struct CustomMultiForm: View {
 
 // MARK: - Future detail form view refactor
 enum EditControl {
-    case industryPicker(Binding<IndustryType>)
+    case industryPicker(Binding<IndustryChoice>)
     case servicePicker(Binding<ServiceType>)
+    case materialTypePicker(Binding<ProductUnitTypes>)
     case customField(Binding<[CustomFieldModel]>)
-    case textField(Binding<String>)
-    case currencyField(Binding<Double>)
+    case textField(Binding<String>, placeholder: String? = nil)
+    case currencyField(Binding<String>)
     case none
 }
 
 struct DetailField: Identifiable {
-    let id = UUID()
+    var id: String { title }
     let title: String
     let value: String?
     let edit: EditControl
+    let errorMessage: String?
 }
 
 struct MultiForm: View {
     let fields: [DetailField]
     let isEditing: Bool
-    
+    let attemptedSave: Bool
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             ForEach(fields) { field in
                 Text(field.title)
-                    .font(.system(size: 15, weight: .medium))
+                    .fontWeight(.medium)
                     .foregroundStyle(AppColors.accent)
                 if isEditing {
                     editView(for: field.edit)
-                    if let value = field.value { Text(value) }
+                    if attemptedSave {
+                        if let error = field.errorMessage {
+                            Text(error)
+                                .foregroundStyle(AppColors.error)
+                                .frame(minHeight: 16, alignment: .leading)
+                        }
+                    }
+                } else if let value = field.value {
+                    Text(value)
+                        .foregroundStyle(AppColors.secondaryText)
+                        .fontWeight(.semibold)
                 }
                 if field.id != fields.last?.id {
                     Divider()
@@ -225,27 +237,52 @@ struct MultiForm: View {
         switch control {
         case .industryPicker(let binding):
             Picker("Industry", selection: binding) {
-                ForEach(IndustryChoice.all) {
-                    Text($0.displayName).tag($0.type)
+                ForEach(IndustryChoice.all) { type in
+                    Text(type.displayName).tag(type)
                 }
             }
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
         case .servicePicker(let binding):
             Picker("Service", selection: binding) {
-                ForEach(ServiceType.allCases) {
-                    Text($0.displayName)
+                ForEach(ServiceType.allCases, id: \.self) { type in
+                    Text(type.displayName).tag(type)
+                        .foregroundStyle(AppColors.secondaryText)
                 }
             }
+            .fontWeight(.semibold)
+            .pickerStyle(.wheel)
+            .frame(maxWidth: .infinity, alignment: .leading)
             
-        case .customField(let binding):
-            ForEach(binding) { binding in
-                TextField("", text: binding.label)
-                TextField("", value: binding.value, format: .currency(code: "USD"))
+        case .materialTypePicker(let binding):
+            Picker("Material", selection: binding) {
+                ForEach(ProductUnitTypes.allCases, id: \.self) { type in
+                    Text(type.displayName).tag(type)
+                }
             }
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity, alignment: .leading)
             
-        case .textField(let binding):
-            TextField("", text: binding)
+        case .customField(let fieldsBinding):
+            ForEach(fieldsBinding) { $binding in
+                TextField("", text: $binding.label)
+                TextField("", value: $binding.value, format: .currency(code: "USD"))
+            }
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+        case .textField(let binding, let placeholder):
+            TextField(placeholder ?? "", text: binding)
+                .fontWeight(.semibold)
+                .foregroundStyle(AppColors.secondaryText)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
         case .currencyField(let binding):
-            TextField("", value: binding, format: .currency(code: "USD"))
+            TextField("", text: binding)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
         case .none:
             EmptyView()
         }

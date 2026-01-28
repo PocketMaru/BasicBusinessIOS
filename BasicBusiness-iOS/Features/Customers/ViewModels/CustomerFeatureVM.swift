@@ -4,7 +4,7 @@ import Foundation
 @Observable
 final class CustomerFeatureVM {
     var allCustomers: [CustomerModel] = []
-    private let saveCustomer = SaveCustomer()
+    private let saveCustomer = ModelStorageUseCase<CustomerModel>(filename: "customers.json")
     init() {
         do {
             allCustomers = try saveCustomer.load()
@@ -13,26 +13,21 @@ final class CustomerFeatureVM {
         }
     }
     
-    func addCustomer(from draft: CustomerModel) throws {
-        let newCustomer = try saveCustomer.create(newCustomer: draft, currentList: allCustomers)
-        allCustomers = newCustomer
+    func addCustomer(from newCustomer: CustomerModel) throws {
+        let updatedList = try saveCustomer.create(newModel: newCustomer, currentList: allCustomers)
+        allCustomers = updatedList
     }
     
-    func updateCustomer(from draft: CustomerModel) throws {
-        guard let _ = allCustomers.firstIndex(where: { $0.id == draft.id}) else {
-            throw SaveError.writeFailed(reason: "Customer not found")
-        }
-        let updated = try saveCustomer.update(updated: draft, currentList: allCustomers)
+    func updateCustomer(from newCustomer: CustomerModel) throws {
+        let updated = try saveCustomer.update(updated: newCustomer, currentList: allCustomers)
         allCustomers = updated
     }
     
     func removeCustomer(at index: Int) throws {
-        guard allCustomers.indices.contains(index) else {
-            throw SaveError.writeFailed(reason: "Invalid index \(index)")
-        }
+        guard allCustomers.indices.contains(index) else { return }
         let customerToRemove = allCustomers[index]
         allCustomers = try saveCustomer.delete(
-            customer: customerToRemove,
+            model: customerToRemove,
             currentList: allCustomers
         )
     }

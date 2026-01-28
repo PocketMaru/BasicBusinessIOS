@@ -113,7 +113,7 @@ final class QuoteFormVM: JobDocumentFormProtocol {
     func trySubmit() -> Bool {
         guard validateFields() else { return false }
         let cleanedDraft = cleanDraft(draft)
-        guard var document = convertDraftToDocument(cleanedDraft) else { return false }
+        guard let document = convertDraftToDocument(cleanedDraft) else { return false }
         do {
             try onSubmit(document)
             clearErrors()

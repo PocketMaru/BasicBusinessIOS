@@ -17,10 +17,17 @@ struct ExpenseView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarTitleDisplayMode(.inline)
         .ToolBarTitle(
-            businessName: userVM.user.businessName,
+            title: userVM.user.businessName,
+            primaryIconName: "chart.bar",
             primaryIconTapped: {
             activeSheet = .user
-        })
+        },
+            thirdIconName: "plus.circle",
+            thirdIconColor: AppColors.accent,
+            thirdIconTapped: {
+                
+            }
+        )
     }
     
 }

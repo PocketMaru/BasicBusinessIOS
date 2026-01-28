@@ -1,9 +1,15 @@
 import Foundation
+import Observation
 
-final class MaterialFeatureVM {
+@MainActor
+@Observable
+final class MaterialFeature {
     var allMaterials: [MaterialModel] = []
-    private let saveMaterial = SaveMaterial()
+    private let saveMaterial = ModelStorageUseCase<MaterialModel>(filename: "materials.json")
     
+    #warning("Create a load function that runs off the main thread")
+    #warning("Run this function in the AppFeature on init of the app feature in a function that calls all feature load functions")
+    #warning("Call this function in main tab view on load of the view")
     init () {
         do {
             allMaterials = try saveMaterial.load()
@@ -14,30 +20,24 @@ final class MaterialFeatureVM {
     
     func addMaterial(from draft: MaterialModel) throws {
         let newMaterials = try saveMaterial.create(
-            draft: draft,
+            newModel: draft,
             currentList: allMaterials
         )
         allMaterials = newMaterials
     }
     
     func updateMaterials(from draft: MaterialModel) throws {
-        guard let _ = allMaterials.firstIndex(where: { $0.id == draft.id }) else {
-            throw SaveError.writeFailed(reason: "Material not found")
-        }
         let updated = try saveMaterial.update(
-            material: draft,
+            updated: draft,
             currentList: allMaterials
         )
         allMaterials = updated
     }
     
     func deleteMaterial(at index: Int) throws {
-        guard allMaterials.indices.contains(index) else {
-            throw SaveError.writeFailed(reason: "Invalid index \(index)")
-        }
         let materialToRemove = allMaterials[index]
         allMaterials = try saveMaterial.delete(
-            material: materialToRemove,
+            model: materialToRemove,
             currentList: allMaterials
         )
     }

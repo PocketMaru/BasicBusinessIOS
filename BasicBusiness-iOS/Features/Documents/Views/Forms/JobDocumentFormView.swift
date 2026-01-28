@@ -59,9 +59,10 @@ struct JobDocumentFormView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .ToolBarTitle(
-                businessName: adapter.formTitle,
+                title: adapter.formTitle,
                 primaryIconName: nil,
                 thirdIconName: selectedCustomer != nil ? "checkmark.circle.fill" : nil,
+                thirdIconColor: AppColors.accent,
                 thirdIconTapped: {
                     // Confirm Document
                 }

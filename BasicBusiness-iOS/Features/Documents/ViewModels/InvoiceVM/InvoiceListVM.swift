@@ -6,12 +6,12 @@ import Observation
 final class InvoiceListVM {
     let invoiceFeatureVM: InvoiceFeatureVM
     let customerFeatureVM: CustomerFeatureVM
-    var materialFeatureVM: MaterialFeatureVM
+    var materialFeatureVM: MaterialFeature
     
     init(
         invoiceFeatureVM: InvoiceFeatureVM,
         customerFeatureVM: CustomerFeatureVM,
-        materialFeatureVM: MaterialFeatureVM,
+        materialFeatureVM: MaterialFeature,
     ) {
         self.invoiceFeatureVM = invoiceFeatureVM
         self.customerFeatureVM = customerFeatureVM

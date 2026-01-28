@@ -82,7 +82,7 @@ struct UserView: View {
             .scrollContentBackground(.hidden)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ToolBarTitle(
-                businessName:"User Profile",
+                title:"User Profile",
                 primaryIconName: "arrowshape.backward.circle.fill",
                 primaryIconTapped: {
                     isPresented.toggle()
