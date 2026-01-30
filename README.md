@@ -9,6 +9,25 @@ This project is intentionally structured as a long-term portfolio demonstration 
 
 ---
 
+## Screenshots
+
+### Business Stats
+![Business Stats](Screenshots/business-stats.png)
+
+### Customers
+![Customers](Screenshots/customers.png)
+
+### Create Quote
+![Create Quote](Screenshots/quoting-invoicing.png)
+
+### Quote Detail
+![Quote Detail](Screenshots/quoting-invoicing-detail.png)
+
+### Materials
+![Materials](Screenshots/materials.png)
+
+---
+
 ## Engineering Highlights
 
 - Explicit bootstrap phase restoring domain models before UI activation.
@@ -18,16 +37,6 @@ This project is intentionally structured as a long-term portfolio demonstration 
 - Derived state preferred over stored duplication.
 - Explicit save/load flows instead of hidden global state.
 - Architecture designed for controlled evolution and migration.
-
----
-
-## Screenshots
-
-(Add screenshots to a `/Screenshots` folder and update paths below.)
-
-| Dashboard | Customer Detail | Quote View |
-|-----------|----------------|------------|
-| ![](Screenshots/dashboard.png) | ![](Screenshots/customer.png) | ![](Screenshots/quote.png) |
 
 ---
 
@@ -190,8 +199,8 @@ Recommended: Recent stable Xcode release.
 
 Clone:
 ```bash
-git clone https://github.com/PocketMaru/BasicBusiness.git
-cd BasicBusiness
+git clone https://github.com/PocketMaru/BasicBusinessIOS.git
+cd BasicBusinessIOS
 ```
 
 Open in Xcode:
