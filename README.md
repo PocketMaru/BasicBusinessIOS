@@ -12,32 +12,24 @@ This project is intentionally structured as a long-term portfolio demonstration 
 
 ### Dashboard / Business Stats
 <p align="center">
-  <img src="Screenshots/business-stats.png" width="350" />
+  <img src="Screenshots/business-stats.png" width="320" />
 </p>
 
 ### Customers
 <p align="center">
-  <img src="Screenshots/customers.png" width="350" />
+  <img src="Screenshots/customers.png" width="320" />
+  <img src="Screenshots/customer-detail.png" width="320" />
 </p>
 
-### Customer Detail
+### Quotes & Invoices
 <p align="center">
-  <img src="Screenshots/customer-detail.png" width="350" />
-</p>
-
-### Create Quote
-<p align="center">
-  <img src="Screenshots/quoting-invoicing.png" width="350" />
-</p>
-
-### Quote Detail
-<p align="center">
-  <img src="Screenshots/quoting-invoicing-detail.png" width="350" />
+  <img src="Screenshots/quoting-invoicing.png" width="320" />
+  <img src="Screenshots/quoting-invoicing-detail.png" width="320" />
 </p>
 
 ### Materials
 <p align="center">
-  <img src="Screenshots/materials.png" width="350" />
+  <img src="Screenshots/materials.png" width="320" />
 </p>
 ---
 
