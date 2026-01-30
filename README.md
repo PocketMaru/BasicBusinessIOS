@@ -17,6 +17,9 @@ This project is intentionally structured as a long-term portfolio demonstration 
 ### Customers
 ![Customers](Screenshots/customers.png)
 
+### Customer Detail
+![Customer Detail](Screenshots/customer-detail.png)
+
 ### Create Quote
 ![Create Quote](Screenshots/quoting-invoicing.png)
 
