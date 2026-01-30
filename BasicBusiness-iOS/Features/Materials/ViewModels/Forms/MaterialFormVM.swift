@@ -7,8 +7,8 @@ final class MaterialFormVM {
     
     let mode: FormMode
     
-    private(set) var original: MaterialFormState
-    var draft: MaterialFormState
+    private(set) var original: MaterialDraftModel
+    var draft: MaterialDraftModel
     
     private let onSubmit: (MaterialModel) throws -> Void
     
@@ -37,7 +37,7 @@ final class MaterialFormVM {
     var generalError: String? = nil
     var showAlert: Bool = false
     init(
-        material: MaterialFormState,
+        material: MaterialDraftModel,
         mode: FormMode,
         onSubmit: @escaping (MaterialModel) throws -> Void
     ) {

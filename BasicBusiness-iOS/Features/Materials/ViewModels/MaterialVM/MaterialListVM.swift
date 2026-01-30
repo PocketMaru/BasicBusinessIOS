@@ -14,7 +14,7 @@ final class MaterialListVM {
     func addVM() -> MaterialFormVM {
         print("Creating addVM for new material")
         let vm = MaterialFormVM(
-            material: MaterialFormState(),
+            material: MaterialDraftModel(),
             mode: .add,
             onSubmit: { [weak self] draft in
                 try self?.addMaterial(from: draft)

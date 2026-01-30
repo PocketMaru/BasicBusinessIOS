@@ -1,6 +1,6 @@
 import Foundation
 
-struct MaterialFormState: Identifiable, Equatable {
+struct MaterialDraftModel: Identifiable, Equatable {
     var id: UUID?
     var name: String = ""
     var description: String = ""
@@ -8,7 +8,7 @@ struct MaterialFormState: Identifiable, Equatable {
     var unitType: ProductUnitTypes = .unit
 }
 
-extension MaterialFormState {
+extension MaterialDraftModel {
     func toMaterial() throws -> MaterialModel {
         return MaterialModel(
             id: id ?? UUID(),
@@ -44,8 +44,8 @@ struct MaterialModel: Identifiable, Codable, Equatable, Hashable {
 }
 
 extension MaterialModel {
-    func toFormState() -> MaterialFormState {
-        MaterialFormState(
+    func toFormState() -> MaterialDraftModel {
+        MaterialDraftModel(
             id: id,
             name: name,
             description: description,
