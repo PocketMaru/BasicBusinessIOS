@@ -8,27 +8,37 @@ BasicBusiness is a modular SwiftUI iOS application built from real small-busines
 This project is intentionally structured as a long-term portfolio demonstration of real engineering discipline: domain modeling, explicit persistence, architectural tradeoffs, and scalability planning.
 
 ---
-
 ## Screenshots
 
-### Business Stats
-![Business Stats](Screenshots/business-stats.png)
+### Dashboard / Business Stats
+<p align="center">
+  <img src="Screenshots/business-stats.png" width="350" />
+</p>
 
 ### Customers
-![Customers](Screenshots/customers.png)
+<p align="center">
+  <img src="Screenshots/customers.png" width="350" />
+</p>
 
 ### Customer Detail
-![Customer Detail](Screenshots/customer-detail.png)
+<p align="center">
+  <img src="Screenshots/customer-detail.png" width="350" />
+</p>
 
 ### Create Quote
-![Create Quote](Screenshots/quoting-invoicing.png)
+<p align="center">
+  <img src="Screenshots/quoting-invoicing.png" width="350" />
+</p>
 
 ### Quote Detail
-![Quote Detail](Screenshots/quoting-invoicing-detail.png)
+<p align="center">
+  <img src="Screenshots/quoting-invoicing-detail.png" width="350" />
+</p>
 
 ### Materials
-![Materials](Screenshots/materials.png)
-
+<p align="center">
+  <img src="Screenshots/materials.png" width="350" />
+</p>
 ---
 
 ## Engineering Highlights
