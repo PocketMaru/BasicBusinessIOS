@@ -1,9 +1,9 @@
 # BasicBusiness
 
-Tech: Swift, SwiftUI, MVVM, Codable JSON Persistence, Async/Await
-Architecture: Modular Domain-Driven Structure
-Testing Focus: Unit tests for domain + persistence
-Design: Offline-first local persistence
+- Tech: Swift, SwiftUI, MVVM, Codable JSON Persistence, Async/Await
+- Architecture: Modular Domain-Driven Structure
+- Testing Focus: Unit tests for domain + persistence
+- Design: Offline-first local persistence
 
 > A production-minded, local-first iOS application demonstrating modular SwiftUI architecture, explicit source-of-truth data flow, and file-based JSON persistence without SwiftData.  
 > Designed around real small-business workflows with a strong emphasis on maintainability, correctness, and long-term scalability.
