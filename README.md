@@ -1,9 +1,17 @@
 # BasicBusiness
 
-> A production-minded, local-first iOS application demonstrating modular SwiftUI architecture, explicit source-of-truth data flow, and file-based JSON persistence without SwiftData.  
-> Designed around real small-business workflows with a strong emphasis on maintainability, correctness, and long-term scalability.
+A production-minded, local-first iOS application demonstrating modular SwiftUI architecture, explicit source-of-truth data flow, and file-based JSON persistence without SwiftData.  
+Designed around real small-business workflows with a strong emphasis on maintainability, correctness, and long-term scalability.
 
 BasicBusiness is a modular SwiftUI iOS application built from real small-business workflows. It is not a SaaS product or a generic “business app” template — it is an opinionated, local-first toolkit focused on maintainable code, clear source-of-truth architecture, and feature-based modularity.
+
+- Tech: Swift, SwiftUI, MVVM, Codable JSON Persistence, Async/Await
+- Architecture: Modular Domain-Driven Structure
+- Testing Focus: Unit tests for domain + persistence
+- Design: Offline-first local persistence
+  
+📄 **Resume**  
+Download my resume → [Joshua Hauer Resume](./Joshua_Hauer_Resume.pdf)
 
 This project is intentionally structured as a long-term portfolio demonstration of real engineering discipline: domain modeling, explicit persistence, architectural tradeoffs, and scalability planning.
 
