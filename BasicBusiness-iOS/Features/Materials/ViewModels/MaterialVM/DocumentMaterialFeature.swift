@@ -1,7 +1,5 @@
 import Foundation
 
-import Foundation
-
 @MainActor
 @Observable
 final class DocumentMaterialFeature {

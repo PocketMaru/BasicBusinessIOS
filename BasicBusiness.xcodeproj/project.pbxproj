@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		53F507252F5647E7005235E7 /* SwiftNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 53F507242F5647E7005235E7 /* SwiftNavigation */; };
+		53F507272F5647E7005235E7 /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 53F507262F5647E7005235E7 /* SwiftUINavigation */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		53D1A22C2DC7DC9300E7A675 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -179,6 +184,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53F507272F5647E7005235E7 /* SwiftUINavigation in Frameworks */,
+				53F507252F5647E7005235E7 /* SwiftNavigation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +241,8 @@
 			);
 			name = BasicBusiness;
 			packageProductDependencies = (
+				53F507242F5647E7005235E7 /* SwiftNavigation */,
+				53F507262F5647E7005235E7 /* SwiftUINavigation */,
 			);
 			productName = LawnPro;
 			productReference = 53D1A21E2DC7DC9200E7A675 /* BasicBusiness.app */;
@@ -311,6 +320,10 @@
 			);
 			mainGroup = 53D1A2152DC7DC9200E7A675;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				53F507222F564296005235E7 /* XCRemoteSwiftPackageReference "swift-case-paths" */,
+				53F507232F5647E7005235E7 /* XCRemoteSwiftPackageReference "swift-navigation" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 53D1A21F2DC7DC9200E7A675 /* Products */;
 			projectDirPath = "";
@@ -678,6 +691,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		53F507222F564296005235E7 /* XCRemoteSwiftPackageReference "swift-case-paths" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-case-paths";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.2;
+			};
+		};
+		53F507232F5647E7005235E7 /* XCRemoteSwiftPackageReference "swift-navigation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-navigation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		53F507242F5647E7005235E7 /* SwiftNavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53F507232F5647E7005235E7 /* XCRemoteSwiftPackageReference "swift-navigation" */;
+			productName = SwiftNavigation;
+		};
+		53F507262F5647E7005235E7 /* SwiftUINavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53F507232F5647E7005235E7 /* XCRemoteSwiftPackageReference "swift-navigation" */;
+			productName = SwiftUINavigation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 53D1A2162DC7DC9200E7A675 /* Project object */;
 }
